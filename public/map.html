@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+  <meta charset="utf-8">
+  <title>Circles</title>
+  <style>
+    html, body, #map-canvas {
+      height: 100%;
+      margin: 0;
+      padding: 0;
+    }
+
+  </style>
+  <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&signed_in=true"></script>
+  <script>
+    // This example creates circles on the map, representing
+    // populations in North America.
+
+    // First, create an object containing LatLng and population for each city.
+    var citymap = {};
+    citymap['cupertino'] = {
+      center: new google.maps.LatLng(37.3230107, -122.0322519),
+      sessions: 1920.45901639
+    };
+    citymap['houston'] = {
+      center: new google.maps.LatLng(29.7589382, -95.3676974),
+      sessions: 32053.0163934
+    };
+    citymap['madison'] = {
+      center: new google.maps.LatLng(43.074761, -89.3837613),
+      sessions: 3952.6557377
+    };
+    citymap['cincinnati'] = {
+      center: new google.maps.LatLng(39.1014537, -84.5124602),
+      sessions: 4761.06557377
+    };
+    citymap['fresno'] = {
+      center: new google.maps.LatLng(36.7394421, -119.7848307),
+      sessions: 3605.7704918
+    };
+    citymap['tallahassee'] = {
+      center: new google.maps.LatLng(30.4380832, -84.2809332),
+      sessions: 1217.0
+    };
+    citymap['greenville'] = {
+      center: new google.maps.LatLng(34.851354, -82.3984882),
+      sessions: 1088.0
+    };
+    citymap['pleasanton'] = {
+      center: new google.maps.LatLng(37.6624312, -121.8746789),
+      sessions: 1002.0
+    };
+    citymap['birmingham'] = {
+      center: new google.maps.LatLng(52.4813679, -1.8980726),
+      sessions: 1675.0
+    };
+    citymap['milwaukee'] = {
+      center: new google.maps.LatLng(43.0349931, -87.922497),
+      sessions: 4328.85245902
+    };
+    citymap['richmond'] = {
+      center: new google.maps.LatLng(-37.8074499, 144.990717487),
+      sessions: 3480.78688525
+    };
+    citymap['mountain view'] = {
+      center: new google.maps.LatLng(37.3855745, -122.08205),
+      sessions: 1188.0
+    };
+    citymap['denver'] = {
+      center: new google.maps.LatLng(39.7391536, -104.9847034),
+      sessions: 8087.27868852
+    };
+    citymap['new orleans'] = {
+      center: new google.maps.LatLng(29.9499323, -90.0701156),
+      sessions: 2575.0
+    };
+    citymap['riverside'] = {
+      center: new google.maps.LatLng(33.9533546, -117.3961623),
+      sessions: 2404.01639344
+    };
+    citymap['torrance'] = {
+      center: new google.maps.LatLng(33.8358492, -118.3406288),
+      sessions: 2233.0
+    };
+    citymap['west palm beach'] = {
+      center: new google.maps.LatLng(26.7153425, -80.0533746),
+      sessions: 1155.0
+    };
+    citymap['tulsa'] = {
+      center: new google.maps.LatLng(36.1556805, -95.9929113),
+      sessions: 3276.47540984
+    };
+    citymap['fremont'] = {
+      center: new google.maps.LatLng(37.5482697, -121.9885719),
+      sessions: 6392.3442623
+    };
+    citymap['tucker'] = {
+      center: new google.maps.LatLng(39.1256758, -79.5607117),
+      sessions: 1795.0
+    };
+    citymap['south san francisco'] = {
+      center: new google.maps.LatLng(37.6549493, -122.4081251),
+      sessions: 2451.18032787
+    };
+    citymap['jacksonville'] = {
+      center: new google.maps.LatLng(30.3321838, -81.655651),
+      sessions: 4648.39344262
+    };
+    citymap['miami'] = {
+      center: new google.maps.LatLng(25.7742658, -80.1936589),
+      sessions: 7840.0
+    };
+    citymap['baton rouge'] = {
+      center: new google.maps.LatLng(30.4507462, -91.154551),
+      sessions: 1954.0
+    };
+    citymap['orlando'] = {
+      center: new google.maps.LatLng(28.5421175, -81.3790462),
+      sessions: 8101.16393443
+    };
+    citymap['detroit'] = {
+      center: new google.maps.LatLng(42.3486635, -83.0567375),
+      sessions: 1281.0
+    };
+    citymap['glendale'] = {
+      center: new google.maps.LatLng(34.1423455, -118.2483671),
+      sessions: 1668.85245902
+    };
+    citymap['salt lake city'] = {
+      center: new google.maps.LatLng(40.7670126, -111.8904308),
+      sessions: 5762.36065574
+    };
+    citymap['cicero'] = {
+      center: new google.maps.LatLng(41.8455878, -87.7539448),
+      sessions: 2406.0
+    };
+    citymap['santa clara'] = {
+      center: new google.maps.LatLng(37.3541132, -121.9551744),
+      sessions: 8355.78688525
+    };
+    citymap['saint louis'] = {
+      center: new google.maps.LatLng(16.187637, -15.2954315),
+      sessions: 3512.0
+    };
+    citymap['ormond beach'] = {
+      center: new google.maps.LatLng(29.2858129, -81.0558894),
+      sessions: 1330.0
+    };
+    citymap['cleveland'] = {
+      center: new google.maps.LatLng(41.5051613, -81.6934446),
+      sessions: 1115.0
+    };
+    citymap['santa ana'] = {
+      center: new google.maps.LatLng(18.4430229, 122.213535709),
+      sessions: 1959.7704918
+    };
+    citymap['columbia'] = {
+      center: new google.maps.LatLng(2.8930783, -73.7845072),
+      sessions: 2441.36065574
+    };
+    citymap['portland'] = {
+      center: new google.maps.LatLng(45.5202471, -122.6741949),
+      sessions: 3642.37704918
+    };
+    citymap['fort lauderdale'] = {
+      center: new google.maps.LatLng(26.1223084, -80.1433786),
+      sessions: 1471.0
+    };
+    citymap['edison'] = {
+      center: new google.maps.LatLng(40.5382375, -74.3945172451),
+      sessions: 2085.57377049
+    };
+    citymap['chicago'] = {
+      center: new google.maps.LatLng(41.8755546, -87.6244212),
+      sessions: 29760.3442623
+    };
+    citymap['ann arbor'] = {
+      center: new google.maps.LatLng(42.2681569, -83.7312291),
+      sessions: 2810.90163934
+    };
+    citymap['newark'] = {
+      center: new google.maps.LatLng(40.735657, -74.1723667),
+      sessions: 5370.75409836
+    };
+    citymap['paradise'] = {
+      center: new google.maps.LatLng(39.7596061, -121.6219177),
+      sessions: 2592.70491803
+    };
+    citymap['colorado springs'] = {
+      center: new google.maps.LatLng(38.8339578, -104.8253485),
+      sessions: 1089.0
+    };
+    citymap['columbus'] = {
+      center: new google.maps.LatLng(39.9622601, -83.0007065),
+      sessions: 4682.21311475
+    };
+    citymap['cary'] = {
+      center: new google.maps.LatLng(35.7882973, -78.7811925),
+      sessions: 1989.24590164
+    };
+    citymap['nashville'] = {
+      center: new google.maps.LatLng(36.1622296, -86.7743531),
+      sessions: 6188.26229508
+    };
+    citymap['alhambra'] = {
+      center: new google.maps.LatLng(37.17609375, -3.58807915873),
+      sessions: 3206.0
+    };
+    citymap['albuquerque'] = {
+      center: new google.maps.LatLng(35.0841034, -106.6509851),
+      sessions: 1127.0
+    };
+    citymap['marietta'] = {
+      center: new google.maps.LatLng(33.9528472, -84.5496148),
+      sessions: 1048.0
+    };
+    citymap['virginia beach'] = {
+      center: new google.maps.LatLng(36.7953025, -76.0509250226),
+      sessions: 1677.0
+    };
+    citymap['dublin'] = {
+      center: new google.maps.LatLng(53.3497645, -6.2602732),
+      sessions: 2551.42622951
+    };
+    citymap['fort worth'] = {
+      center: new google.maps.LatLng(32.753177, -97.3327459),
+      sessions: 4596.37704918
+    };
+    citymap['las vegas'] = {
+      center: new google.maps.LatLng(36.1662859, -115.149225),
+      sessions: 7778.70491803
+    };
+    citymap['raleigh'] = {
+      center: new google.maps.LatLng(35.7804015, -78.6390779),
+      sessions: 4488.81967213
+    };
+    citymap['austin'] = {
+      center: new google.maps.LatLng(30.2711286, -97.7436995),
+      sessions: 12129.8360656
+    };
+    citymap['baltimore'] = {
+      center: new google.maps.LatLng(39.2908608, -76.6108073),
+      sessions: 2151.0
+    };
+    citymap['cambridge'] = {
+      center: new google.maps.LatLng(52.2033051, 0.124862),
+      sessions: 3005.50819672
+    };
+    citymap['washington'] = {
+      center: new google.maps.LatLng(38.8949549, -77.0366456),
+      sessions: 8281.3442623
+    };
+    citymap['durham'] = {
+      center: new google.maps.LatLng(54.666667, -1.75),
+      sessions: 1771.06557377
+    };
+    citymap['san francisco'] = {
+      center: new google.maps.LatLng(8.444585, 125.951249185),
+      sessions: 25324.1147541
+    };
+    citymap['monterey park'] = {
+      center: new google.maps.LatLng(34.0512156, -118.129229),
+      sessions: 1014.0
+    };
+    citymap['oakland'] = {
+      center: new google.maps.LatLng(37.8044557, -122.2713563),
+      sessions: 2386.31147541
+    };
+    citymap['arlington'] = {
+      center: new google.maps.LatLng(32.7355816, -97.1071186),
+      sessions: 4088.59016393
+    };
+    citymap['philadelphia'] = {
+      center: new google.maps.LatLng(39.952335, -75.163789),
+      sessions: 9909.18032787
+    };
+    citymap['new york'] = {
+      center: new google.maps.LatLng(40.7305991, -73.9865812),
+      sessions: 64998.5901639
+    };
+    citymap['saint paul'] = {
+      center: new google.maps.LatLng(43.6941, 7.12264),
+      sessions: 1816.27868852
+    };
+    citymap['huntington beach'] = {
+      center: new google.maps.LatLng(33.6781238, -118.0000112),
+      sessions: 1910.62295082
+    };
+    citymap['anaheim'] = {
+      center: new google.maps.LatLng(33.8347516, -117.911732),
+      sessions: 2050.19672131
+    };
+    citymap['highlands ranch'] = {
+      center: new google.maps.LatLng(39.5538771, -104.9694264),
+      sessions: 1854.0
+    };
+    citymap['redmond'] = {
+      center: new google.maps.LatLng(47.6694141, -122.1238767),
+      sessions: 3123.19672131
+    };
+    citymap['pittsburgh'] = {
+      center: new google.maps.LatLng(40.4416941, -79.9900861),
+      sessions: 4149.7704918
+    };
+    citymap['irving'] = {
+      center: new google.maps.LatLng(32.8629195, -96.9791701655),
+      sessions: 2097.36065574
+    };
+    citymap['irvine'] = {
+      center: new google.maps.LatLng(33.6856969, -117.8259819),
+      sessions: 10645.0491803
+    };
+    citymap['ashburn'] = {
+      center: new google.maps.LatLng(39.0437192, -77.4874899),
+      sessions: 4766.73770492
+    };
+    citymap['elmhurst'] = {
+      center: new google.maps.LatLng(41.8994745, -87.9403418),
+      sessions: 1138.0
+    };
+    citymap['honolulu'] = {
+      center: new google.maps.LatLng(21.304547, -157.8556764),
+      sessions: 1254.0
+    };
+    citymap['atlanta'] = {
+      center: new google.maps.LatLng(33.7490987, -84.3901849),
+      sessions: 24514.5737705
+    };
+    citymap['memphis'] = {
+      center: new google.maps.LatLng(35.1490215, -90.0516285),
+      sessions: 1553.0
+    };
+    citymap['tampa'] = {
+      center: new google.maps.LatLng(27.9477595, -82.458444),
+      sessions: 8242.59016393
+    };
+    citymap['long beach'] = {
+      center: new google.maps.LatLng(33.7774658, -118.1884871),
+      sessions: 1798.59016393
+    };
+    citymap['tucson'] = {
+      center: new google.maps.LatLng(32.2217422, -110.9264759),
+      sessions: 3194.37704918
+    };
+    citymap['oklahoma city'] = {
+      center: new google.maps.LatLng(35.4729886, -97.5170536),
+      sessions: 4868.95081967
+    };
+    citymap['reston'] = {
+      center: new google.maps.LatLng(38.9312353, -77.3570209094),
+      sessions: 1706.19672131
+    };
+    citymap['san juan'] = {
+      center: new google.maps.LatLng(9.07497205, 123.471812968),
+      sessions: 1267.0
+    };
+    citymap['charlotte'] = {
+      center: new google.maps.LatLng(35.2270869, -80.8431268),
+      sessions: 6435.85245902
+    };
+    citymap['boston'] = {
+      center: new google.maps.LatLng(42.3604823, -71.0595678),
+      sessions: 6964.54098361
+    };
+    citymap['little rock'] = {
+      center: new google.maps.LatLng(34.7464809, -92.2895948),
+      sessions: 1013.0
+    };
+    citymap['minneapolis'] = {
+      center: new google.maps.LatLng(44.9772995, -93.2654692),
+      sessions: 5735.80327869
+    };
+    citymap['livonia'] = {
+      center: new google.maps.LatLng(42.36837, -83.3527097),
+      sessions: 1119.0
+    };
+    citymap['seattle'] = {
+      center: new google.maps.LatLng(47.6038321, -122.3300624),
+      sessions: 12410.1639344
+    };
+    citymap['tacoma'] = {
+      center: new google.maps.LatLng(47.2495798, -122.4398746),
+      sessions: 1329.0
+    };
+    citymap['rochester'] = {
+      center: new google.maps.LatLng(51.389062, 0.5049347),
+      sessions: 2012.83606557
+    };
+    citymap['dallas'] = {
+      center: new google.maps.LatLng(32.7761963, -96.7968994),
+      sessions: 17631.4262295
+    };
+    citymap['san diego'] = {
+      center: new google.maps.LatLng(32.7174209, -117.1627714),
+      sessions: 20036.6885246
+    };
+    citymap['gainesville'] = {
+      center: new google.maps.LatLng(29.651907, -82.3247976),
+      sessions: 1879.18032787
+    };
+    citymap['louisville'] = {
+      center: new google.maps.LatLng(38.2542376, -85.759407),
+      sessions: 3954.8852459
+    };
+    citymap['vancouver'] = {
+      center: new google.maps.LatLng(49.2608944, -123.1139383),
+      sessions: 1973.52459016
+    };
+    citymap['rancho santa margarita'] = {
+      center: new google.maps.LatLng(33.640855, -117.603104),
+      sessions: 1979.0
+    };
+    citymap['san antonio'] = {
+      center: new google.maps.LatLng(12.3913651, 124.262226811),
+      sessions: 7178.24590164
+    };
+    citymap['springfield'] = {
+      center: new google.maps.LatLng(39.7989763, -89.6443688),
+      sessions: 1806.44262295
+    };
+    citymap['indianapolis'] = {
+      center: new google.maps.LatLng(39.7683331, -86.1583502),
+      sessions: 3702.1147541
+    };
+    citymap['bellevue'] = {
+      center: new google.maps.LatLng(46.255, 6.154317),
+      sessions: 5919.7704918
+    };
+    citymap['sunnyvale'] = {
+      center: new google.maps.LatLng(37.3688301, -122.0363496),
+      sessions: 2806.96721311
+    };
+    citymap['phoenix'] = {
+      center: new google.maps.LatLng(33.4467681, -112.0756724),
+      sessions: 11430.557377
+    };
+    citymap['sacramento'] = {
+      center: new google.maps.LatLng(38.5815719, -121.4943996),
+      sessions: 5445.49180328
+    };
+    citymap['san jose'] = {
+      center: new google.maps.LatLng(10.7837952, 121.879579887),
+      sessions: 22609.8196721
+    };
+    citymap['kansas city'] = {
+      center: new google.maps.LatLng(39.0844687, -94.5630298),
+      sessions: 5745.39344262
+    };
+    citymap['palo alto'] = {
+      center: new google.maps.LatLng(37.442156, -122.1634472),
+      sessions: 1967.62295082
+    };
+    citymap['plano'] = {
+      center: new google.maps.LatLng(42.4552097, 0.2136803),
+      sessions: 3868.42622951
+    };
+    citymap['omaha'] = {
+      center: new google.maps.LatLng(41.2587317, -95.9378732),
+      sessions: 3579.96721311
+    };
+    citymap['el paso'] = {
+      center: new google.maps.LatLng(31.7600372, -106.487287),
+      sessions: 1203.0
+    };
+    citymap['los angeles'] = {
+      center: new google.maps.LatLng(34.053717, -118.2427266),
+      sessions: 42545.7704918
+    };
+    citymap['richardson'] = {
+      center: new google.maps.LatLng(32.9481789, -96.7297206),
+      sessions: 2878.0
+    };
+    citymap['buffalo'] = {
+      center: new google.maps.LatLng(42.8864468, -78.8783689),
+      sessions: 1712.0
+    };
+    var cityCircle;
+
+    function initialize() {
+      // Create the map.
+      var mapOptions = {
+        zoom: 4,
+        center: new google.maps.LatLng(37.09024, -95.712891),
+        mapTypeId: google.maps.MapTypeId.TERRAIN
+      };
+
+      var map = new google.maps.Map(document.getElementById('map-canvas'),
+        mapOptions);
+
+      // Construct the circle for each value in citymap.
+      // Note: We scale the area of the circle based on the population.
+      for (var city in citymap) {
+        var sessionOptions = {
+          strokeColor: '#FF0000',
+          strokeOpacity: 0.8,
+          strokeWeight: 2,
+          fillColor: '#FF0000',
+          fillOpacity: 0.35,
+          map: map,
+          center: citymap[city].center,
+          radius: Math.sqrt(citymap[city].sessions) * 1000
+        };
+        // Add the circle for this city to the map.
+        cityCircle = new google.maps.Circle(sessionOptions);
+      }
+    }
+
+    google.maps.event.addDomListener(window, 'load', initialize);
+
+  </script>
+</head>
+<body>
+<div id="map-canvas"></div>
+</body>
+</html>

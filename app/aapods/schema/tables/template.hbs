@@ -1,0 +1,22 @@
+<div class="row">
+    <div class="col-md-3">
+        <div class="row">
+          <h4>{{#link-to 'schema'}}See Overall Status{{/link-to}}</h4>
+        </div>
+        <div class="row">
+            <h3>Tables</h3>
+        </div>
+        <div class="row">
+            <div class="list-group">
+              {{#each model.tables as |table|}}
+                {{#link-to 'schema.tables.table' table.id class="list-group-item"}}{{table.name}} ({{table.mappedct}}/{{table.colct}}){{/link-to}}
+              {{/each}}
+            </div>
+        </div>
+    </div>
+    <div class="col-md-9">
+        <div class="row space-box">
+          {{outlet}}
+        </div>
+    </div>
+</div>

@@ -1,0 +1,15 @@
+{{#if isLoading}}
+Loading ...
+{{else}}
+{{#if error}}
+<button action={{'retry'}}>Retry</button>
+{{else}}
+{{#if isVals}}
+<div class="factorvals">
+{{#each vals as |val|}}
+{{val.name}}
+{{/each}}
+</div>
+{{/if}}
+{{/if}}
+{{/if}}

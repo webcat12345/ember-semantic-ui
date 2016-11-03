@@ -1,0 +1,5 @@
+id,name,avg_value,color,icon,dashboard,chart_id
+1,Avg Connection Count ,2%,panel panel-primary,fa fa-shopping-cart fa-5x,1,Device Avg Connection Count by Country
+2,Avg Amount Spent by Device,8.50%,panel panel-green,fa fa-tasks fa-5x,1,Device Avg Amount by Device
+3,Avg Session Length,1.5 billion,panel panel-red,fa fa-comments fa-5x,1,Avg Session Length by OS Version
+4,Avg Transmitted Bytes,60%,panel panel-red,fa fa-comments fa-5x,1,Avg Transmitted Bytes by Country

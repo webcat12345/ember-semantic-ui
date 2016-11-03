@@ -1,0 +1,403 @@
+<!-- Story start -->
+<div class="row myaffix" id="story">
+
+    <!-- CSS component is factor select -->
+
+
+    <div class="media">
+        <div class="media-left">
+            <div class="story--title">
+                <h3 class="story--header">Story</h3>
+                <!--<button type="button" class="btn btn-primary" data-toggle="tooltip"
+                        title="Bookmark this page" {{action 'bookmark'}}>
+                  {{#if story_object}}
+                      <i class="fa fa-bookmark"></i>
+                  {{else}}
+                      <i class="fa fa-bookmark-o"></i>
+                  {{/if}}
+                </button>-->
+                <button class="btn btn-primary" type="button" data-toggle="collapse"
+                        data-target="#collapseCompareChart" aria-expanded="false" aria-controls="collapseCompareChart">
+                    <i class="fa fa-line-chart"></i>
+                </button>
+            </div>
+
+        </div>
+        <div class="media-body">
+            <div class="row">
+                <div class="col-md-6">
+                    <h4 class="media-heading">
+                      {{number-fmt 'metric' model.results.d.pm}}%
+                      {{#if model.results.d.isHigher}}
+                          increase in
+                      {{else}}
+                          dip in
+                      {{/if}}
+
+                      {{#ui-dropdown class="dropdown-toggle ui fluid selection dropdown filters" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" fullTextSearch='exact' onChange=(action 'metric_change')}}
+                          <div><span class="metric--name_title">{{model.metric.name}}</span><i
+                                  class="dropdown icon"></i>
+                          </div>
+
+                          <div class="menu col-md-3 ">
+                            {{#each model.metrics as |metric|}}
+                                <div class="item {{if (eq metric.id model.metric.id) 'active selected' '' }}"
+                                     data-value="{{metric.id}}">
+                                  {{metric.name}}
+                                </div>
+                            {{/each}}
+                          </div>
+                      {{/ui-dropdown}}
+                        <!-- <span class="metric--name_title">{{model.metric.name}}</span> -->
+                    </h4>
+                    <p>
+                        comparing
+            <span class="bucket_style">
+                {{format-bucket model.results.apt}}
+                <div class="actual_metric_value">
+                    ({{number-fmt 'metric' model.results.apt.om}}{{model.metric.unit_type}})
+                </div>
+            </span>
+                        with
+          <span class="bucket_style">
+              {{format-bucket model.results.bpt}}
+              <div class="actual_metric_value">({{number-fmt 'metric' model.results.bpt.om}}{{model.metric.unit_type}})
+              </div>
+
+
+              </span>
+                        for
+                      {{#if model.results.displaystr}}
+                        {{#each model.results.displaystr as |df|}}
+                          {{df.name}}{{df.op}}{{df.value}}
+                        {{/each}}
+                      {{else}}
+                          Segment=Overall
+                      {{/if}}
+                    </p>
+                  {{#if model.results.d.significance}}
+                    {{#unless (eq model.results.d.significance.pvalue -1)}}
+                        ( Statistical
+                        significance: {{why/significance-popover significance=model.results.d.significance}} )
+                    {{/unless}}
+                  {{/if}}
+                </div>
+                <div class="factor_select">
+                    <div class="col-md-3">
+
+                        <div class="">
+                          {{!-- {{select-picker content=alldims
+                                       selection=follows
+                                       action=(action "setAdvancedSearchChoices")
+                                       multiple=true
+                                       liveSearch="advanced"
+                                       optionLabelPath="content.name"
+                                       optionValuePath="content.id"}} --}}
+
+                            <nav class="nav in dimensions">
+                                <li>
+                                    <a href="javascript:void(0)" data-toggle="collapse" href="#collapseDimensions"
+                                       aria-expanded="false"
+                                       aria-controls="collapseFilters" class="active"><h4><span
+                                            class="metric--name_title">{{model.compare.dimensions.length}}
+                                        dimensions</span> <i
+                                            class="dropdown icon"></i></h4>
+                                    </a>
+                                    <ul class="nav nav-second-level collapse" id="collapseDimensions">
+                                        <li>
+                                            <a>{{input value=dimsearch class="form-control" placeholder="search..."}}</a>
+                                        </li>
+                                      {{#each follows as |dimension|}}
+                                          <li>
+                                              <a href="javascript:void(0)">
+                                                {{j-check checked=dimension.following action='follow' entity="dimensions" entityval=dimension.id}}
+                                                {{dimension.name}}
+                                              </a>
+                                          </li>
+                                      {{/each}}
+                                    </ul>
+                                </li>
+                            </nav>
+                            were used for the analysis
+
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <button class="btn-compare btn-compare_empty" data-toggle="tooltip" data-placement="bottom"
+                                title="Updates the factor list on this why report"{{action "updateCompare"}}><i
+                                class="fa fa-refresh"></i></button>
+                        <button class="btn-compare btn-compare_empty" data-toggle="tooltip" data-placement="bottom"
+                                title="Saves the updated factor list globally, for every why report" {{action "saveCompare"}}>
+                            <i class="fa fa-floppy-o"></i></button>
+                        <!--<button class="btn-compare btn-compare_empty" data-toggle="tooltip" data-placement="bottom"-->
+                        <!--title="Want human help? Get detailed expert analysis sent to you" {{action "expertAnalysis"}}>-->
+                        <!--<i class="fa fa-hand-o-up"></i></button>-->
+                    </div>
+                </div>
+            </div>
+            <div class="collapse" id="collapseCompareChart">
+                <hr>
+                <div class="row">
+                    <div class="col-md-8">
+                      {{explain-chart
+                      currentControllerBinding="controller"
+                      dataset=mainChartObj.dataset
+                      selectedMetricId=mainChartObj.selectedMetricId
+                      selectedDimensionId=(unbound mainChartObj.selectedDimensionId)
+                      startDate=mainChartObj.startDate
+                      endDate=mainChartObj.endDate
+                      type=mainChartObj.type
+                      group_by=mainChartObj.group_by
+                      dashboard=mainChartObj.dashboard
+                      metrics=mainChartObj.metrics
+                      preColorA=mainChartObj.preColorA
+                      preColorB=mainChartObj.preColorB
+                      f=mainChartObj.f
+                      spark_only=mainChartObj.spark_only
+                      chart_name = mainChartObj.chart_name
+                      editing=false
+                      window=window
+                      showModal=(action 'modalForMainChart')
+                      is_story=true}}
+                    </div>
+                    <div class="col-md-4">
+
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-10">
+                        <a type="button" data-toggle="collapse" href="javascript:void(0)" class="pull-right"
+                           data-target="#collapseCompareChart" aria-expanded="false"
+                           aria-controls="collapseCompareChart">
+                            <i class="fa fa-chevron-up"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Storu end -->
+
+
+<!-- Report start -->
+<div class="report">
+    <!-- Report title -->
+    <h3>Why report</h3>
+
+    <!-- Other impacted metrics table -->
+  {{#if model.metric.calculation.numerator.id}}
+      <table class="table">
+          <thead>
+          <tr style="color:gray">
+              <th>Other impacted metrics</th>
+              <th>
+                {{format-bucket model.results.apt}}
+              </th>
+              <th>
+                {{format-bucket model.results.bpt}}
+              </th>
+              <th>Change</th>
+            {{#if model.results.isdate}}
+                <th>Sparkline</th>
+            {{/if}}
+          </tr>
+          </thead>
+          <tbody>
+          {{#if model.metric.calculation.numerator.id}}
+              <tr>
+                  <td>{{model.metric.calculation.numerator.name}}</td>
+                  <td>{{number-fmt 'metric' model.results.apt.mct}}{{model.metric.calculation.numerator.unit_type}}</td>
+                  <td>{{number-fmt 'metric' model.results.bpt.mct}}{{model.metric.calculation.numerator.unit_type}}</td>
+                  <td>
+                    <span class={{if model.results.d.isNumHigher "text-success" "text-danger"}}>
+                    {{number-fmt 'changeperc' model.results.d.mct}}
+                        ({{number-fmt 'changeperc' model.results.d.pmct}}%)
+                    </span>
+
+
+                    {{#link-to 'compare.explain' (query-params fltr=fltr metric_id=model.metric.calculation.numerator.id factor_id=factor_id sd=sd ed=ed a=a b=b)}}
+                        Why?
+                    {{/link-to}}
+                      <span class="hand pull-right text-" {{action 'modalForMetric' model.metric.calculation.numerator.id}}>
+                          <i class="fa fa-line-chart"></i>
+                      </span>
+                  </td>
+                {{#if model.results.isdate}}
+                    <td>
+                        <div>{{charts/sparkline-chart dataset=model.dataset
+                        selectedMetricId=model.metric.calculation.numerator.id
+                        selectedDimensionId=model.factor.id
+                        windowStart=model.window.startDate
+                        windowEnd=model.window.endDate
+                        startDate=model.results.apt.name
+                        endDate=model.results.bpt.name
+                        type='line'
+                        filter=model.results.fltr}}</div>
+                    </td>
+                {{/if}}
+              </tr>
+          {{/if}}
+          {{#if model.metric.calculation.denominator.id}}
+              <tr>
+                  <td>{{model.metric.calculation.denominator.name}}</td>
+                  <td>{{number-fmt 'metric' model.results.apt.ct}}{{model.metric.calculation.denominator.unit_type}}</td>
+                  <td>{{number-fmt 'metric' model.results.bpt.ct}}{{model.metric.calculation.denominator.unit_type}}</td>
+                  <td>
+                    <span class={{if model.results.d.isDenomHigher "text-success" "text-danger"}}>
+                    {{number-fmt 'changeperc' model.results.d.ct}}
+                        ({{number-fmt 'changeperc' model.results.d.pct}}%)
+                      </span>
+
+                    {{#link-to 'compare.explain' (query-params fltr=fltr metric_id=model.metric.calculation.denominator.id factor_id=factor_id sd=sd ed=ed a=a b=b)}}
+                        Why?
+                    {{/link-to}}
+                      <span class="hand pull-right" {{action 'modalForMetric' model.metric.calculation.denominator.id}}>
+                          <i class="fa fa-line-chart"></i>
+                      </span>
+                  </td>
+                {{#if model.results.isdate}}
+                    <td>
+                        <div>{{charts/sparkline-chart dataset=model.dataset
+                        selectedMetricId=model.metric.calculation.denominator.id
+                        selectedDimensionId=model.factor.id
+                        windowStart=model.window.startDate
+                        windowEnd=model.window.endDate
+                        startDate=model.results.apt.name
+                        endDate=model.results.bpt.name
+                        type='line'
+                        filter=model.results.fltr}}</div>
+                    </td>
+                {{/if}}
+              </tr>
+          {{/if}}
+          </tbody>
+      </table>
+  {{/if}}
+
+    <!-- Report content -->
+    <div class="col-md-12 report--content">
+      {{#if model.params.search_str}}
+          <div class="row">
+
+              <div class="col-md-6">
+                  <strong>Search Results: </strong> &nbsp;{{model.params.search_str}} &nbsp;<a
+                      href="" {{action "searchDims" null}}><i class="fa fa-times-circle" aria-hidden="true"></i></a>
+              </div>
+              <div class="col-md-6">
+              </div>
+          </div>
+      {{/if}}
+
+      {{#unless model.results.factors}}
+          <div class="row">
+              <div class="col-md-12">
+                {{#if model.results.adhocwhy_exist}}
+                    <h3>Cuberon is computing what caused this anamoly.</h3>
+                  {{#if model.results.job}}
+                      <div class="progress">
+                          <div class="progress-bar" role="progressbar"
+                               aria-valuenow="{{number-fmt 'int' model.results.job.perc_cubes}}" aria-valuemin="0"
+                               aria-valuemax="100"
+                               style="min-width: 2em;width: {{number-fmt 'int' model.results.job.perc_cubes}}%;">
+                            {{number-fmt 'int' model.results.job.perc_cubes}}%
+                          </div>
+                      </div>
+                  {{/if}}
+                    Patterns detectors have been triggered. You can bookmark this URL and return later.<br>
+                    We will email you as soon as the data is available.
+                {{else}}
+
+                  {{#if (eq model.results.job.perc_cubes 100) }}
+                      No results found
+                  {{else}}
+                      <div id="adhoc-message">
+                        {{why/adhoc-message model=model.params dataset_id=model.dataset_id done="done" cancel="cancel"}}
+                      </div>
+                  {{/if}}
+                {{/if}}
+              </div>
+          </div>
+          <!-- Report in progress end -->
+
+      {{else}}
+          <!-- Tab list -->
+
+          <div class="row">
+            {{#if breadcrumb}}
+                <ol class="breadcrumb">
+                  {{#each breadcrumb as |bc|}}
+                      <li class="{{bc.class}}">
+                        {{#if bc.class}}
+                          {{bc.name}}
+                        {{else}}
+                            <a href=""  {{action "breadcrumbClk" bc}}>{{bc.name}}</a>
+                        {{/if}}
+                      </li>
+                  {{/each}}
+
+                </ol>
+            {{/if}}
+          </div>
+
+        {{#if model.params.search_str}}
+          {{partial "compare/explain/search-results"}}
+        {{else}}
+          {{partial "compare/explain/tabs"}}
+        {{/if}}
+
+      {{/unless}}
+        <div class="row">
+          {{#if model.params.validate}}
+            {{#if isAdmin}}
+                Baseline Models Coverage = {{model.results.historical_model_coverage}} % <br>
+                Valid Segments = {{model.results.validation.raw_true_count}}
+                Total Segments Compared = {{model.results.validation.sample_size}}
+                <table class="table">
+                    <thead>
+                    <tr style="color:gray">
+                        <th>Dimension Name</th>
+                        <th>Segment Name</th>
+                        <th>
+                          {{format-bucket model.results.apt}} WhyPage
+                        </th>
+                        <th>
+                          {{format-bucket model.results.apt}} Raw
+                        </th>
+                        <th>
+                          {{format-bucket model.results.bpt}} WhyPage
+                        </th>
+                        <th>
+                          {{format-bucket model.results.bpt}} Raw
+                        </th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {{#each model.results.validation.segments.raw as |segment|}}
+                      {{#unless segment.status}}
+                          <tr id={{segment.source}}>
+                              <td>{{segment.a.fname}}
+                              </td>
+                              <td>{{segment.a.segment}}
+                              </td>
+                              <td>{{number-fmt 'metric' segment.a.api}}
+                              </td>
+                              <td>{{number-fmt 'metric' segment.a.source}}
+                              </td>
+                              <td>{{number-fmt 'metric' segment.b.api}}
+                              </td>
+                              <td>{{number-fmt 'metric' segment.b.source}}
+                              </td>
+                          </tr>
+                      {{/unless}}
+                    {{/each}}
+                    </tbody>
+                </table>
+                <button class="btn btn-default" {{action 'debug'}}>Debug</button>
+            {{/if}}
+          {{/if}}
+        </div>
+    </div>
+</div>
+<!-- Report end -->

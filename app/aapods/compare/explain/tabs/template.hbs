@@ -1,0 +1,220 @@
+<div class="row">
+    <div class="col-md-12">
+        <ul class="nav nav-tabs" role="tablist">
+          {{#unless (eq model.dataset_id 'whoeasy')}}
+              <li role="presentation" class={{unbound (if (eq result_tab "regular") "active")}}>
+                  <a href="#table" aria-controls="table" role="tab" data-toggle="tab" title="Top Segments"
+                    {{action "setCompareType" "regular" preventDefault=false}}>
+                      <i class="fa fa-pie-chart"></i> Top Segments
+                  </a>
+              </li>
+              <li role="presentation" class={{unbound (if (eq result_tab "groups") "active")}}>
+                  <a href="#dimgroups" aria-controls="winners" role="tab" data-toggle="tab" title="Dimension Groups"
+                    {{action "setCompareType" "groups" preventDefault=false}}>
+                      <i class="fa fa-shield"></i> Main Contributors
+                  </a>
+              </li>
+          {{/unless}}
+            <li role="presentation" class={{unbound (if (eq result_tab "optimize") "active")}}>
+                <a href="#winners" aria-controls="winners" role="tab" data-toggle="tab" title="Winners and Losers"
+                  {{action "setCompareType" "optimize" preventDefault=false}}>
+                    <i class="fa fa-shield"></i> Winners and Losers
+                </a>
+            </li>
+            <li role="presentation">
+                <a href="#metrics" aria-controls="metrics" role="tab" data-toggle="tab" title="Metrics">
+                    <i class="fa fa-filter"></i> Other Impacted Metrics
+                </a>
+            </li>
+
+          {{#if model.results.has_deeper_why}}
+              <li role="presentation">
+                  <a href="#paths" aria-controls="paths" role="tab" data-toggle="tab" title="Top User Flows">
+                      Top Paths
+                  </a>
+              </li>
+          {{/if}}
+        </ul>
+    </div>
+</div>
+
+
+{{filteredResults}}
+<!-- Tab content -->
+<div class="tab-content">
+
+    <!-- Metrics tab -->
+    <div role="tabpanel" class="tab-pane" id="metrics">
+        <div class="panel panel-default">
+            <!--<div class="panel-heading">
+              <h4 class="panel-title"> Analysis </h4>
+            </div> -->
+
+
+          {{why/why-funnel title="test" data=metricpie highlight="highlight"}}
+
+            <div class="panel-body">
+
+              {{#data-tables tableid='metricstable' btnid='metricbuttons' selectable=false filters=filterSearch highlights=mHighlights}}
+                  <table id="metricstable"
+                         data-order='[[ 4, "desc"]]'
+                         class="table dataTable no-footer display compact"
+                         cellspacing="0" width="100%"
+                         role="grid"
+                         aria-describedby="datatable_info"
+                         data-dom='<"top"if>rt<"bottom"p><"clear">'>
+                      <thead>
+                      <tr class="active">
+                          <th data-orderable="false">Metric Name</th>
+                          <th data-orderable="false">
+                            {{format-bucket model.results.apt}}
+                          </th>
+                          <th>
+                            {{format-bucket model.results.bpt}}
+                          </th>
+                          <th data-orderable="false">Diff</th>
+                          <th>% Change</th>
+                          <th data-orderable="false"></th>
+                      </tr>
+                      </thead>
+                      <tbody>
+                      {{#each funnelpts as |m|}}
+                          <tr>
+                              <td>{{factor-name factors=metricHash id=m.metric.metricid}}</td>
+                              <td>{{number-fmt 'metric' m.metric.apt.m}}</td>
+                              <td>{{number-fmt 'metric' m.metric.bpt.m}}</td>
+                              <td>{{number-fmt 'metric' m.metric.diff.om}} </td>
+                              <td>{{number-fmt 'changeperc' m.metric.diff.pm}}
+                                  <div class="hand pull-right" {{action 'modalForMetric' m.metric.metricid}}>
+                                      <i class="fa fa-line-chart"></i>
+                                  </div>
+                              </td>
+                              <td>
+                                  <a href="" class="btn btn-default btn-xs tbl-btns" type="button"
+                                     title="{{point.facet.n}}"{{action 'metricwhy' m.metric.metricid}}>
+                                      <i class="fa fa-eye" aria-hidden="true"></i> Explore</a>
+                                {{#if point.loading}}
+                                  {{fa-icon icon="refresh" spin=true size="1"}}
+                                {{/if}}
+                                  <a href=""  {{action 'deletedim' point.facet.f}}>
+
+                                  </a>
+                                  <div class="btn-group">
+                                      <button class="btn btn-default btn-xs tbl-btns dropdown-toggle" type="button"
+                                              data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                          More <span class="caret"></span>
+                                      </button>
+                                      <ul class="dropdown-menu">
+                                          <li><a href="" {{action 'deletemetric' m.metric}}>
+                                              <i class="fa fa-times" aria-hidden="true"></i> Remove</a></li>
+                                          <li><a href="" {{action "editFactor" m}}>
+                                              <i class="fa fa-pencil" aria-hidden="true"></i> Edit</a></li>
+                                      </ul>
+                                  </div>
+                              </td>
+                          </tr>
+                      {{/each}}
+                      </tbody>
+                  </table>
+              {{/data-tables}}
+            </div>
+        </div>
+    </div>
+  {{#if isEditGroup}}
+    {{#modal-dialog close="toggleEditGroup"
+    targetAttachment="center"
+    translucentOverlay=true}}
+      {{factor-groups factors=model.dimensions}}
+    {{/modal-dialog}}
+  {{/if}}
+  {{#if isEditFactor}}
+    {{#modal-dialog close="toggleEdit"
+    targetAttachment="center"
+    translucentOverlay=true}}
+      {{schema/factor-form factor=currFactor isMini=true save="toggleEdit" cancel="toggleEdit"}}
+    {{/modal-dialog}}
+  {{/if}}
+  {{#if isSegFunnel}}
+    {{#modal-dialog close="toggleFunnel"
+    targetAttachment="center"
+    translucentOverlay=true}}
+        <div id="chartcontainer" style="width:100%">
+          {{why/metric-table story=currStory metricwhy="metricwhy" isMini=true save="isSegFunnel" cancel="isSegFunnel"}}
+        </div>
+    {{/modal-dialog}}
+  {{/if}}
+    <!-- Segments tab -->
+  {{#if (eq result_tab 'groups')}}
+      <div role="tabpanel" class="tab-pane active" id="dimgroups">
+          <div class="panel panel-default">
+              <!--<div class="panel-heading">
+               <h4 class="panel-title"> Analysis </h4>
+             </div> -->
+              <div class="panel-body">
+
+                  <!-- No significant segments -->
+                  <div class="row">
+                    {{#if significantMessage}}
+                        <div class="alert alert-danger" role="alert">
+                            <strong>No Significant Segments were found</strong> <br>
+                            Please uncheck one above to see all segments.
+                        </div>
+                    {{/if}}
+                  </div>
+                {{partial "compare/explain/group-segments"}}
+              </div>
+          </div>
+      </div>
+  {{/if}}
+  {{#if (eq result_tab 'regular')}}
+
+      <div role="tabpanel" class="tab-pane active" id="table">
+          <div class="panel panel-default">
+              <!--<div class="panel-heading">
+               <h4 class="panel-title"> Analysis </h4>
+             </div> -->
+              <div class="panel-body">
+
+                  <!-- No significant segments -->
+                  <div class="row">
+                    {{#if significantMessage}}
+                        <div class="alert alert-danger" role="alert">
+                            <strong>No Significant Segments were found</strong> <br>
+                            Please uncheck one above to see all segments.
+                        </div>
+                    {{/if}}
+                  </div>
+                {{partial "compare/explain/why-segments"}}
+              </div>
+          </div>
+      </div>
+  {{/if}}
+
+  {{#if (eq result_tab 'optimize')}}
+
+      <div role="tabpanel" class="tab-pane active" id="winners">
+          <div class="panel panel-default">
+              <!--<div class="panel-heading">
+               <h4 class="panel-title"> Analysis </h4>
+             </div> -->
+              <div class="panel-body">
+
+                  <!-- No significant segments -->
+                  <div class="row">
+                    {{#if significantMessage}}
+                        <div class="alert alert-danger" role="alert">
+                            <strong>No Significant Segments were found</strong> <br>
+                            Please uncheck one above to see all segments.
+                        </div>
+                    {{/if}}
+                  </div>
+                {{partial "compare/explain/compare-segments"}}
+              </div>
+          </div>
+      </div>
+  {{/if}}
+
+    <div role="tabpanel" class="tab-pane" id="chart">
+      {{charts/high-chart config=chart}}
+    </div>
+</div>

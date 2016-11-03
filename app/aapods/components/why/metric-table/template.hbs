@@ -1,0 +1,71 @@
+<h4>Metric Table <small><a href="" {{action "toggleViz"}}><i class="fa fa-table" aria-hidden="true"></i> Table</a> | <a href="" {{action "toggleViz"}}><i class="fa fa-filter" aria-hidden="true"></i> Funnel</a></small></h4>
+{{#if isPie}}
+{{why/why-funnel title="test" data=story.mpie highlight="highlight"}}
+{{else}}
+{{#data-tables tableid='metricstable' btnid='metricbuttons' selectable=false filters=filterSearch highlights=mHighlights}}
+                      <table id="metricstable"
+                             data-order='[[ 4, "desc"]]'
+                             class="table dataTable no-footer display compact"
+                             cellspacing="0" width="100%"
+                             role="grid"
+                             aria-describedby="datatable_info"
+                             data-dom='<"top"if>rt<"bottom"p><"clear">'>
+                          <thead>
+                          <tr class="active">
+                              <th data-orderable="false">Metric Name</th>
+                              <th data-orderable="false">
+                                  {{format-bucket story.abucket}}
+                             </th>
+                             <th>
+                                 {{format-bucket story.bbucket}}
+                              </th>
+                              <th data-orderable="false">Diff</th>
+                              <th>% Change</th>
+                              <th data-orderable="false"></th>
+                          </tr>
+                          </thead>
+                          <tbody>
+                          {{#each story.change.otherdiff as |m|}}
+                              <tr>
+                                  <td>{{factor-name factors=story.metricHash id=m.metricid}}</td>
+                                  <td>{{number-fmt 'metric' m.apt.m}}</td>
+                                  <td>{{number-fmt 'metric' m.bpt.m}}</td>
+                                  <td>{{number-fmt 'metric' m.diff.om}} </td>
+                                  <td>{{number-fmt 'changeperc' m.diff.pm}}
+                                      <!-- temp removing
+                                      <div class="hand pull-right" {{action 'modalForMetric' m.metricid}}>
+                                          <i class="fa fa-line-chart"></i>
+                                      </div>
+                                      -->
+                                  </td>
+                                  <td>
+                                      <a href="" class="btn btn-default btn-xs tbl-btns" type="button"
+                                         title="{{point.facet.n}}"{{action 'metricwhy' m.metricid}}>
+                                          <i class="fa fa-eye" aria-hidden="true"></i> Explore</a>
+                                    {{#if point.loading}}
+                                      {{fa-icon icon="refresh" spin=true size="1"}}
+                                    {{/if}}
+                                      <a href=""  {{action 'deletedim' point.facet.f}}>
+
+                                      </a>
+                                      <!-- hiding advanced options
+                                      <div class="btn-group">
+                                          <button class="btn btn-default btn-xs tbl-btns dropdown-toggle" type="button"
+                                                  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                              More <span class="caret"></span>
+                                          </button>
+                                          <ul class="dropdown-menu">
+                                              <li><a href="" {{action 'deletemetric' m.metric}}>
+                                                  <i class="fa fa-times" aria-hidden="true"></i> Remove</a></li>
+                                              <li><a href="" {{action "editFactor" m}}>
+                                                  <i class="fa fa-pencil" aria-hidden="true"></i> Edit</a></li>
+                                          </ul>
+                                      </div>
+                                      -->
+                                  </td>
+                              </tr>
+                          {{/each}}
+                          </tbody>
+                      </table>
+                  {{/data-tables}}
+                  {{/if}}

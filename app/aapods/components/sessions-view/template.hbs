@@ -1,0 +1,44 @@
+
+<div class="ui padded grid middle aligned ">
+  {{#if loadingSessions}}
+    <div class="sixteen wide column center aligned">
+        <h1>Loading...</h1>
+        {{fa-icon icon="refresh" spin=true size="4"}}
+    </div>
+  {{else}}
+    {{#if sampleSessions}}
+        <div class="sixteen wide column center aligned">
+          <div class="ui padded grid middle aligned ">
+            {{#data-tables tableid='sessionTable'}}
+                <table id="sessionTable"
+                        data-order='[[ 0, "desc"], [ 1, "asc"],[ 2, "asc"]]'
+                        class="table dataTable no-footer display compact"
+                        cellspacing="0" width="100%"
+                        role="grid"
+                        aria-describedby="datatable_info"
+                        data-dom='<"top"if>rt<"bottom"p><"clear">'>
+                    <thead>
+                    <tr class="active">
+                      {{#each dims as |onedim|}}
+                        <th>{{onedim}}</th>
+                      {{/each}}
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {{#each sampleSessions as |session|}}
+                        <tr>
+                          {{#each dims as |onedim|}}
+                            <td>{{get-property session onedim}}</td>
+                          {{/each}}
+                        </tr>
+                    {{/each}}
+                    </tbody>
+                    <tfoot></tfoot>
+                </table>
+            {{/data-tables}}
+          </div>
+        </div>
+      {{/if}}
+  {{/if}}
+</div>
+

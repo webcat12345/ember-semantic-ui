@@ -1,0 +1,45 @@
+<div class="row">
+  <div class="col-md-12">
+   {{input action='searchDims' type='text' class='form-control search-box' value=searchStr}}
+    <button class="btn btn-success-outline search-box" type="submit" {{action 'searchDims' searchStr}}>Go</button>
+{{view 'select'
+                              content=sorts
+                              optionValuePath='content.key'
+                              optionLabelPath='content.name'
+                              selection=selSort
+                              classNames='form-control search-box'
+                              required=true}}
+  </div>
+</div>
+
+<div class="row grp-results">
+<div class="col-md-2 group-nav">
+  <!--<a href="" {{action "toggleEditGroup"}}>
+                                                  <i class="fa fa-pencil" aria-hidden="true"></i> Edit</a>-->
+{{why/dim-groups funnels=dimGroups setFunnel="setCurrGroup"}}
+</div>
+<div class="col-md-10">
+  <div class="row">
+
+     </div>
+{{#each currGroup.metrics as |dim|}}
+{{why/dim-table sort=selSort story=currStory dim=dim.id title=dim.id isDebug=isDebug filterSearch=filterSearch
+tableid='dimgroups' btnid='topsegmentsbuttons' model=model
+uniq_factors=uniq_factors compare=model deeperwhy="deeperwhy"
+deletedim="deletedim" modalForSegment="modalForSegment" isAdmin=isAdmin
+modalForContrib="modalForContrib" dimHash=dimHash selectdim="selectdim"
+sortChoices=sortChoices sortchoice=sortchoice  exploreSessions="exploreSessionsOld"
+significantFilter="significantFilter" editFactor="editFactor" whyfunnel="whyfunnel" factor=factor}}
+{{/each}}
+</div>
+</div>
+<!--
+<div id="topsegmentsbuttons">
+    <div class="pull-left vertical-sep">
+      {{#unless dim}}
+        {{j-check checked=sameDirectionOnly action='directionFilter'}}
+        {{if model.results.d.isHigher 'Positive' 'Negative'}} Impact Only<br>
+        {{j-check checked=significantOnly action='significantFilter'}} Significant Only
+      {{/unless}}
+    </div>
+</div>-->

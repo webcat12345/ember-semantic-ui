@@ -1,0 +1,204 @@
+<h1 class="text-blue">Optimize <strong>goal</strong></h1>
+
+<div class="ui grid middle">
+    <div class="row">
+
+      {{#if notForNow}}
+          <div class="two wide columns">
+              <label>Pick Funnel Using</label>
+            {{view 'select'
+            content=funnelTypes
+            optionValuePath='content.id'
+            optionLabelPath='content.name'
+            value=selectedFunnelType
+            classNames='ui fluid dropdown'
+            required=true}}
+          </div>
+
+      {{/if}}
+      {{#if (eq selectedFunnelType 'metric')}}
+          <div class="ten wide column middle aligned content">
+              <h1>What drives
+                {{semantic-select
+                content=conversionMetrics
+                optionValuePath='content.id'
+                optionLabelPath='content.name'
+                selection=selectedMetric
+                uiType="inline"
+                prompt="Pick Conversion Metric"
+                id='conversionmetric'
+                required=true}} ?
+              </h1>
+
+          </div>
+      {{else if (eq selectedFunnelType 'twometrics')}}
+          <div class="four wide field">
+              <label>Start Count</label>
+            {{semantic-select
+            content=funnelMetrics
+            optionValuePath='content.id'
+            optionLabelPath='content.name'
+            selection=selectedStartMetric
+            prompt="Pick Start Count"
+            required=true}}
+          </div>
+          <div class="four wide field">
+              <label>Goal Count</label>
+            {{semantic-select
+            content=funnelMetrics
+            optionValuePath='content.id'
+            optionLabelPath='content.name'
+            selection=selectedEndMetric
+            prompt="Pick End Count"
+            required=true}}
+          </div>
+      {{else if (eq selectedFunnelType 'events')}}
+          <div class="three wide field">
+              <label>Start Event</label>
+            {{semantic-select
+            content=dimensionsValues
+            optionValuePath='content.value'
+            optionLabelPath='content.name'
+            value=selectedStartEvent
+            prompt="Pick start event"
+            required=true}}
+          </div>
+          <div class="three wide field">
+              <label>End Event</label>
+            {{semantic-select
+            content=dimensionsValues
+            optionValuePath='content.value'
+            optionLabelPath='content.name'
+            value=selectedEndEvent
+            prompt="Pick end event"
+            required=true}}
+          </div>
+      {{else}}
+          <div class="five wide field">
+              <label>&nbsp;</label>
+              <h3>Not Supported Yet</h3>
+          </div>
+      {{/if}}
+
+        <div class="right floated left aligned column right middle aligned">
+          {{#if readyToAnalyze}}
+              <button class="ui orange button" id="analyze" {{action 'analyze'}}>Analyze</button>
+          {{else}}
+              <button class="ui orange button disabled">Analyze</button>
+          {{/if}}
+        </div>
+
+        <div class="right floated right middle aligned column">
+          {{partial "apps/settings-button"}}
+        </div>
+
+    </div>
+    <div class="row">
+      {{#if displaySettings.showDriverSelect}}
+
+          <div class="ten wide column">
+              <h1>
+                  Pick Driver
+                {{semantic-select
+                content=model.dimensions
+                optionValuePath='content.id'
+                optionLabelPath='content.name'
+                selection=resultDimension
+                prompt="Pick Dimension"
+                uiType="inline"
+                required=true}}   </h1>
+
+          </div>
+
+      {{/if}}
+    </div>
+    <div class="row">
+        <div class="sixteen wide column" id="filters">
+          {{partial "apps/pick-filters"}}
+        </div>
+    </div>
+</div>
+{{#if settings}}
+    <div class="ui form">
+        <div class="fields">
+            <div class="three wide field">
+                <label>Pick Driver</label>
+              {{semantic-select
+              content=model.dimensions
+              optionValuePath='content.id'
+              optionLabelPath='content.name'
+              selection=resultDimension
+              prompt="Pick Dimension"
+              required=true}}
+            </div>
+            <div class="three wide field">
+                <label>User Count Metric</label>
+              {{semantic-select
+              content=model.metrics
+              optionValuePath='content.id'
+              optionLabelPath='content.name'
+              selection=selectedCountMetric
+              prompt="Pick Metric"
+              required=true}}
+            </div>
+            <div class="two wide field">
+                <label>&nbsp;</label>
+                <button class="ui basic button"{{action 'saveSettings'}}>Save</button>
+            </div>
+        </div>
+    </div>
+{{/if}}
+
+<div class="ui divider"></div>
+{{#if loadingStory}}
+    <div class="whitebox text-center">
+        <h1>Loading...</h1>
+      {{fa-icon icon="refresh" spin=true size="4"}}
+    </div>
+{{else if resultsExist}}
+  {{#if results}}
+      <div class="ui divided padded grid stackable">
+          <div class="row">
+              <div class="four wide column">
+                  <div class="ui horizontal statistic small">
+                      <div class="value">
+                        {{number-fmt 'commas' results.bpt.ct}}
+                      </div>
+                      <div class="label">users <br>started</div>
+                  </div>
+              </div>
+              <div class="four wide column">
+                  <div class="ui horizontal statistic small">
+                      <div class="value">
+                        {{number-fmt 'percunit' results.bpt.om}}
+                      </div>
+                      <div class="label">
+                          of users <br> converted
+                      </div>
+                  </div>
+                {{#ui-progress percent=(number-fmt 'int' results.bpt.om) classNames="story-bar orange"}}
+                    <div class="bar story-bar"></div>
+                    <div class="label story-label">{{number-fmt 'int' results.bpt.mct}} users</div>
+                {{/ui-progress}}
+              </div>
+
+              <div class="four wide column">
+                  <div class="sub-heading">
+                      Based on
+                    {{semantic-select
+                    content=dateChoices
+                    selection=new_duration
+                    optionValuePath='content.name'
+                    optionLabelPath='content.name'
+                    uiType="inline"
+                    prompt=duration
+                    required=true}} of historical data.
+                      <div class="sub-heading">from {{date-fmt sd 'year'}} to {{date-fmt ed 'short'}}</div>
+                  </div>
+
+              </div>
+          </div>
+      </div>
+  {{/if}}
+  {{partial "apps/result-tabs"}}
+{{/if}}

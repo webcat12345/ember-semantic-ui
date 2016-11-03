@@ -1,0 +1,28 @@
+<table class="ui selectable definition celled table table--table">
+
+    <tbody>
+    <tr>
+        <td class="table--td table--fixed table--header table--segment ignored">Segment</td>
+      {{#each headers as |header|}}
+          <td class="table--td table--header">{{date-fmt header 'header'}}</td>
+      {{/each}}
+    </tr>
+    {{#each series as |serie|}}
+        <tr {{action "toggle_serie" serie}}>
+          {{#if serie.should_display}}
+              <td class="table--td table--fixed ignored"><a class="ui empty circular label"
+                                                            style="background-color:{{serie.color}}"></a> {{str-fmt serie.displayName 30}}
+              </td>
+          {{else}}
+              <td class="table--td table--fixed ignored"><a
+                      class="ui grey empty circular label"></a> {{str-fmt serie.displayName 30}}
+              </td>
+          {{/if}}
+
+          {{#each serie.data as |point|}}
+              <td class="table--td">{{point.displayValue}}</td>
+          {{/each}}
+        </tr>
+    {{/each}}
+    </tbody>
+</table>

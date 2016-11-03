@@ -1,0 +1,27 @@
+<div class="panel panel-info">
+    <div class="panel-heading">
+        <div class="row text-center">
+          <div class="col-md-12">
+          {{#unless loading}}
+              <div class="row"><h4>{{number-fmt 'changeperc' change}}%</h4></div>
+          {{/unless}}
+            <div class="row text-center">
+              {{charts/sparkline-chart dataset=dataset
+              selectedMetricId=selectedMetricId
+              selectedDimensionId=selectedDimensionId
+              windowStart=windowStart
+              windowEnd=windowEnd
+              startDate=startDate
+              endDate=endDate
+              type='Line'
+              topN=40
+              filter=filter
+              loadDone=(action 'loadDone')}}
+            </div>
+          </div>
+        </div>
+    </div>
+    <div class="panel-footer text-center">
+        <a href="" {{action 'mclick'}}>{{metricName}}</a>
+    </div>
+</div>

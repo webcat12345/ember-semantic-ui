@@ -1,0 +1,32 @@
+<ul class="chat">
+  {{#each stories}}
+    {{#if this.why}}
+        <li class="clearfix">
+          {{#if this.why.d.isHigher}}
+              There was a change of <span
+                  style="color:green">{{number-fmt 'metric' this.why.change}}</span>
+              caused by
+            {{#each  this.why.answer.positive as |facet|}}
+              {{facet.name}}: <strong>{{facet.values.[0]}}</strong>,
+            {{/each}}
+          {{else}}
+              There was a change of <span
+                  style="color:red">{{number-fmt 'metric' this.why.change}}</span>
+              caused by
+            {{#each  this.why.answer.negative as |facet|}}
+                <em>{{facet.name}}: <strong>{{facet.values.[0]}}</strong></em>
+            {{/each}}
+          {{/if}}
+
+            <div class="header">
+              {{#link-to 'compare.explain' (query-params dataset_id=model.config.datasetId factor_id=model.dashboard.date metric_id=metric.id a=this.why.apt.name b=this.why.bpt.name dim=null)}}
+                  Give me more details{{/link-to}}
+
+                <small class="pull-right text-muted">
+                    <i class="fa fa-clock-o fa-fw"></i>{{this.why.bpt.name}}
+                </small>
+            </div>
+        </li>
+    {{/if}}
+  {{/each}}
+</ul>

@@ -1,0 +1,33 @@
+<div class="row">
+<a {{action "removeSegment" segment}}                                        class="pull-right"><i class="fa fa-times"></i> &nbsp;&nbsp;&nbsp;</a>
+<div class="col-md-3">
+{{select-2
+    content=dimensions
+    optionLabelPath="name"
+    value=segment.selDim
+    class="ui input"
+    placeholder="Choose your dimension"
+
+}}
+</div>
+{{#if segment.selDim}}
+<div class="col-md-3">
+{{select-2
+    content=functions
+    optionLabelPath="name"
+    value=segment.selFun
+    class="ui input"
+    placeholder="Choose your function"
+}}
+</div>
+<div class="col-md-3">
+{{select-2
+    content=segment.values
+    optionLabelPath="name"
+    value=segment.selVal
+    class="ui input"
+    placeholder="Choose your dimension"
+}}
+</div>
+{{/if}}
+</div>

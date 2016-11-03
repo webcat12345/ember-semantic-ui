@@ -1,0 +1,279 @@
+{{#if f.hide}}
+{{else}}
+    <div class="padded row">
+        <div class="sixteen wide column">
+            <div class="insight-feed">
+                <div class="ui middle left aligned divided grid">
+                    <div class="row">
+                        <div class="sixteen wide column">
+                            For <strong>{{f.segment_name}}</strong>
+                            on {{#if f.weekType}}{{date-fmt f.datecol "short"}}{{else}}{{date-fmt f.datecol "year"}}{{/if}}
+                            <strong>{{f.name}} </strong>is {{#if f.isPos}} up {{else}} down {{/if}}
+                            <span class="ui"
+                                  data-tooltip="There is a {{number-fmt 'percunit' anomalyType.prob}} chance of a change this big.">
+                              <span class="{{if f.isPos 'text-green' 'text-red'}}">
+                                {{number-fmt 'changeperc' f.perc_delta}}%
+                                {{#unless (eq anomalyType.type 'Usual')}}
+                                    (<strong> {{anomalyType.type}}</strong>)
+                                {{/unless}}
+                             </span>
+                            </span>
+                            compared with same {{f.period_lang}}.
+
+                            <a class="pull-right" data-toggle="collapse" href="#{{unbound (id-fmt f.uid)}}"
+                               aria-expanded="false"
+                               aria-controls="{{unbound (id-fmt f.uid)}}">
+                                <i class="fa fa-chevron-down"></i>
+                            </a><br>
+                          {{#unless (eq f.segment_name 'segment=overall')}}
+                              <p class="text-muted">
+                                  The segment accounted for {{f.c_previous}}% of all {{f.name}} and now it accounts
+                                  for {{f.c_current}}%.
+                              </p>
+                          {{/unless}}
+                        </div>
+                    </div>
+                  {{#if whyResults}}
+                      <div class="row">
+                          <div class="eight wide column">
+                              Contribution <span class="text-green">increased</span> for<br>
+                            {{#each  whyResults.answer.positive as |facet|}}
+                              {{#if (or (not model.params.statsig_only) facet.vals.[0].isSignificant)}}
+                                {{facet.name}} <strong>{{facet.vals.[0].name}}</strong>
+                              <span class="ui"
+                                    data-tooltip="Metric changed by {{number-fmt 'changepercunit' facet.vals.[0].f.pm}}.">
+                                  <small><em>+{{number-fmt "percunit" facet.vals.[0].f.contribdiff}}</em></small>
+                              </span>
+                                  <br>
+                              {{/if}}
+                            {{/each}}
+                          </div>
+
+                          <div class="eight wide column">
+                              Contribution <span class="text-red"> decreased</span> for<br>
+                            {{#each  whyResults.answer.negative as |facet|}}
+                              {{#if (or (not model.params.statsig_only) facet.vals.[0].isSignificant)}}
+                                {{facet.name}} <strong>{{facet.values.[0]}}</strong>
+                              <span class="ui"
+                                    data-tooltip="Metric changed by {{number-fmt 'changepercunit' facet.vals.[0].f.pm}}.">
+                                  <small><em>-{{number-fmt "percunit" facet.vals.[0].f.contribdiff}}</em></small>
+                              </span>
+                                  <br>
+                              {{/if}}
+                            {{/each}}
+                          </div>
+                      </div>
+                  {{else if loading}}
+                    {{fa-icon icon="refresh" spin=true size="2"}}
+                  {{else}}
+                      Analysis has not run yet.
+                  {{/if}}
+                    <div class="row">
+                        <div class="sixteen wide column">
+                          {{#link-to 'compare.explain'
+                          (query-params
+                          factor_id=f.datefactorid
+                          metric_id=f.table.[0].id
+                          fltr=f.filter
+                          a=f.prevdatecol
+                          b=f.datecol
+                          dim=null
+                          uiversion='simple'
+                          statsig_only=model.params.statsig_only
+                          stat_sig_level=model.params.stat_sig_level
+                          hist_level=model.params.hist_level
+                          result_tab='optimize'
+                          sort='contribdiff'
+                          sort_dir=null)
+                          target="_blank"}}
+                              See Drivers{{/link-to}}
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+            <div class="collapse insight-expand" id="{{unbound (id-fmt f.uid)}}">
+                <table class="table">
+                    <thead>
+                    <tr style="color:gray">
+                        <th>Metric</th>
+                        <th>{{#if f.weekType}}{{date-fmt f.prevdatecol "short"}}{{else}}{{date-fmt f.prevdatecol "year"}}{{/if}}</th>
+                        <th>{{#if f.weekType}}{{date-fmt f.datecol "short"}}{{else}}{{date-fmt f.datecol "year"}}{{/if}}</th>
+                        <th>Change</th>
+                        <th>Sparkline</th>
+                        <th>More Details</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {{#each f.table as |metric|}}
+                        <tr>
+                            <td>{{metric.name}}</td>
+                            <td>{{number-fmt metric.model.unit_format metric.previous.val}}</td>
+                            <td>{{number-fmt metric.model.unit_format metric.val}}</td>
+                          {{#if metric.isPos}}
+                              <td class="text-success">{{number-fmt 'change' metric.delta}}
+                                  ({{number-fmt 'changeperc' metric.perc_delta}}%)
+                              </td>
+                          {{else}}
+                              <td class="text-danger">{{number-fmt 'changeperc' metric.delta}}
+                                  ({{number-fmt 'changeperc' metric.perc_delta}}%)
+                              </td> {{/if}}
+                            <td>
+                                <div>{{charts/sparkline-chart dataset=dataset
+                                selectedMetricId=metric.id
+                                selectedDimensionId=f.datefactorid
+                                windowStart=window.startDate
+                                windowEnd=window.endDate
+                                startDate=f.prevdatecol
+                                endDate=f.datecol
+                                type='Line'
+                                topN=40
+                                filter=f.filter}}</div>
+
+                            </td>
+
+                            <td>
+                              {{#link-to 'compare.explain'
+                              (query-params
+                              factor_id=f.datefactorid
+                              metric_id=f.table.[0].id
+                              fltr=f.filter
+                              a=f.prevdatecol
+                              b=f.datecol
+                              dim=null
+                              uiversion='simple'
+                              statsig_only=model.params.statsig_only
+                              stat_sig_level=model.params.stat_sig_level
+                              hist_level=model.params.hist_level
+                              result_tab='optimize'
+                              sort='contribdiff'
+                              sort_dir=null)
+                              target="_blank"}}
+                                  See Drivers{{/link-to}}
+                              {{#if isAdmin}}
+                                  <br>
+                                {{#link-to 'apps.feature' model.dataset_id
+                                (query-params mtype='metric'
+                                sd=f.prevdatecol
+                                ed=f.datecol
+                                num_id=null denom_id=null
+                                factor_id=f.datefactorid
+                                metric_id=(if metric.model.calculation.numerator metric.model.calculation.numerator.id metric.id)
+                                dim=null topN=null sort=null sort_dir=null
+                                make_raw_slices=null search_str=null
+                                fltr=f.filter
+                                group="Profile"
+                                a=(concat model.dashboard.date '==' f.prevdatecol)
+                                b=(concat model.dashboard.date '==' f.datecol)
+                                statsig_only=true stat_sig_level=null)
+                                target="_blank"}}
+                                    Profile
+                                {{/link-to}} ·
+                                  <a href="" {{action 'show'}}>Scores</a> ·
+                                  <a href="" {{action 'show_segment'}}>Segment_Scores</a>
+                              {{/if}}
+                            </td>
+                        </tr>
+                        {{#if isAdmin}}
+                          {{#if show_scores}}
+                              <tr>
+
+                                  <td><b>p-value : {{metric.usually.conf}}, Z-score: {{metric.usually.zscore}}</b>
+                                  </td>
+                                  <td><b>Contribution : {{metric.abs_c_delta}}, Expected Contribution change
+                                      = {{metric.expected_contribution}}</b></td>
+                                  <td><b>pval:{{metric.usually.all_conf}},
+                                      Allzscvalue: {{metric.usually.all_zscore}},
+                                      zscmean: {{metric.usually.all_mean}}, zscstd: {{metric.usually.all_std}},
+                                      zsclookbacks: {{metric.usually.all_lookbacks}}, Sum: {{metric.sum_all_z}}</b>
+                                  </td>
+                                  <td><b> p-value : {{metric.usually.conf}}, Z-score: {{metric.usually.zscore}},
+                                      Z-score details : {{metric.usually.lookbacks}}, {{metric.usually.mean}},
+                                      Z-score Std: {{metric.usually.std}}, Sum: {{metric.sum_weekly_z}}</b></td>
+                                  <td><b>Expected Contribution = {{metric.moving_avg_contribution}}, Z score for
+                                      contribution = {{metric.z_contribution}}, pvalue con
+                                      = {{metric.pvalue_contribution}}</b></td>
+                                  <td><b> iceberg: {{metric.iceberg}}, Impact score : {{metric.percimpact}}</b></td>
+                              </tr>
+                          {{/if}}
+
+                        {{/if}}
+                    {{/each}}
+                    {{#if isAdmin}}
+                      {{#if show_segment_scores}}
+                        {{#each f.collapsed_stories as |segment|}}
+                            <tr>
+                                <td><b>{{segment.datecol}}</b></td>
+                                <td><b>{{segment.name}}, {{segment.previous.val}}, {{segment.val}}</b></td>
+                                <td><b>Contribution : {{segment.abs_c_delta}}, Expected Contribution change
+                                    = {{segment.expected_contribution}}, Expected Contribution
+                                    = {{segment.moving_avg_contribution}}</b></td>
+                                <td><b>p-value : {{segment.usually.conf}}, Z-score: {{segment.usually.zscore}},
+                                    Z-score details : {{segment.usually.lookbacks}}, {{segment.usually.mean}}
+                                    , {{segment.usually.std}}, iceberg: {{segment.iceberg}},
+                                    Sum: {{segment.sum_weekly_z}}</b></td>
+                                <td><b> pval:{{segment.usually.all_conf}},
+                                    Allzscvalue: {{segment.usually.all_zscore}},
+                                    zscmean: {{segment.usually.all_mean}}, zscstd: {{segment.usually.all_std}},
+                                    zsclookbacks: {{segment.usually.all_lookbacks}}, Sum: {{segment.sum_all_z}}</b>
+                                </td>
+                                <td><b>Impact score : {{segment.percimpact}}</b></td>
+
+                            </tr>
+                        {{/each}}
+                      {{/if}}
+                    {{/if}}
+                    </tbody>
+                </table>
+                <div class="row toolbar center-block">
+                  {{#if f.liked}}
+                      <a href="" {{action 'unlike' f}}><i class="fa fa-thumbs-up"></i> Like</a>
+                  {{else}}
+                      <a href="" {{action 'like' f}}> <i class="fa fa-thumbs-o-up"></i> Like</a>
+                  {{/if}}
+                    &nbsp;
+                    &nbsp;
+                    <a href="javascript: void(0)"><i class="fa fa-comment-o"></i> Comment</a>
+                    &nbsp;
+                    &nbsp;
+                    <a href="mailto:?subject=Look at this story about {{f.segment_name}} &body={{f.segment_name}}'s {{f.name}} changed {{number-fmt 'changeperc' f.delta}}. %0D%0A%0D%0AMore stories like this at {{f.url}}%0D%0A%0D%0ABest,%0D%0ACuberon"><i
+                            class="fa fa-share"></i> Share </a>
+                </div>
+
+              {{#if f.totallikes}}
+                  <div class="row center-block likes">
+                      <br/>
+                      <a href="javascript: void(0)">Liked by {{f.totallikes}}{{#if f.likedby}}
+                          <p>{{f.likedby}}</p>{{/if}}
+                      </a>
+                  </div>
+              {{/if}}
+                <br>
+
+                <div class="row comments center-block">
+                  {{#if f.comments}}
+                    {{#each f.comments as |comment|}}
+                        <div class="row">
+                            <div class="col-md-1 comment-icon">
+                                <i class="fa fa-user"></i>
+                            </div>
+                            <div class="col-md-11 comment-text">
+                                <span class="text-primary">{{comment.user}}</span>
+                              {{comment.comment}}
+                                <br/>
+
+                                <p class="text-muted">
+                                    <small>{{comment.date}}</small>
+                                </p>
+
+                            </div>
+                        </div>
+                    {{/each}}
+                  {{/if}}
+                  {{input action="comment" aria-controls="existing-user-table" class="form-control" placeholder="Write a comment..." value=comment}}
+                </div>
+            </div>
+        </div>
+    </div>
+{{/if}}

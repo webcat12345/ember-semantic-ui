@@ -1,0 +1,5 @@
+id,name,subtitle,type,avg_value,metric_type,dashboard,unit,kpi
+1,Conversion Rate,Conversion Rate by Department,spline,10,rate,1,%,yes
+2,Product Sales,Brand Sales by Department,column,10,rate,1,%,yes
+3,Brand Sales,Brand Sales by Department,pie,10,rate,1,%,yes
+4,Query Conversion,Query Sales by Department,area,10,rate,1,%,yes

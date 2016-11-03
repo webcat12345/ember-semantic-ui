@@ -1,0 +1,12 @@
+id,name,type,img_url
+LineCharts,Line,line,https://cloud.highcharts.com/images/abywon/0/136.svg
+Spline,Spline,spline,https://cloud.highcharts.com/images/upafes/1/136.svg
+AreaCharts,Area,area,https://cloud.highcharts.com/images/ecexev/2/136.svg
+ColumnCharts,Column,column,https://cloud.highcharts.com/images/ovobiq/1/136.svg
+BarCharts,Bar,bar,https://cloud.highcharts.com/images/ovuvul/1/137.svg
+Bubble,Bubble,bubble,https://cloud.highcharts.com/images/usyfyw/0/136.svg
+Scatter,Scatter,scatter,https://cloud.highcharts.com/images/ezatat/0/136.svg
+PieCharts,Pie,pie,https://cloud.highcharts.com/images/yqoxob/3/136.svg
+Polar,Polar,polar,https://cloud.highcharts.com/images/ajogud/2/136.svg
+Funnel,Funnel,funnel,https://cloud.highcharts.com/images/exumeq/0/136.svg
+Pyramid,Pyramid,pyramid,https://cloud.highcharts.com/images/obulek/0/136.svg

@@ -1,0 +1,128 @@
+<div class="five wide column text-wrap">
+    <div class="ui middle aligned padded grid">
+        <div class="padded row facet-div">
+            <div class="column facet-left-icon">
+              {{#if pt.facet.isSignificant}}
+                  <i class="fa fa-hand-pointer-o"></i>
+              {{else}}
+                  <i class="fa fa-exclamation-triangle"></i>
+              {{/if}}
+            </div>
+            <div class="fourteen wide column">
+                <span class="facet-name">{{pt.facet.n}} {{!--#if pt.isNew}}<a class="ui teal tag label">New</a>{{/if--}}</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+{{#unless (eq type 'mevsrest')}}
+    <div class="two wide column">
+    <span class="{{pt.labelcolor}} facet-change">
+        <strong>{{number-fmt displaySettings.fmt pt.show}}{{displaySettings.unit}}</strong>
+    </span>
+    </div>
+{{/unless}}
+
+{{#if (eq type "mevsrest")}}
+    <div class="two wide column">
+        <div class="row facet-chart-box segment_text">
+          {{displaySettings.firstSegmentMessage}}
+        </div>
+        <div class="row facet-chart-box segment_text">
+          {{displaySettings.secondSegmentMessage}}
+        </div>
+    </div>
+{{/if}}
+
+<div class="four wide column">
+    <div class="facet-chart-border">
+        <div class="row facet-chart-box">
+            <div class="col-md-3 facet-chart-box">
+                <div style="width: {{pt.firstBarWidth}}%;" class="facet-chart-bar-blue facet-chart-row">&nbsp;</div>
+            </div>
+            <div class="col-md-9 facet-chart-box">
+                <div class="facet-chart-row {{pt.labelcolor}} {{unless pt.isClicked "facet-hover-only"}}">
+                  {{number-fmt displaySettings.firstBarFmt pt.firstBarShow}}{{displaySettings.unit}}
+                  {{displaySettings.firstBarMsg}}
+                </div>
+            </div>
+        </div>
+        <div class="row facet-chart-box">
+            <div class="col-md-3 facet-chart-box">
+              {{#if (or pt.isClicked displaySettings.alwaysShowSecondBar)}}
+                  <div style="width: {{pt.secondBarWidth}}%;"
+                       class="facet-chart-bar facet-chart-second-row">&nbsp;</div>
+              {{else}}
+                  <div style="width: {{pt.secondBarWidth}}%;"
+                       class="facet-chart-bar facet-chart-second-row facet-hover-only">&nbsp;</div>
+                  <div style="width: {{pt.secondBarWidth}}%;"
+                       class="facet-chart-second-row facet-nohover-only">&nbsp;</div>
+              {{/if}}
+
+            </div>
+            <div class="col-md-9 facet-chart-box">
+                <div class="facet-chart-second-row {{unless pt.isClicked "facet-hover-only"}}">
+                  {{number-fmt displaySettings.secondBarFmt pt.secondBarShow}}{{displaySettings.unit}}
+                  {{displaySettings.secondBarMsg}}</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{{#if (eq type 'mevsrest')}}
+    <div class="two wide column">
+        <strong>
+          {{#if (eq pt.labelcolor 'text-green')}}
+              <span class="facet-change {{pt.labelcolor}}">
+                <i class='fa fa-arrow-up' aria-hidden='true'></i>
+              </span>
+          {{else}}
+              <span class="facet-change {{pt.labelcolor}}">
+                <i class='fa fa-arrow-down' aria-hidden='true'></i>
+              </span>
+          {{/if}}
+            <span class="facet-change">
+            &nbsp;{{number-fmt displaySettings.fmt pt.show}}{{displaySettings.unit}}
+          </span>
+        </strong>
+    </div>
+{{/if}}
+
+{{#if displaySettings.showSizeColumn}}
+    <div class="three wide column">
+        <div class="ui middle aligned grid">
+            <div class="four wide column aligned">
+                <div class="facet-size-circle" style="width:{{pt.sizeWidth}}px; height:{{pt.sizeWidth}}px;">&nbsp;</div>
+            </div>
+            <div class="twelve wide column aligned">
+                <div class="facet-chart-row-users {{unless pt.isClicked "facet-hover-only"}}">
+                    <strong>{{number-fmt 'percunit' pt.facet.facet_data.b.pct}}
+                        ({{number-fmt 'commas' pt.facet.facet_data.b.ct}})</strong>
+                  {{displaySettings.totalUsers}}<br>
+                </div>
+            </div>
+        </div>
+    </div>
+{{/if}}
+<div class="two wide column right">
+  {{#if displaySettings.showImpactButton}}
+    {{#if (gt 20 pt.facet.facet_data.b.ct)}}
+        <div class="ui label tiny" data-tooltip="The segment is to small to be profiled">
+            <del> Profile</del>
+        </div>
+    {{else if (eq mtype 'retention')}}
+      {{#link-to "apps.feature" model.dataset_id (query-params fltr=fltr
+      mtype=mtype metric_id=metric_id sd=sd ed=ed num_id=num_id denom_id=denom_id
+      factor_id=factor_id dim=null topN=null sort=null sort_dir=null
+      make_raw_slices=null search_str=null a="rest" b=(concat pt.facet.f '==' pt.facet.n) group="Profile"
+      statsig_only=true stat_sig_level=null) target="_blank" bubbles=false class="ui label tiny"}}Profile{{/link-to}}
+    {{else}}
+      {{#link-to "apps.feature" model.dataset_id (query-params fltr=fltr
+      mtype='metric' metric_id=denominatorMetric.id sd=sd ed=ed num_id=null denom_id=null
+      factor_id=factor_id dim=null topN=null sort=null sort_dir=null
+      make_raw_slices=null search_str=null a="rest" b=(concat pt.facet.f '==' pt.facet.n) group="Profile"
+      statsig_only=true stat_sig_level=null) target="_blank" bubbles=false class="ui label tiny"}}Profile{{/link-to}}
+    {{/if}}
+  {{/if}}
+    <div class="hand pull-right"><i class="fa fa-chevron-down"></i></div>
+</div>

@@ -1,0 +1,88 @@
+
+<div class="sidebar--section">
+  <div class="sidebar--title"> DASHBOARDS<span class="sidebar--title--cta"> {{#link-to 'channels.create' dataset_id}}<i class="fa fa-plus-circle"></i>create{{/link-to}}</span></div>
+  <ul class="nav nav-second-level collapse in" id="collapseDashboard">
+    {{#each channels as |feed|}}
+        <li>
+          {{#link-to  'channels.channel.overview' dataset_id feed.id}}{{feed.name}}{{/link-to}}
+        </li>
+    {{/each}}
+      <!-- <li>{{#link-to 'channels.create' dataset_id}}<i class="fa fa-plus-circle"></i> Create New{{/link-to}}</li> -->
+  </ul>
+</div>R
+
+<div class="sidebar--section">
+  <div class="sidebar--title">EXPLORE</div>
+  <ul class="nav nav-second-level collapse in" id="collapseExplore">
+      <li>
+        {{#link-to 'chart.time_view' dataset_id }}<i class="fa fa-calendar"></i> Time View{{/link-to}}
+      </li>
+      <li>
+        {{#link-to 'chart.advanced_chart' dataset_id}}<i class="fa fa-pie-chart"></i> Advanced Chart{{/link-to}}
+      </li>
+      <li>
+        {{#link-to 'chart.percentage_chart' dataset_id}}<i class="fa fa-percent"></i> Percentage Chart{{/link-to}}
+      </li>
+      <li>
+        {{#link-to 'chart.abtest' dataset_id}}<i class="fa fa-hand-spock-o"></i> A/B Testing{{/link-to}}
+      </li>
+      <li class="disabled">
+          <a href="javascript:void(0)" class="disabled"><i class="fa fa-filter"></i> Funnels</a>
+      </li>
+      <li class="disabled">
+          <a href="javascript:void(0)" class="disabled"><i class="fa fa-users"></i> Cohorts</a>
+      </li>
+  </ul>
+</div>
+<div class="sidebar--section">
+  <div class="sidebar--title">REPORTS</div>
+  <ul class="nav nav-second-level collapse in" id="collapseExplore">
+    <li>
+          {{#link-to "analysis.adhocwhy" dataset_id}} <i class="fa fa-file-text"></i>My Reports
+        {{/link-to}}
+    </li>
+    <li>
+    {{#link-to "analysis.bookmarks" dataset_id}} <i class="fa fa-bookmark"></i>My Bookmarks{{/link-to}}
+    </li>
+  </ul>
+</div>
+<div class="sidebar--section">
+    <div class="sidebar--title">DATA</div>
+    <ul class="nav nav-second-level collapse in" id="collapseExplore">
+        <li>
+          {{#link-to "sources" dataset_id}} <i class="fa fa-database"></i>Sources
+          {{/link-to}}
+        </li>
+        <li>
+          {{#link-to "factors" dataset_id (query-params type='metric')}} <i class="fa fa-line-chart"></i>Metrics
+          {{/link-to}}
+        </li>
+        <li>
+          {{#link-to "factors" dataset_id (query-params type='dimension')}} <i class="fa fa-cube"></i>Dimensions
+          {{/link-to}}
+        </li>
+    </ul>
+</div>
+
+{{!-- {{dataset-component }} --}}
+
+
+
+
+{{!--
+{{#link-to "channels.channel.feed" dataset_id tagName="li" href=false}}
+{{#link-to 'channels.channel.feed' dataset_id (query-params likes='true')}}<i class="fa fa-bookmark"></i> Bookmarks{{/link-to}}
+{{/link-to}}
+
+{{#link-to "chart" dataset_id tagName="li" href=false}}
+{{#link-to "chart"}} <i class="fa fa-signal"></i> Metrics{{/link-to}}
+{{/link-to}}
+
+{{#link-to "chart" dataset_id tagName="li" href=false}}
+{{#link-to "chart"}} <i class="fa fa-eye"></i> Factors{{/link-to}}
+{{/link-to}}
+
+{{#link-to "chart" dataset_id tagName="li" href=false}}
+{{#link-to "chart"}}<i class="fa fa-connectdevelop"></i> Connections{{/link-to}}
+{{/link-to}}
+ --}}

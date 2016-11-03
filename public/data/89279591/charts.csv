@@ -1,0 +1,5 @@
+id,name,dashboard,chart_id
+1,Avg Session Duration,1,Sessions Avg. Session Duration by Browser
+2,Bounce Rate,1,Sessions Bounce Rate by Campaign
+3,Pages per Session,1,Sessions Pages / Session by Date
+4,Sessions per User,1,Sessions Number of Sessions per User by Browser

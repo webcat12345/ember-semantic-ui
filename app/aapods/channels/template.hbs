@@ -1,0 +1,26 @@
+<h1>Welcome <strong>{{model.user.username}},</strong> here's your activity overview</h1>
+<h1>for
+  {{#ui-dropdown class="ui inline dropdown" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" fullTextSearch='exact' onChange=(action 'feed_change')}}
+      <div class="text"><span>{{channel.name}}</span>
+
+      </div>
+      <i class="dropdown icon"></i>
+
+      <div class="menu">
+        {{#each model.feed as |feed|}}
+            <div class="item {{if (eq feed.id channel.id) 'active selected' '' }}"
+                 data-value="{{feed.id}}">
+              {{feed.name}}
+            </div>
+        {{/each}}
+        <div class="item" data-value="create">
+          Create new
+        </div>
+      </div>
+  {{/ui-dropdown}}
+</h1>
+{{outlet}}
+
+
+
+

@@ -1,0 +1,120 @@
+<div class="sixteen wide column">
+    <div class="ui segments">
+        <div class="ui segment facet-selected">
+            <div class="ui grid">
+              {{partial "apps/facet-summary"}}
+            </div>
+        </div>
+        <div class="ui secondary segment facet-detail">
+            <div class="ui grid">
+                <div class="twelve wide column">
+                    <strong>SUMMARY</strong><br>
+                  {{#if (eq type 'mevsrest')}}
+                      <i class="text-grey fa fa-circle-o"></i><i> Sessions with "{{str-fmt B 70}}": </i><br>
+                      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The probability for sessions with
+                      <strong><i>{{displaySettings.firstSegmentMessage}}</i></strong>
+                      to have this attribute is
+                      <strong>{{number-fmt 'percunit' pt.facet.facet_data.b.pct}} </strong>
+                      (<strong>{{number-fmt 'commas' pt.facet.facet_data.b.ct}}</strong> out of
+                      <strong>{{number-fmt 'commas' results.bpt.ct}}</strong> have it)
+                      <br>
+                      <i class="text-grey fa fa-ban"></i><i> Sessions without "{{str-fmt B 70}}": </i><br>
+                      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The probability for sessions without
+                      <strong><i>{{str-fmt B 15}}</i></strong> to also have this attribute is
+                      <strong>{{number-fmt 'percunit' pt.facet.facet_data.a.pct}} </strong>
+                      (<strong>{{number-fmt 'commas' pt.facet.facet_data.a.ct}}</strong> out of
+                      <strong>{{number-fmt 'commas' results.apt.ct}}</strong>)
+                  {{else if numeratorMetric}}
+                      <i class="text-grey fa fa-circle-o"></i><i> Triggered: </i><br>
+                      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;When users trigger <strong><i>{{str-fmt pt.facet.n 15}}</i></strong>,
+                      they end up converting
+                      at <strong>{{number-fmt 'percunit' pt.facet.facet_data.b.om}} </strong>
+                      (<strong>{{number-fmt 'commas' pt.facet.facet_data.b.mct}}</strong> out of
+                      <strong>{{number-fmt 'commas' pt.facet.facet_data.b.ct}}</strong>)
+                      <br>
+                      <i class="text-grey fa fa-ban"></i><i> Didn't trigger: </i><br>
+                      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;When users don't trigger, they end up
+                      converting
+                      at <strong>{{number-fmt 'percunit' pt.facet.facet_data.a.om}} </strong>
+                      (<strong>{{number-fmt 'commas' pt.facet.facet_data.a.mct}}</strong> out of
+                      <strong>{{number-fmt 'commas' pt.facet.facet_data.a.ct}}</strong>)
+                  {{else if (eq type 'retention')}}
+
+                      <i class="text-grey fa fa-circle-o"></i><i> With attribute: </i><br>
+                      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;When users have this attribute,
+                      <strong>{{number-fmt 'percunit' pt.facet.facet_data.b.om}} </strong>
+                      (<strong>{{number-fmt 'commas' pt.facet.facet_data.b.mct}}</strong> out of
+                      <strong>{{number-fmt 'commas' pt.facet.facet_data.b.ct}}</strong>)
+                      return in {{selected_time_window.name}} <strong>{{retention_end_value}}</strong>
+                      <br>
+                      <i class="text-grey fa fa-ban"></i><i> Without attribute: </i><br>
+                      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;When users don't have this attribute, only
+                      <strong>{{number-fmt 'percunit' pt.facet.facet_data.a.om}} </strong>
+                      (<strong>{{number-fmt 'commas' pt.facet.facet_data.a.mct}}</strong> out of
+                      <strong>{{number-fmt 'commas' pt.facet.facet_data.a.ct}}</strong>)
+                      return in {{selected_time_window.name}} <strong>{{retention_end_value}}</strong>
+                  {{else}}
+                      <i class="text-grey fa fa-circle-o"></i><i> With attribute: </i><br>
+                      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;When users have this attribute,
+                    {{displaySettings.resultTitle}} is
+                      <strong>{{number-fmt 'metric' pt.facet.facet_data.b.om}}{{displaySettings.unit}}</strong>
+                      Which is <strong>{{number-fmt 'percunit' pt.facet.facet_data.b.pct}}</strong> of all
+                      <br>
+                      <i class="text-grey fa fa-ban"></i><i> Without attribute: </i><br>
+                      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;When users don't have this attribute,
+                    {{displaySettings.resultTitle}} is
+                      <strong>{{number-fmt 'metric' pt.facet.facet_data.a.om}}{{displaySettings.unit}}</strong>.
+
+                  {{/if}}
+                    <br>
+                  {{#if disabled}}
+                      <i class="text-grey fa fa-pie-chart"></i>
+                      <strong>{{number-fmt 'percunit' pt.facet.facet_data.b.pct}}</strong>
+                      of users trigger this event<br>
+                  {{/if}}
+                </div>
+                <div class="four wide column">
+                  {{#if pt.facet.isSignificant}}
+                      <strong>Statistically Significant</strong><br>
+                      <strong>{{number-fmt 'percunit' pt.facet.significance.pvalue}}</strong> Statistical Significance
+                  {{else}}
+                      <strong>Not Significant</strong><br>
+                    {{#unless pt.facet.significance.sufficient_counts}}
+                        Insufficient count for significance<br>
+                    {{else}}
+                      {{#unless pt.facet.significance.statsig_above_thresh}}
+                          Statistical significance below threshold<br>
+                          <strong>{{number-fmt 'percunit' pt.facet.significance.pvalue}}</strong> Statistical
+                          Significance
+                      {{/unless}}
+                    {{/unless}}
+                  {{/if}}
+
+                </div>
+                <div class="four wide column">
+                  {{#if displaySettings.showSessionList}}
+                      <span class="hand" {{action "exploreSessions" pt false}}>
+                        <i class="fa fa-filter"></i> See sessions that did not convert
+                    </span> <br>
+
+                      <span class="hand" {{action "exploreSessions" pt true}}>
+                        <i class="fa fa-filter"></i> See sessions that converted
+                    </span> <br>
+                  {{/if}}
+                  {{#if displaySettings.showConversionChart}}
+                      <span class="hand" {{action 'modalForConversion' pt}}>
+                        <i class="fa fa-line-chart"></i> See conversion history
+                    </span> <br>
+                  {{/if}}
+
+                  {{#if displaySettings.showSizeChart}}
+                      <span class="hand" {{action 'modalForTraffic' pt}}>
+                        <i class="fa fa-line-chart"></i> See usage history
+                    </span> <br>
+                  {{/if}}
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

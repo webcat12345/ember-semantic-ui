@@ -1,0 +1,40 @@
+<h2>Current Cron Status</h2>
+<div class="row">
+  {{#each model.tasks as |task|}}
+      <div class="row space-box">
+        <strong>{{task.datasetId}} {{task.name}} <small>{{task.type}}</small></strong>
+        {{#if task.isCompleted}}
+            <span class="fa-stack fa-sm">
+                                <i class="fa fa-circle fa-stack-2x text-lightgreen"></i>
+                                <i class="fa fa-check fa-stack-1x fa-inverse"></i>
+                              </span>
+        {{else if task.isRunning}}
+            <i class="fa fa-refresh fa-spin"></i>
+        {{else}}
+            <span class="fa-stack fa-sm">
+                <i class="fa fa-circle fa-stack-2x text-lightred"></i>
+                <i class="fa fa-times fa-stack-1x fa-inverse"></i>
+            </span>
+        {{/if}}
+          <em>
+            Checked {{date-fmt task.checkStartedTime}}.
+            {{#if task.lastCompletedTime}}
+                Successfully completed {{date-fmt task.lastCompletedTime}} in {{number-fmt 'commas' task.timeTaken}} seconds.
+            {{/if}}
+            {{#if task.lastErrorTime}}
+                <span class="text-lightred">
+                  {{#if task.lastError}}
+                    {{#bootstrap-popover title="Error Message" message=task.lastError}}Error {{/bootstrap-popover}}
+                  {{else}}
+                      Error
+                  {{/if}}
+                  {{date-fmt task.lastErrorTime}}
+                </span>
+            {{/if}}
+            {{#if task.isRunning}}
+                Started import {{date-fmt task.checkStartedTime}}
+            {{/if}}
+          </em>
+      </div>
+  {{/each}}
+</div>

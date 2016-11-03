@@ -1,0 +1,19 @@
+
+<div class="full col-md-12">
+<h3 class="page-header">Create Channel</h3>
+<div class="well col-md-6">
+  <p>Give it a unique name e.g. "Daily Active User Exceptions"</p>
+  <p>{{input
+    type='text'
+    class='form-control'
+    value=name}}
+ {{input
+    type='checkbox'
+    checked=allMetrics}} All Metrics
+  {{input
+    type='checkbox'
+    checked=allDimensions}} All Dimensions</p>
+    <button class="btn btn-default" {{action 'create'}}>{{saveText}}</button>
+    <button class="btn btn-default" {{action 'cancel'}}>Cancel</button>
+  </div>
+ </div>

@@ -1,0 +1,25 @@
+{{#bootstrap-popover title="More Details"
+linktext=(str-concat (number-fmt "perc" point.facet.mevsrest) 'X')}}
+    <table class="table table-striped table-in-popover">
+        <tbody>
+        <tr>
+            <td>My % Change</td>
+            <td class={{point.metriccolor}}>
+              {{number-fmt 'changepercunit' point.facet.pm}}
+            </td>
+        </tr>
+        <tr>
+            <td>Rest % Change</td>
+            <td class={{point.restcolor}}>
+              {{number-fmt 'changepercunit' point.facet.pctrestchange}}
+            </td>
+        </tr>
+        <tr>
+            <td>Me vs Rest</td>
+            <td class={{point.mevsrestcolor}}>{{number-fmt 'metric' point.facet.mevsrest}}
+                X
+            </td>
+        </tr>
+        </tbody>
+    </table>
+{{/bootstrap-popover}}

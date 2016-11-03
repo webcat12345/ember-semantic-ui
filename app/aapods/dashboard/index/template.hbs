@@ -1,0 +1,38 @@
+<div class="row text-center">
+  <div class="col-md-3"></div>
+  <div class="col-md-6">
+    <div class="row">
+      <h2>Dashboard Status</h2>
+    </div>
+    <div class="row {{unless selectedDate text-red}}">
+      <div class="col-md-6 text-right font-bold">Pick a date field:</div>
+      <div class="col-md-6">
+        {{view 'select'
+        class='form-control'
+        content=model.dimensions
+        selection=selectedDate
+        prompt="Select Date"
+        optionGroupPath="table"
+        optionLabelPath="content.factor.name"
+        optionValuePath="content.factor.id"}}
+      </div>
+    </div>
+    <div class="row {{unless selectedCountMetric text-red}}">
+      <div class="col-md-6 text-right font-bold">Pick a metric to use for Default Segment Size:</div>
+      <div class="col-md-6">
+        {{view 'select'
+        class='form-control'
+        content=model.metrics
+        selection=selectedCountMetric
+        prompt="Select Count Metric"
+        optionGroupPath="table"
+        optionLabelPath="content.factor.name"
+        optionValuePath="content.factor.id"}}
+      </div>
+    </div>
+    <div class="row space-box">
+      <button class="btn btn-default" {{action 'saveDashboard'}}>{{saveText}}</button>
+    </div>
+  </div>
+  <div class="col-md-3"></div>
+</div>

@@ -1,0 +1,21 @@
+<h4>My Boomarks</h4>
+{{#data-tables tableid="bookmarks"}}
+<table class="table table-striped" id="bookmarks" data-order='[[ 1, "desc"]]'>
+    <thead>
+    <tr>
+        <th>Title</th>
+        <th>Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    {{#each model as |bookmark|}}
+          <tr>
+            <td><a href={{bookmark.compareUrl}}>{{bookmark.title}}</a></td>
+            <td><button type="button" class="btn btn-default" {{action 'trash' bookmark}}>
+    <span class="glyphicon glyphicon-trash"></span> Trash
+  </button></td>
+          </tr>
+    {{/each}}
+    </tbody>
+</table>
+{{/data-tables}}

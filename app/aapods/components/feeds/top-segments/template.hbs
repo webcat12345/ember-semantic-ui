@@ -1,0 +1,33 @@
+<h4 class="page-header">Top Segments <small>by {{pagetitle}}</small></h4>
+<table class="table table-striped">
+	<thead>
+		<tr>
+			<th>Rank</th>
+			<th>Segment</th>
+			<th>Contribution (Before)</th>
+			<th>Contribution (After)</th>
+			<th>Contribution (Change)</th>
+		</tr>
+	</thead>
+	<tbody>
+		{{#each feed as |f ind|}}
+		{{#if (eq f.segment_name segment_name)}}
+		<tr class="info">
+			<td>{{ind}}</td>
+			<td>{{f.segment_name}}</td>
+			<td>{{f.c_previous}}</td>
+			<td>{{f.c_current}}</td>
+			<td>{{f.c_delta}}</td>
+		</tr>
+		{{else}}
+		<tr>
+			<td>{{ind}}</td>
+			<td>{{f.segment_name}}</td>
+			<td>{{f.c_previous}}</td>
+			<td>{{f.c_current}}</td>
+			<td>{{f.c_delta}}</td>
+		</tr>
+		{{/if}}
+		{{/each}}
+	</tbody>
+</table>

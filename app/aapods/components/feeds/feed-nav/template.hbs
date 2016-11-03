@@ -1,0 +1,119 @@
+<div class="container">
+    Period:
+  {{#ui-dropdown class="ui inline dropdown" data-toggle="dropdown" role="button"
+  aria-haspopup="true" aria-expanded="false"}}
+      <div class="text">
+        {{#if (eq period '7')}}
+            Week over Week
+        {{else if (eq period '364')}}
+            Year over Year
+        {{else}}
+            All
+        {{/if}}
+      </div>
+      <i class="dropdown icon"></i>
+
+      <div class="menu">
+        {{#link-to 'channels.channel.feed' (query-params period=null) class='item'}}
+            All
+        {{/link-to}}
+
+        {{#link-to 'channels.channel.feed' (query-params period='7') class='item'}}
+            Week over Week
+        {{/link-to}}
+
+        {{#link-to 'channels.channel.feed' (query-params period='364') class='item'}}
+            Year over Year
+        {{/link-to}}
+
+      </div>
+  {{/ui-dropdown}}
+    Dates:
+  {{#ui-dropdown class="ui inline dropdown" data-toggle="dropdown" role="button"
+  aria-haspopup="true" aria-expanded="false"}}
+      <div class="text"><span>All</span>
+      </div>
+      <i class="dropdown icon"></i>
+
+      <div class="menu">
+        {{#each topranges as |range|}}
+          {{#link-to 'channels.channel.feed'
+          (query-params sortBy='abs_c_delta' startDate=range.startDate endDate=range.endDate)
+          class=(if (eq startDate range.startDate) 'item selected' 'item')
+          }}
+            {{range.name}}
+          {{/link-to}}
+        {{/each}}
+          <a class="ui search icon input .dates--search_dropdown">Custom Dates      lol {{qstartDate}}
+              <div>
+
+                {{daterange-picker startDate=qstartDate endDate=qendDate
+                minDate=model.window.startDate maxDate=model.window.endDate}}
+              </div>
+          </a>
+      </div>
+  {{/ui-dropdown}}
+
+    Metrics:
+  {{#ui-dropdown class="ui inline dropdown" data-toggle="dropdown" role="button"
+  aria-haspopup="true" aria-expanded="false"}}
+      <div class="text"><span>All</span>
+      </div>
+      <i class="dropdown icon"></i>
+
+      <div class="menu">
+        {{#each follows.allmetrics as |metric|}}
+          {{#if metric.following}}
+            {{#link-to 'channels.channel.feed' (query-params query=metric.id pagetitle=metric.name)
+            class=(if (eq query metric.id) 'item selected' 'item')
+            }}
+              {{metric.name}}
+            {{/link-to}}
+          {{/if}}
+        {{/each}}
+      </div>
+  {{/ui-dropdown}}
+
+    Dimensions:
+  {{#ui-dropdown class="ui inline dropdown" data-toggle="dropdown" role="button"
+  aria-haspopup="true" aria-expanded="false"}}
+      <div class="text"><span>All</span>
+      </div>
+      <i class="dropdown icon"></i>
+
+      <div class="menu">
+        {{#each follows.alldimensions as |dimension|}}
+          {{#link-to 'channels.channel.feed' (query-params query=dimension.id pagetitle=dimension.name)
+          class=(if (eq query dimension.id) 'item selected' 'item')
+          }}
+            {{dimension.name}}
+          {{/link-to}}
+        {{/each}}
+      </div>
+  {{/ui-dropdown}}
+    Story Type:
+  {{#ui-dropdown class="ui inline dropdown" data-toggle="dropdown" role="button"
+  aria-haspopup="true" aria-expanded="false"}}
+      <div class="text"><span>All</span>
+      </div>
+      <i class="dropdown icon"></i>
+
+      <div class="menu">
+        {{#link-to 'channels.channel.feed' (query-params likes='true')
+        class=(if (eq likes 'true') 'item selected' 'item')
+        }}
+            Likes
+        {{/link-to}}
+
+        {{#each follows.allstypes as |stype|}}
+          {{#if stype.following}}
+            {{#link-to 'channels.channel.feed' (query-params storyType=stype.name)
+            class=(if (eq storyType stype.name) 'item selected' 'item')
+            }}
+              {{stype.name}}
+            {{/link-to}}
+          {{/if}}
+        {{/each}}
+      </div>
+  {{/ui-dropdown}}
+</div>

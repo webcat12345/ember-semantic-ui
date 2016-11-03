@@ -1,0 +1,78 @@
+{{#bootstrap-popover title="More Details" label=(if point.facet.isNew "label label-warning") label-text=(if point.facet.isNew "new")
+linktext=(unless point.facet.isNew (number-fmt 'changepercunit' point.facet.pm))
+}}
+    <table class="table table-striped table-in-popover">
+        <thead>
+        <tr>
+            <th></th>
+            <th>
+              {{#if model.results.apt.bucket.[0].value }}
+                {{#if model.results.apt.bucket.[1] }}
+                  {{#each model.results.apt.bucket as |one_value|}}
+                    {{one_value.name}}{{one_value.op}}{{one_value.value}}
+                    <br>
+                  {{/each}}
+                {{else}}
+                  {{#if model.results.apt.bucket.[0] }}
+                    {{model.results.apt.bucket.[0].value}}
+                  {{/if}}
+                {{/if}}
+              {{else}}
+                {{model.results.apt.bucket}}
+              {{/if}}
+            </th>
+            <th>
+              {{#if model.results.bpt.bucket.[0].value }}
+                {{#if model.results.bpt.bucket.[1] }}
+                  {{#each model.results.bpt.bucket as |one_value|}}
+                    {{one_value.name}}{{one_value.op}}{{one_value.value}}
+                    <br>
+                  {{/each}}
+                {{else}}
+                  {{#if model.results.bpt.bucket.[0] }}
+                    {{model.results.bpt.bucket.[0].value}}
+                  {{/if}}
+                {{/if}}
+              {{else}}
+                {{model.results.bpt.bucket}}
+              {{/if}}
+            </th>
+            <th>Change</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td>{{model.metric.name}}</td>
+            <td>{{number-fmt 'metric' point.facet.facet_data.a.om}}{{model.metric.unit_type}}</td>
+            <td>{{number-fmt 'metric' point.facet.facet_data.b.om}}{{model.metric.unit_type}}</td>
+            <td class={{point.metriccolor}}>
+              {{number-fmt 'changeperc' point.facet.om}}{{model.metric.unit_type}}
+                ({{number-fmt 'changepercunit' point.facet.pm}}
+                )
+            </td>
+        </tr>
+        {{#if model.metric.calculation.numerator}}
+            <tr>
+                <td>{{model.metric.calculation.numerator.name}}</td>
+                <td>{{number-fmt 'metric' point.facet.facet_data.a.mct}}{{model.metric.calculation.numerator.unit_type}}</td>
+                <td>{{number-fmt 'metric' point.facet.facet_data.b.mct}}{{model.metric.calculation.numerator.unit_type}}</td>
+                <td class={{point.numercolor}}>
+                  {{number-fmt 'changeperc' point.facet.mct}}{{model.metric.calculation.numerator.unit_type}}
+                    ({{number-fmt 'changeperc' point.facet.pmct}}%)
+                </td>
+            </tr>
+        {{/if}}
+        {{#if model.metric.calculation.denominator}}
+            <tr>
+                <td>{{model.metric.calculation.denominator.name}}</td>
+                <td>{{number-fmt 'metric' point.facet.facet_data.a.ct}}{{model.metric.calculation.denominator.unit_type}}</td>
+                <td>{{number-fmt 'metric' point.facet.facet_data.b.ct}}{{model.metric.calculation.denominator.unit_type}}</td>
+                <td class={{point.denomcolor}}>
+                  {{number-fmt 'changeperc' point.facet.ct}}{{model.metric.calculation.denominator.unit_type}}
+                    ({{number-fmt 'changeperc' point.facet.pct}}%)
+                </td>
+            </tr>
+        {{/if}}
+        </tbody>
+    </table>
+{{/bootstrap-popover}}

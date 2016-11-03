@@ -1,0 +1,24 @@
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            
+          <img class="pull-right" src="http://s31.postimg.org/4r5znivp7/report_icon_1x.png">
+        
+            	<p>
+	             <strong>This report has never been run before. May I run it for you?</strong>
+			      <br><br>
+			      </p>
+			      <p style="color:#808080">We'll email you when the report is ready.</p><br>
+			     
+
+			     {{input type="checkbox" checked=run_deeper}} Run Deeper <br/><br/>
+
+           <p class="description">Cuberon will pre-run deeper analysis’ for most top<br>
+            segment results before returning this report. Enabling this option will increase turnaround time. </p>
+			    <button type="button" class="btn btn-primary btn-sm" {{action 'done'}}>Yes</button>
+				<button type="button" class="btn btn-primary btn-sm" {{action 'cancel'}}>No</button>
+
+		</div>
+		
+        </div>
+    </div>

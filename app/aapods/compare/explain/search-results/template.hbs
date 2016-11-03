@@ -1,0 +1,19 @@
+<div class="row">
+<div class="col-md-11">
+        Search: {{input action='searchDims' type='text' class='form-control' value=searchStr}}
+</div>
+<div class="col-md-1"><br/>
+    <a class="btn btn-default" {{action 'searchDims' searchStr}}>Go</a>
+</div>
+<br/>
+</div>
+{{why/segment-table title="" isDebug=isDebug
+tableid='topsegmentstable' btnid='topsegmentsbuttons' model=model
+uniq_factors=uniq_factors pts=pts compare=model deeperwhy="deeperwhy"
+deletedim="deletedim" modalForSegment="modalForSegment" isAdmin=isAdmin
+modalForContrib="modalForContrib" dimHash=dimHash selectdim="selectdim"
+significantFilter="significantFilter" directionFilter="directionFilter"
+editFactor="editFactor" factor=factor filterSearch=filterSearch searchDims="searchDims"
+sortChoices=sortChoices sortchoice=sortchoice uiversion=uiversion
+compare_type=result_tab whyfunnel="whyfunnel"
+exploreSessions="exploreSessionsOld"}}

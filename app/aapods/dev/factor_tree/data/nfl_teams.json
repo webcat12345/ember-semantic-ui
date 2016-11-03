@@ -1,0 +1,665 @@
+{
+  "pts": {
+    "deal_age==1. prefeature": {
+      "id": "deal_age==1. prefeature",
+      "value": "1. prefeature",
+      "dimension": "deal_age"
+    },
+    "deal_age==NULL": {
+      "id": "deal_age==NULL",
+      "value": "NULL",
+      "dimension": "deal_age"
+    },
+    "new_visitor==1": {
+      "id": "new_visitor==1",
+      "value": "1",
+      "dimension": "new_visitor"
+    },
+    "new_visitor==0": {
+      "id": "new_visitor==0",
+      "value": "0",
+      "dimension": "new_visitor"
+    },
+    "platform==Touch": {
+      "id": "platform==Touch",
+      "value": "Touch",
+      "dimension": "platform"
+    },
+    "-==-": {
+      "id": "-==-",
+      "value": "-",
+      "dimension": "-"
+    },
+    "platform==App": {
+      "id": "platform==App",
+      "value": "App",
+      "dimension": "platform"
+    },
+    "deal_age==2. 0-5": {
+      "id": "deal_age==2. 0-5",
+      "value": "2. 0-5",
+      "dimension": "deal_age"
+    },
+    "deal_age==6. 91+": {
+      "id": "deal_age==6. 91+",
+      "value": "6. 91+",
+      "dimension": "deal_age"
+    },
+    "deal_age==5. 61-90": {
+      "id": "deal_age==5. 61-90",
+      "value": "5. 61-90",
+      "dimension": "deal_age"
+    },
+    "deal_age==3. 6-30": {
+      "id": "deal_age==3. 6-30",
+      "value": "3. 6-30",
+      "dimension": "deal_age"
+    },
+    "platform==Web": {
+      "id": "platform==Web",
+      "value": "Web",
+      "dimension": "platform"
+    },
+    "deal_age==4. 31-60": {
+      "id": "deal_age==4. 31-60",
+      "value": "4. 31-60",
+      "dimension": "deal_age"
+    }
+  },
+  "conn": [
+    {
+      "metrics": {
+        "bookings": 246866.9544,
+        "receipt_page_views": 5136,
+        "deal_age": null,
+        "cart_checkout_views": 7,
+        "conf_page_views": 10403,
+        "Checkouts_Completed": 5292.295970696,
+        "Checkouts_Started": 10410,
+        "dealviews": 245719,
+        "Visits": null,
+        "cart_conf_page_views": 156.295970696,
+        "platform": null,
+        "units": 8460,
+        "bb_clicks": 12249,
+        "sum_conf_page_views": 10403,
+        "new_visitor": null,
+        "nor": 70281.2606440593
+      },
+      "source": "deal_age==1. prefeature",
+      "destination": "new_visitor==1"
+    },
+    {
+      "metrics": {
+        "bookings": 124269783.4124998,
+        "receipt_page_views": 1858220,
+        "deal_age": null,
+        "cart_checkout_views": 761294,
+        "conf_page_views": 3321079,
+        "Checkouts_Completed": 2437928.0774509464,
+        "Checkouts_Started": 4082373,
+        "dealviews": 71311065,
+        "Visits": null,
+        "cart_conf_page_views": 579708.0774509467,
+        "platform": null,
+        "units": 3401837,
+        "bb_clicks": 7145480,
+        "sum_conf_page_views": 3321079,
+        "new_visitor": null,
+        "nor": 33522939.494300015
+      },
+      "source": "new_visitor==0",
+      "destination": "platform==Web"
+    },
+    {
+      "metrics": {
+        "bookings": 83654533.4666999,
+        "receipt_page_views": 1115189,
+        "deal_age": null,
+        "cart_checkout_views": 148713,
+        "conf_page_views": 3224234,
+        "Checkouts_Completed": 1567641.5519671473,
+        "Checkouts_Started": 3372947,
+        "dealviews": 65879181,
+        "Visits": null,
+        "cart_conf_page_views": 452452.5519671474,
+        "platform": null,
+        "units": 2048015,
+        "bb_clicks": 7608325,
+        "sum_conf_page_views": 3224234,
+        "new_visitor": null,
+        "nor": 19850534.194307964
+      },
+      "source": "deal_age==3. 6-30",
+      "destination": "new_visitor==0"
+    },
+    {
+      "metrics": {
+        "bookings": 64819816.404299945,
+        "receipt_page_views": 966531,
+        "deal_age": null,
+        "cart_checkout_views": 347718,
+        "conf_page_views": 1674228,
+        "Checkouts_Completed": 1222692.9999999884,
+        "Checkouts_Started": 2021946,
+        "dealviews": 37882801,
+        "Visits": null,
+        "cart_conf_page_views": 256161.9999999884,
+        "platform": null,
+        "units": 1652915,
+        "bb_clicks": 3664632,
+        "sum_conf_page_views": 1674228,
+        "new_visitor": null,
+        "nor": 18246416.378900006
+      },
+      "source": "new_visitor==1",
+      "destination": "platform==Web"
+    },
+    {
+      "metrics": {
+        "bookings": 1558965.2181999998,
+        "receipt_page_views": 40675,
+        "deal_age": null,
+        "cart_checkout_views": 205,
+        "conf_page_views": 97818,
+        "Checkouts_Completed": 41879.369435653,
+        "Checkouts_Started": 98023,
+        "dealviews": 2662015,
+        "Visits": null,
+        "cart_conf_page_views": 1204.369435653,
+        "platform": null,
+        "units": 59870,
+        "bb_clicks": 80280,
+        "sum_conf_page_views": 97818,
+        "new_visitor": null,
+        "nor": 423587.3726506823
+      },
+      "source": "deal_age==1. prefeature",
+      "destination": "new_visitor==0"
+    },
+    {
+      "metrics": {
+        "bookings": 43366874.68239999,
+        "receipt_page_views": 1083560,
+        "deal_age": null,
+        "cart_checkout_views": 50495,
+        "conf_page_views": 2705417,
+        "Checkouts_Completed": 1100320.4289682535,
+        "Checkouts_Started": 2755912,
+        "dealviews": 45395630,
+        "Visits": null,
+        "cart_conf_page_views": 16760.4289682534,
+        "platform": null,
+        "units": 1313967,
+        "bb_clicks": 4581504,
+        "sum_conf_page_views": 2705417,
+        "new_visitor": null,
+        "nor": 12515947.342
+      },
+      "source": "new_visitor==0",
+      "destination": "platform==Touch"
+    },
+    {
+      "metrics": {
+        "bookings": 1805832.1726,
+        "receipt_page_views": 45811,
+        "deal_age": null,
+        "cart_checkout_views": 212,
+        "conf_page_views": 108221,
+        "Checkouts_Completed": 47171.6654063489,
+        "Checkouts_Started": 108433,
+        "dealviews": 2907734,
+        "Visits": null,
+        "cart_conf_page_views": 1360.6654063489,
+        "platform": null,
+        "units": 68330,
+        "bb_clicks": 92529,
+        "sum_conf_page_views": 108221,
+        "new_visitor": null,
+        "nor": 493868.6332947416
+      },
+      "source": "-==-",
+      "destination": "deal_age==1. prefeature"
+    },
+    {
+      "metrics": {
+        "bookings": 17943828.107599996,
+        "receipt_page_views": 459079,
+        "deal_age": null,
+        "cart_checkout_views": 19719,
+        "conf_page_views": 980971,
+        "Checkouts_Completed": 465482.2896825395,
+        "Checkouts_Started": 1000690,
+        "dealviews": 22596486,
+        "Visits": null,
+        "cart_conf_page_views": 6403.2896825395,
+        "platform": null,
+        "units": 548548,
+        "bb_clicks": 1955190,
+        "sum_conf_page_views": 980971,
+        "new_visitor": null,
+        "nor": 5334832.7464000005
+      },
+      "source": "new_visitor==1",
+      "destination": "platform==Touch"
+    },
+    {
+      "metrics": {
+        "bookings": 106297722.96319988,
+        "receipt_page_views": 1380168,
+        "deal_age": null,
+        "cart_checkout_views": 153746,
+        "conf_page_views": 3842871,
+        "Checkouts_Completed": 1922245.632591763,
+        "Checkouts_Started": 3996617,
+        "dealviews": 80998865,
+        "Visits": null,
+        "cart_conf_page_views": 542077.6325917632,
+        "platform": null,
+        "units": 2523187,
+        "bb_clicks": 9454885,
+        "sum_conf_page_views": 3842871,
+        "new_visitor": null,
+        "nor": 25266362.63236257
+      },
+      "source": "-==-",
+      "destination": "deal_age==3. 6-30"
+    },
+    {
+      "metrics": {
+        "bookings": 2844631.4766,
+        "receipt_page_views": 10091,
+        "deal_age": null,
+        "cart_checkout_views": 0,
+        "conf_page_views": 1222027,
+        "Checkouts_Completed": 10091,
+        "Checkouts_Started": 1222027,
+        "dealviews": 1654675,
+        "Visits": null,
+        "cart_conf_page_views": 0,
+        "platform": null,
+        "units": 124731,
+        "bb_clicks": 2558171,
+        "sum_conf_page_views": 1222027,
+        "new_visitor": null,
+        "nor": 442247.4737966844
+      },
+      "source": "-==-",
+      "destination": "deal_age==NULL"
+    },
+    {
+      "metrics": {
+        "bookings": 13229660.257600006,
+        "receipt_page_views": 217062,
+        "deal_age": null,
+        "cart_checkout_views": 3060,
+        "conf_page_views": 413398,
+        "Checkouts_Completed": 301048.7127934052,
+        "Checkouts_Started": 416458,
+        "dealviews": 9822080,
+        "Visits": null,
+        "cart_conf_page_views": 83986.7127934053,
+        "platform": null,
+        "units": 390318,
+        "bb_clicks": 878462,
+        "sum_conf_page_views": 413398,
+        "new_visitor": null,
+        "nor": 3584635.5575926136
+      },
+      "source": "deal_age==4. 31-60",
+      "destination": "new_visitor==1"
+    },
+    {
+      "metrics": {
+        "bookings": 33580317.01690001,
+        "receipt_page_views": 677865,
+        "deal_age": null,
+        "cart_checkout_views": 29790,
+        "conf_page_views": 1311957,
+        "Checkouts_Completed": 944885.3976817756,
+        "Checkouts_Started": 1341747,
+        "dealviews": 29381587,
+        "Visits": null,
+        "cart_conf_page_views": 267020.3976817758,
+        "platform": null,
+        "units": 1191039,
+        "bb_clicks": 2131430,
+        "sum_conf_page_views": 1311957,
+        "new_visitor": null,
+        "nor": 9325957.956889054
+      },
+      "source": "-==-",
+      "destination": "deal_age==5. 61-90"
+    },
+    {
+      "metrics": {
+        "bookings": 55084609.32779993,
+        "receipt_page_views": 1297131,
+        "deal_age": null,
+        "cart_checkout_views": 58134,
+        "conf_page_views": 3156288,
+        "Checkouts_Completed": 1593258.5979893943,
+        "Checkouts_Started": 3214422,
+        "dealviews": 64583060,
+        "Visits": null,
+        "cart_conf_page_views": 296127.5979893942,
+        "platform": null,
+        "units": 2013973,
+        "bb_clicks": 6273100,
+        "sum_conf_page_views": 3156288,
+        "new_visitor": null,
+        "nor": 13684058.308815412
+      },
+      "source": "deal_age==2. 0-5",
+      "destination": "new_visitor==0"
+    },
+    {
+      "metrics": {
+        "bookings": 756441.6200000001,
+        "receipt_page_views": 769,
+        "deal_age": null,
+        "cart_checkout_views": 0,
+        "conf_page_views": 143520,
+        "Checkouts_Completed": 769,
+        "Checkouts_Started": 143520,
+        "dealviews": 184240,
+        "Visits": null,
+        "cart_conf_page_views": 0,
+        "platform": null,
+        "units": 31781,
+        "bb_clicks": 185207,
+        "sum_conf_page_views": 143520,
+        "new_visitor": null,
+        "nor": 113728.589
+      },
+      "source": "deal_age==NULL",
+      "destination": "new_visitor==1"
+    },
+    {
+      "metrics": {
+        "bookings": 64688355.60799995,
+        "receipt_page_views": 1155787,
+        "deal_age": null,
+        "cart_checkout_views": 82857,
+        "conf_page_views": 2297980,
+        "Checkouts_Completed": 1674245.1812861334,
+        "Checkouts_Started": 2380837,
+        "dealviews": 52150597,
+        "Visits": null,
+        "cart_conf_page_views": 518458.181286134,
+        "platform": null,
+        "units": 2126348,
+        "bb_clicks": 4146847,
+        "sum_conf_page_views": 2297980,
+        "new_visitor": null,
+        "nor": 17361702.98742359
+      },
+      "source": "-==-",
+      "destination": "deal_age==4. 31-60"
+    },
+    {
+      "metrics": {
+        "bookings": 2088189.8566,
+        "receipt_page_views": 9322,
+        "deal_age": null,
+        "cart_checkout_views": 0,
+        "conf_page_views": 1078507,
+        "Checkouts_Completed": 9322,
+        "Checkouts_Started": 1078507,
+        "dealviews": 1470435,
+        "Visits": null,
+        "cart_conf_page_views": 0,
+        "platform": null,
+        "units": 92950,
+        "bb_clicks": 2372964,
+        "sum_conf_page_views": 1078507,
+        "new_visitor": null,
+        "nor": 328518.8847966844
+      },
+      "source": "deal_age==NULL",
+      "destination": "new_visitor==0"
+    },
+    {
+      "metrics": {
+        "bookings": 6863076.625399999,
+        "receipt_page_views": 128836,
+        "deal_age": null,
+        "cart_checkout_views": 1128,
+        "conf_page_views": 242751,
+        "Checkouts_Completed": 172255.9025882834,
+        "Checkouts_Started": 243879,
+        "dealviews": 5737536,
+        "Visits": null,
+        "cart_conf_page_views": 43419.9025882833,
+        "platform": null,
+        "units": 220742,
+        "bb_clicks": 472826,
+        "sum_conf_page_views": 242751,
+        "new_visitor": null,
+        "nor": 1977552.5259888717
+      },
+      "source": "deal_age==5. 61-90",
+      "destination": "new_visitor==1"
+    },
+    {
+      "metrics": {
+        "bookings": 13238912.781100005,
+        "receipt_page_views": 309795,
+        "deal_age": null,
+        "cart_checkout_views": 2453,
+        "conf_page_views": 600500,
+        "Checkouts_Completed": 350463.3329479563,
+        "Checkouts_Started": 602953,
+        "dealviews": 12320596,
+        "Visits": null,
+        "cart_conf_page_views": 40668.3329479563,
+        "platform": null,
+        "units": 447635,
+        "bb_clicks": 1461593,
+        "sum_conf_page_views": 600500,
+        "new_visitor": null,
+        "nor": 3183965.970296706
+      },
+      "source": "deal_age==2. 0-5",
+      "destination": "new_visitor==1"
+    },
+    {
+      "metrics": {
+        "bookings": 22643189.49649999,
+        "receipt_page_views": 264979,
+        "deal_age": null,
+        "cart_checkout_views": 5033,
+        "conf_page_views": 618637,
+        "Checkouts_Completed": 354604.0806246158,
+        "Checkouts_Started": 623670,
+        "dealviews": 15119684,
+        "Visits": null,
+        "cart_conf_page_views": 89625.0806246158,
+        "platform": null,
+        "units": 475172,
+        "bb_clicks": 1846560,
+        "sum_conf_page_views": 618637,
+        "new_visitor": null,
+        "nor": 5415828.438054606
+      },
+      "source": "deal_age==3. 6-30",
+      "destination": "new_visitor==1"
+    },
+    {
+      "metrics": {
+        "bookings": 12720278.928399999,
+        "receipt_page_views": 280024,
+        "deal_age": null,
+        "cart_checkout_views": 88114,
+        "conf_page_views": 734067,
+        "Checkouts_Completed": 332585.9999999981,
+        "Checkouts_Started": 822181,
+        "dealviews": 13478278,
+        "Visits": null,
+        "cart_conf_page_views": 52561.9999999982,
+        "platform": null,
+        "units": 389466,
+        "bb_clicks": 1083093,
+        "sum_conf_page_views": 734067,
+        "new_visitor": null,
+        "nor": 3690576.596873751
+      },
+      "source": "new_visitor==1",
+      "destination": "platform==App"
+    },
+    {
+      "metrics": {
+        "bookings": 38505775.70529994,
+        "receipt_page_views": 779057,
+        "deal_age": null,
+        "cart_checkout_views": 443870,
+        "conf_page_views": 1360057,
+        "Checkouts_Completed": 836327.9647575694,
+        "Checkouts_Started": 1803927,
+        "dealviews": 30527710,
+        "Visits": null,
+        "cart_conf_page_views": 57270.9647575693,
+        "platform": null,
+        "units": 1016821,
+        "bb_clicks": 1846018,
+        "sum_conf_page_views": 1360057,
+        "new_visitor": null,
+        "nor": 12925833.380596902
+      },
+      "source": "deal_age==6. 91+",
+      "destination": "new_visitor==1"
+    },
+    {
+      "metrics": {
+        "bookings": 51458695.350399956,
+        "receipt_page_views": 938725,
+        "deal_age": null,
+        "cart_checkout_views": 79797,
+        "conf_page_views": 1884582,
+        "Checkouts_Completed": 1373196.4684927282,
+        "Checkouts_Started": 1964379,
+        "dealviews": 42328517,
+        "Visits": null,
+        "cart_conf_page_views": 434471.4684927287,
+        "platform": null,
+        "units": 1736030,
+        "bb_clicks": 3268385,
+        "sum_conf_page_views": 1884582,
+        "new_visitor": null,
+        "nor": 13777067.429830976
+      },
+      "source": "deal_age==4. 31-60",
+      "destination": "new_visitor==0"
+    },
+    {
+      "metrics": {
+        "bookings": 165229417.84219941,
+        "receipt_page_views": 3590803,
+        "deal_age": null,
+        "cart_checkout_views": 3191187,
+        "conf_page_views": 6803218,
+        "Checkouts_Completed": 3942237.9881983195,
+        "Checkouts_Started": 9994405,
+        "dealviews": 145971194,
+        "Visits": null,
+        "cart_conf_page_views": 351434.9881983193,
+        "platform": null,
+        "units": 4672158,
+        "bb_clicks": 7814478,
+        "sum_conf_page_views": 6803218,
+        "new_visitor": null,
+        "nor": 52857862.120198525
+      },
+      "source": "-==-",
+      "destination": "deal_age==6. 91+"
+    },
+    {
+      "metrics": {
+        "bookings": 218404212.54759946,
+        "receipt_page_views": 4692645,
+        "deal_age": null,
+        "cart_checkout_views": 2253492,
+        "conf_page_views": 11654015,
+        "Checkouts_Completed": 5918414.706343554,
+        "Checkouts_Started": 13907507,
+        "dealviews": 233759891,
+        "Visits": null,
+        "cart_conf_page_views": 1225769.7063435544,
+        "platform": null,
+        "units": 7166703,
+        "bb_clicks": 19753268,
+        "sum_conf_page_views": 11654015,
+        "new_visitor": null,
+        "nor": 58668292.361000225
+      },
+      "source": "-==-",
+      "destination": "deal_age==2. 0-5"
+    },
+    {
+      "metrics": {
+        "bookings": 26717240.39150001,
+        "receipt_page_views": 549029,
+        "deal_age": null,
+        "cart_checkout_views": 28662,
+        "conf_page_views": 1069206,
+        "Checkouts_Completed": 772629.4950934922,
+        "Checkouts_Started": 1097868,
+        "dealviews": 23644051,
+        "Visits": null,
+        "cart_conf_page_views": 223600.4950934924,
+        "platform": null,
+        "units": 970297,
+        "bb_clicks": 1658604,
+        "sum_conf_page_views": 1069206,
+        "new_visitor": null,
+        "nor": 7348405.4309001835
+      },
+      "source": "deal_age==5. 61-90",
+      "destination": "new_visitor==0"
+    },
+    {
+      "metrics": {
+        "bookings": 218404212.54759946,
+        "receipt_page_views": 4692645,
+        "deal_age": null,
+        "cart_checkout_views": 2253492,
+        "conf_page_views": 11654015,
+        "Checkouts_Completed": 5918414.706343554,
+        "Checkouts_Started": 13907507,
+        "dealviews": 233759891,
+        "Visits": null,
+        "cart_conf_page_views": 1225769.7063435544,
+        "platform": null,
+        "units": 7166703,
+        "bb_clicks": 19753268,
+        "sum_conf_page_views": 11654015,
+        "new_visitor": null,
+        "nor": 58668292.361000225
+      },
+      "source": "new_visitor==0",
+      "destination": "platform==App"
+    },
+    {
+      "metrics": {
+        "bookings": 126723642.13689947,
+        "receipt_page_views": 2811746,
+        "deal_age": null,
+        "cart_checkout_views": 2747317,
+        "conf_page_views": 5443161,
+        "Checkouts_Completed": 3105910.0234407503,
+        "Checkouts_Started": 8190478,
+        "dealviews": 115443484,
+        "Visits": null,
+        "cart_conf_page_views": 294164.02344075,
+        "platform": null,
+        "units": 3655337,
+        "bb_clicks": 5968460,
+        "sum_conf_page_views": 5443161,
+        "new_visitor": null,
+        "nor": 39932028.73960162
+      },
+      "source": "deal_age==6. 91+",
+      "destination": "new_visitor==0"
+    }
+  ]
+}

@@ -1,0 +1,119 @@
+<div class="row text-center">
+    <h3>Status of imported data</h3>
+</div>
+
+<div class="row text-center">
+    <div class="col-md-1"></div>
+    <div class="col-md-10">
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th class="text-right font-extra-bold">Name</th>
+                <th class="text-left">Total Available</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td class="text-right font-extra-bold">
+                    Total Columns
+                </td>
+                <td class="text-left">
+                  {{model.status.total}}
+                </td>
+            </tr>
+
+            <tr>
+                <td class="text-right font-extra-bold">
+                    Identified Columns
+                </td>
+                <td class="text-left">
+                  {{model.status.saved}}
+                </td>
+            </tr>
+
+            <tr>
+                <td class="text-right font-extra-bold">
+                    Unidentified Columns
+                </td>
+                <td class="text-left">
+                  {{model.status.unsaved}}
+                </td>
+            </tr>
+            <tr>
+                <td class="text-right font-extra-bold">
+                    Number of Metrics
+                </td>
+                <td class="text-left">
+                  {{model.status.metrics}}
+                    <button class='btn btn-default' {{action 'createMetric'}}>Create</button>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="text-right font-extra-bold">
+                    Number of Dimensions
+                </td>
+                <td class="text-left">
+                  {{model.status.dimensions}}
+                    <button class='btn btn-default' {{action 'createDimension'}}>Create</button>
+                </td>
+            </tr>
+            <tr class="{{unless selectedDate 'danger'}}">
+                <td class="text-right font-extra-bold">Pick Date Dimension:</td>
+                <td class="text-left">
+                  {{view 'select'
+                  class='form-control'
+                  content=model.dimensions
+                  selection=selectedDate
+                  prompt="Select Date"
+                  optionGroupPath="group"
+                  optionLabelPath="content.name"
+                  optionValuePath="content.id"}}
+                    <button class='btn btn-default' {{action 'saveDashboard'}}>{{saveDashText}}</button>
+                </td>
+            </tr>
+
+            <tr class="{{unless selectedDate 'danger'}}">
+                <td class="text-right font-extra-bold">Weekly charts ?</td>
+                <td class="text-left">
+                  {{view "select" class='form-control' content=model.boolean value=model.dashboard.isWeek}}
+                    <button class='btn btn-default' {{action 'saveDashboard'}}>{{saveDashText}}</button>
+                </td>
+            </tr>
+
+
+            <tr class="{{unless selectedCountMetric 'danger'}}">
+                <td class="text-right font-extra-bold">Pick Segment Size Metric</td>
+                <td class="text-left">
+                  {{view 'select'
+                  class='form-control'
+                  content=model.metrics
+                  selection=selectedCountMetric
+                  prompt="Select Segment Size Metric"
+                  optionGroupPath="group"
+                  optionLabelPath="content.name"
+                  optionValuePath="content.id"}}
+                    <button class='btn btn-default' {{action 'saveDashboard'}}>{{saveDashText}}</button>
+                </td>
+            </tr>
+            {{!--
+            <tr class="{{unless selectedUserId 'danger'}}">
+                <td class="text-right font-extra-bold">Pick UserId Dimension</td>
+                <td class="text-left">
+                  {{view 'select'
+                  class='form-control'
+                  content=model.dimensions
+                  selection=selectedUserId
+                  prompt="Select User Id Factor"
+                  optionGroupPath="group"
+                  optionLabelPath="content.name"
+                  optionValuePath="content.id"}}
+                    <button class='btn btn-default' {{action 'saveDashboard'}}>{{saveDashText}}</button>
+                </td>
+            </tr>
+                 --}}
+            </tbody>
+        </table>
+    </div>
+</div>
+<div class="col-md-1"></div>

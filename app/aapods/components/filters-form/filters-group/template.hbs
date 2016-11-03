@@ -1,0 +1,93 @@
+<div class="four wide column filters--dropdown-first">
+  {{#ui-dropdown class="ui fluid search selection dropdown filterDimension"  fullTextSearch='exact' sort=true
+  onChange=(action 'updateSelectedDimension') onHide=(action 'updateSelectedDimensionHide') forceSelection=false}}
+      <div class="default text">pick attribute</div>
+      <i class="dropdown icon"></i>
+      <div class="menu">
+        {{#each dimensions as |dimension|}}
+            <div class="item" data-id="{{dimension.id}}" data-value="{{dimension.id}}">
+              {{str-fmt-dropdown dimension.name}}
+            </div>
+        {{/each}}
+      </div>
+  {{/ui-dropdown}}
+</div>
+
+<div class="three wide column filters--dropdown">
+  {{#ui-dropdown class="ui fluid selection dropdown filters " onChange=(action 'updateSelectedFilter')
+  onHide=(action 'updateSelectedFilterHide') forceSelection=false}}
+      <div class="default text"></div>
+      <i class="dropdown icon"></i>
+      <div class="menu">
+        {{#each filterTypes as |filter|}}
+            <div class="item" data-id="{{filter.value}}" data-value="{{filter.value}}">
+              {{filter.name}}
+            </div>
+        {{/each}}
+      </div>
+  {{/ui-dropdown}}
+</div>
+
+<div class="four wide column filters--dropdown">
+  {{#if selectedDimension}}
+    {{#if loadingDimensionValues}}
+      {{#ui-dropdown class="ui fluid search selection dropdown dimensionValues" fullTextSearch='exact' sort=true
+      onChange=(action 'updateSelectedValue') onHide=(action 'updateSelectedValueHide') forceSelection=false}}
+          <div class="default text">
+              loading...
+          </div>
+          <i class="dropdown icon"></i>
+          <div class="menu">
+            {{#each dimensionsValuesList as |value|}}
+                <div class="item" data-value="{{value.value}}">
+                  {{str-fmt-dropdown value.name}}
+                </div>
+            {{/each}}
+          </div>
+      {{/ui-dropdown}}
+    {{else if multiple}}
+      {{#ui-dropdown class="ui fluid search multiple selection dropdown dimensionValues" fullTextSearch='exact' sort=true
+      onChange=(action 'updateSelectedValue') onHide=(action 'updateSelectedValueHide') forceSelection=false}}
+          <div class="default text">
+              pick values
+          </div>
+          <i class="dropdown icon"></i>
+          <div class="menu">
+            {{#each dimensionsValuesList as |value|}}
+                <div class="item" data-value="{{value.value}}">
+                  {{str-fmt-dropdown value.name}}
+                </div>
+            {{/each}}
+          </div>
+      {{/ui-dropdown}}
+    {{else}}
+      {{#ui-dropdown class="ui fluid search selection dropdown dimensionValues" fullTextSearch='exact' sort=true
+      onChange=(action 'updateSelectedValue')  onHide=(action 'updateSelectedValueHide')  forceSelection=false}}
+          <div class="default text">
+              pick value
+          </div>
+          <i class="dropdown icon"></i>
+          <div class="menu">
+            {{#each dimensionsValuesList as |value|}}
+                <div class="item" data-value="{{value.value}}">
+                  {{str-fmt-dropdown value.name}}
+                </div>
+            {{/each}}
+          </div>
+      {{/ui-dropdown}}
+    {{/if}}
+  {{else}}
+    {{#ui-dropdown class="ui fluid search selection dropdown" fullTextSearch='exact' sort=true
+    onChange=(action 'updateSelectedValue')  onHide=(action 'updateSelectedValueHide')  forceSelection=false}}
+        <div class="default text">
+            pick a dimension
+        </div>
+        <i class="dropdown icon"></i>
+    {{/ui-dropdown}}
+  {{/if}}
+</div>
+
+<div class="one wide column filters--dropdown-last">
+    <a {{action "removeFilter" filter.filter_id}}
+            class="hand text-red"><i class="fa fa-times fa-2"></i></a>
+</div>

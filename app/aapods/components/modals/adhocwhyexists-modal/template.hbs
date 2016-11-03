@@ -1,0 +1,20 @@
+{{#main-modal ok='done' close='removeModal' showFooter=false showHeader=false showButtons=false showOkButton=true requests=model.requests}}
+
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-8">
+            <img style='float:right;width:80px;height:80px; margin-right:50px;' src="/assets/images/adhocwhy.png" />
+            	<p>
+	             <strong>This report has been queued and is currently at {{model.percent}}% complete.</strong>
+			      <br><br>
+			      </p>
+			      <p style="color:#808080">We'll email you when the report is ready.</p><br>
+			     
+			    
+		</div>
+		
+        </div>
+    </div>
+
+{{/main-modal}}

@@ -1,0 +1,74 @@
+<!-- Page Title -->
+<div class="row">
+
+    <div class="col-md-6">
+        <label> Dimension </label>{{select-2
+    content=model.dimensions
+    optionLabelPath="name"
+    value=controlDim
+    placeholder="Choose your dimension"
+    }}</div>
+    <div class="col-md-3">
+        <label> Target </label>
+      {{select-2
+      content=dmetrics
+      value=targetMetric
+      placeholder="Choose your metric"
+      }}
+    </div>
+    <div class="col-md-3">
+        <label> Period </label>
+      {{daterange-picker startDate=qstartDate endDate=qendDate
+      minDate=model.window.startDate maxDate=model.window.endDate default=true}}
+
+    </div>
+</div>
+<div class="row">
+    <br/>
+</div>
+<div class="row">
+  {{#if controlDim}}
+      <div class="col-md-3">
+          <label> Control </label>
+          <form action="">
+              <input type="radio" name="control" value="dropdown"> Specific {{controlDim.name}}
+            {{select-2
+            content=controlVals
+            value=selControlVal
+            placeholder="Choose your control"
+            }}<br>
+              <input type="radio" name="control" value="rest"> Rest
+              <small>(everything except variation)</small>
+              <br>
+          </form>
+      </div>
+      <div class="col-md-3">
+          <label> Variation </label>
+          <br/>
+          <br/>
+        {{select-2
+        content=controlVals
+        value=selVariationVal
+        placeholder="Choose your variation"
+        }}
+      </div>
+      <div class="col-md-6">
+          <label> Filters </label>&nbsp;&nbsp;
+          <a {{action "addSegment"}} style="color:#333; cursor: pointer; cursor: hand"><i
+                  class="fa fa-plus-circle"></i>
+              new</a>
+
+        {{#each segments as |segment|}}
+          {{segment-form dimensions=model.dimensions functions=model.functions segment=segment removeSegment="removeSegment"}}
+        {{/each}}
+      </div>
+  {{/if}}
+</div>
+<div class="row">
+    <br/>
+    <div class="col-md-6">
+        <div class="btn btn-block btn-default btn-success inline {{if isDisabled 'disabled'}}" {{action 'optimize'}}>
+            Analyze
+        </div>
+    </div>
+</div>

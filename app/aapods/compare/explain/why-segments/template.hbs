@@ -1,0 +1,43 @@
+{{#if factor}}
+{{else}}
+    <div class="col-md-3">
+      {{why/summary-answer title="Summary" summary=dims_from_data_table dimHash=dimHash answerClick="jumptosegmentrow"}}
+    </div>
+{{/if}}
+<div id="whywheel" class="col-md-9">
+  {{why/why-wheel title="test" data=dimensionpie2 clickpie="clickpie"}}
+  {{#if dimensionpie2.back}}
+      <div id="whywheel-back">
+          <button id="whywheelbackbutton" type="button"
+                  class="btn btn-danger btn-circle btn-lg" {{action "setdim" null}}><i
+                  class="fa fa-arrow-circle-left" aria-hidden="true"></i></button>
+        {{!-- <button id="whywheelbackbutton" type="button" class="btn btn-primary btn-xs" {{action "setdim" null}}><span class="glyphicon glyphicon-circle-arrow-left"></span> Back</button> --}}
+      </div>
+  {{/if}}
+</div>
+<div class="row">
+<div class="col-md-11">
+        Search: {{input action='searchDims' type='text' class='form-control' value=searchStr}}
+</div>
+<div class="col-md-1"><br/>
+    <a class="btn btn-default" {{action 'searchDims' searchStr}}>Go</a>
+</div>
+<br/>
+</div>
+{{why/segment-table title="All Values" isDebug=isDebug filterSearch=filterSearch
+tableid='topsegmentstable' btnid='topsegmentsbuttons'
+uniq_factors=uniq_factors pts=pts compare=model deeperwhy="deeperwhy" searchDims="searchDims"
+deletedim="deletedim" modalForSegment="modalForSegment" isAdmin=isAdmin model=model
+modalForContrib="modalForContrib" dimHash=dimHash selectdim="selectdim"
+sortChoices=sortChoices sortchoice=sortchoice  exploreSessions="exploreSessionsOld"
+significantFilter="significantFilter" editFactor="editFactor" whyfunnel="whyfunnel" factor=factor}}
+
+<div id="topsegmentsbuttons">
+    <div class="pull-left vertical-sep">
+      {{#unless dim}}
+        {{j-check checked=sameDirectionOnly action='directionFilter'}}
+        {{if model.results.d.isHigher 'Positive' 'Negative'}} Impact Only<br>
+        {{j-check checked=significantOnly action='significantFilter'}} Significant Only
+      {{/unless}}
+    </div>
+</div>

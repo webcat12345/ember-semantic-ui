@@ -1,0 +1,76 @@
+<div class="ui padded grid middle aligned ">
+    <div class="padded row">
+        
+        <div class="four wide column">
+            <div class="ui input fluid">
+            {{daterange-picker startDate=qstartDate endDate=qendDate
+            minDate=model.window.startDate maxDate=model.window.endDate default=true class=""}}
+            </div>
+        </div>
+        <div class="one wide column explore--main-button">
+          {{#unless disableDraw}}
+              <button class="ui green button" id="draw" {{action 'exploreSessions'}}>Go</button>
+          {{else}}
+              <button class="ui green button disabled">Go</button>
+          {{/unless}}
+        </div>
+    </div>
+
+
+
+    <div class="padded row">
+      {{#each dimensions as |dimension|}}
+          <div class="three wide column one-filter">
+                {{semantic-select
+                content=model.dimensions
+                optionValuePath='content.id'
+                optionLabelPath='content.name'
+                selection=dimension
+                onSelect=(action 'setDimension' dimension)
+                uiType="inline"
+                prompt="________"
+                id=dimension.id
+                required=true}}
+
+              <a {{action "removeDimension" dimension.id}}
+                      class="text-lightgrey pull-right hand"><i
+                      class="fa fa-times"></i></a>
+          </div>
+      {{/each}}
+        <div class="two wide column">
+            <a {{action "addDimension"}} class="hand">
+                <i class="fa fa-plus"></i> Add Dimension
+            </a>
+        </div>
+    </div>
+
+    <div class="padded row">
+        <div class="two wide column">
+            <button class="ui fluid grey basic button">All sessions</button>
+        </div>
+      {{#each filters as |filter|}}
+          <div class="three wide column one-filter">
+              <a {{action "removeFilter" filter.id}}
+                      class="text-lightgrey pull-right hand"><i
+                      class="fa fa-times"></i></a>
+            {{filters-form dimensions=model.dimensions parentFilters=filters id=filter.id filter=filter setFilters=(action 'setFilters')}}
+          </div>
+      {{/each}}
+        <div class="two wide column">
+            <a {{action "addFilter"}} class="hand">
+                <i class="fa fa-plus"></i> Add filter
+            </a>
+        </div>
+    </div>
+
+</div>
+
+
+<div class="ui divider explore--main-divider"></div>
+{{!--components/modals/session-modal model=sessionModel--}}
+
+
+
+<div class="ui padded grid middle aligned ">
+{{sessions-view sessionModel=sessionModel}}
+</div>

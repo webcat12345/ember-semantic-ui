@@ -1,0 +1,16 @@
+<h1>Your <strong>Data</strong></h1>
+<div class="ui secondary pointing menu">
+  {{#link-to 'factors' class="item"}}Metrics and Dimensions{{/link-to}}
+  {{#link-to 'schema.dimgroups' class="item"}}Dimension Groups{{/link-to}}
+  {{#link-to 'schema.metricgroups' class="item"}}Metric Groups{{/link-to}}
+  {{#link-to 'sources' class="item"}}Sources{{/link-to}}
+  {{#if isAdmin}}
+    {{#link-to 'schema.tables' class="item"}}*Tables{{/link-to}}
+    {{#link-to 'schema.status' class="item"}}*Status{{/link-to}}
+    {{#link-to 'schema.whydims' class="item"}}*Why Dimensions{{/link-to}}
+    {{#link-to 'users' class="item"}}*Users{{/link-to}}
+  {{/if}}
+</div>
+<div class="container">
+  {{outlet}}
+</div>

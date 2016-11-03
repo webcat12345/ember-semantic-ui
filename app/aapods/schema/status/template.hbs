@@ -1,0 +1,538 @@
+<div class="row">
+    <div class="col-md-9">
+        <div class="row space-box">
+            <div class="col-md-1">
+              {{fa-icon icon="cogs" size="3"}}
+            </div>
+            <div class="col-md-11">
+                <div class="row"><h2>Setup</h2></div>
+                <div class="row">Before you can see a channels of Exceptions, you need to setup a few things</div>
+            </div>
+        </div>
+        <div class="row space-box">
+            <div class="col-md-1">
+              {{fa-icon icon="database" size="3"}}
+            </div>
+            <div class="col-md-11">
+                <div class="row">
+                    <div class="col-md-12">
+                        <strong>Data Sources</strong>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-9">
+                      {{#if model.sources}}
+                        {{model.sources.length}} data sources configured.
+                      {{else}}
+                          At least one data source is required.
+                      {{/if}}
+                      {{#if model.sources}}
+                          <span class="fa-stack fa-sm">
+                                <i class="fa fa-circle fa-stack-2x text-lightgreen"></i>
+                                <i class="fa fa-check fa-stack-1x fa-inverse"></i>
+                              </span>
+                      {{else}}
+                          <span class="fa-stack fa-sm">                                 <i
+                                  class="fa fa-circle fa-stack-2x text-lightred"></i>                                 <i
+                                  class="fa fa-times fa-stack-1x fa-inverse"></i>                               </span>
+                      {{/if}}
+                    </div>
+                    <div class="col-md-3">
+                        <div class="btn-group btn-block">
+                            <button type="button" class="btn btn-default btn-block dropdown-toggle" data-toggle="dropdown"
+                                    aria-haspopup="true" aria-expanded="false">
+                                Add Source <span class="caret"></span>
+                            </button>
+                            <ul class="dropdown-menu">
+                                <li>{{#link-to "source" "newmp"}}Mixpanel{{/link-to}}</li>
+                                <li>{{#link-to "source" "newga"}}Google Analytics{{/link-to}}</li>
+                                <li>{{#link-to "source" "newomf"}}Adobe Omniture Feed{{/link-to}}</li>
+                                <li>{{#link-to "source" "news3"}}Amazon S3{{/link-to}}</li>
+                                <li>{{#link-to "source" "newCSFTP"}}Cuberon SFTP{{/link-to}}</li>
+                                <li>{{#link-to "source" "newfile"}}SFTP Import{{/link-to}}</li>
+                                <li>{{#link-to "source" "newmysql"}}MySql{{/link-to}}</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+              {{#each sources as |src|}}
+                  <div class="row text-grey">
+                      <div class="col-md-9">
+                          <em><strong>{{src.name}} </strong></em>
+                        {{#if src.task.isCompleted}}
+                            <span class="fa-stack fa-sm">
+                                <i class="fa fa-circle fa-stack-2x text-lightgreen"></i>
+                                <i class="fa fa-check fa-stack-1x fa-inverse"></i>
+                              </span>
+                        {{else if src.task.isRunning}}
+
+                            <i class="fa fa-refresh fa-spin"></i>
+                        {{else}}
+                            <span class="fa-stack fa-sm">                                 <i
+                                    class="fa fa-circle fa-stack-2x text-lightred"></i>                                 <i
+                                    class="fa fa-times fa-stack-1x fa-inverse"></i>                               </span>
+                        {{/if}}
+                          <em>
+                            {{#if src.task.lastCompletedTime}}
+                                Successfully imported {{date-fmt src.task.lastCompletedTime}}.
+                            {{/if}}
+                            {{#if src.task.lastErrorTime}}
+                                <span class="text-lightred">
+                              {{#if src.task.lastError}}
+                                {{bootstrap-popover text="Error " title="Error Message" message=src.task.lastError}}
+                              {{else}}
+                                  Error
+                              {{/if}}
+                                  {{date-fmt src.task.lastErrorTime}}
+                              </span>
+                            {{/if}}
+                            {{#if src.task.isRunning}}
+                                Started import {{date-fmt src.task.checkStartedTime}}
+                            {{/if}}
+                          </em>
+                      </div>
+                      <div class="col-md-3">
+                        {{#link-to 'source' src.id class='btn btn-default pull-right btn-block'}}
+                            Edit
+                        {{/link-to}}
+                      </div>
+                  </div>
+              {{/each}}
+
+              {{#each etl.tables as |table|}}
+                  <div class="row  text-grey">
+                      <div class="col-md-9">
+                          <em><strong>ETL: {{table.task.name}} </strong></em>
+                        {{#if table.task.everCompleted}}
+                            <span class="fa-stack fa-sm">
+                                <i class="fa fa-circle fa-stack-2x text-lightgreen"></i>
+                                <i class="fa fa-check fa-stack-1x fa-inverse"></i>
+                            </span>
+                        {{else if table.task.isRunning}}
+                            <i class="fa fa-refresh fa-spin"></i>
+                        {{else}}
+                            <span class="fa-stack fa-sm">                                 <i
+                                    class="fa fa-circle fa-stack-2x text-lightred"></i>                                 <i
+                                    class="fa fa-times fa-stack-1x fa-inverse"></i>                               </span>
+                        {{/if}}
+                          <em>
+                            {{#if table.task.lastCompletedTime}}
+                                Successfully run {{date-fmt table.task.lastCompletedTime}}.
+                            {{/if}}
+                            {{#if table.task.lastErrorTime}}
+                                <span class="text-lightred">
+                                  {{#if table.task.lastError}}
+                                    {{bootstrap-popover text="Error " title="Error Message" message=table.lastError}}
+                                  {{else}}
+                                      Error
+                                  {{/if}}
+                                  {{date-fmt table.task.lastErrorTime}}
+                                  </span>
+                            {{/if}}
+                            {{#if table.task.isRunning}}
+                                Started {{date-fmt table.task.checkStartedTime}}
+                            {{/if}}
+                          </em>
+
+                      </div>
+                      <div class="col-md-3">
+                        {{#link-to 'etl' class='btn btn-default pull-right btn-block'}}
+                            Edit
+                        {{/link-to}}
+                      </div>
+                  </div>
+              {{/each}}
+            </div>
+        </div>
+        <div class="row space-box">
+            <div class="col-md-1">
+              {{fa-icon icon="arrows" size="3"}}
+            </div>
+            <div class="col-md-11">
+                <div class="row">
+                    <div class="col-md-12">
+                        <strong>Map your sources</strong>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-9">
+                      {{#if readyCt}}
+                        {{readyCt}} data sources are 100% ready.
+                          <span class="fa-stack fa-sm">
+                                <i class="fa fa-circle fa-stack-2x text-lightgreen"></i>
+                                <i class="fa fa-check fa-stack-1x fa-inverse"></i>
+                              </span>
+                      {{else}}
+                          At least one data source must be completely ready.
+                          <span class="fa-stack fa-sm">                                 <i
+                                  class="fa fa-circle fa-stack-2x text-lightred"></i>                                 <i
+                                  class="fa fa-times fa-stack-1x fa-inverse"></i>                               </span>
+                      {{/if}}
+                    </div>
+                </div>
+              {{#each model.tables as |table|}}
+                  <div class="row text-grey">
+                      <div class="col-md-12">
+                          <div class="row">
+                              <div class="col-md-9">
+                                  <em><strong>{{table.name}} </strong></em>
+                                {{#if table.ready}}
+                                    <span class="fa-stack fa-sm">
+                                <i class="fa fa-circle fa-stack-2x text-lightgreen"></i>
+                                <i class="fa fa-check fa-stack-1x fa-inverse"></i>
+                              </span>
+                                {{else}}
+                                    <span class="fa-stack fa-sm">                                 <i
+                                            class="fa fa-circle fa-stack-2x text-lightred"></i>                                 <i
+                                            class="fa fa-times fa-stack-1x fa-inverse"></i>                               </span>
+                                {{/if}}
+                              </div>
+                          </div>
+                          <div class="row">
+                              <div class="col-md-9">
+                                {{table.mappedct}} of {{table.colct}} columns mapped.
+                                {{#if table.mappedct}}
+
+                                {{else}}
+                                    <span> Must map at least 1 column. </span>
+                                    <span class="fa-stack fa-sm">                                 <i
+                                            class="fa fa-circle fa-stack-2x text-lightred"></i>                                 <i
+                                            class="fa fa-times fa-stack-1x fa-inverse"></i>                               </span>
+                                {{/if}}
+                              </div>
+                              <div class="col-md-3">
+                                {{#link-to 'schema.tables.table' table.id class='btn btn-default pull-right btn-block'}}
+                                    Map Columns
+                                {{/link-to}}
+                              </div>
+                          </div>
+                          <div class="row">
+                              <div class="col-md-9">
+                                {{table.metricct}} Metrics on this table
+                                {{#if table.metricct}}
+
+                                {{else}}
+                                    <span> At least 1 Metric must exist. </span>
+                                    <span class="fa-stack fa-sm">                                 <i
+                                            class="fa fa-circle fa-stack-2x text-lightred"></i>                                 <i
+                                            class="fa fa-times fa-stack-1x fa-inverse"></i>                               </span>
+                                {{/if}}
+                              </div>
+                              <div class="col-md-3">
+                                {{#link-to 'factors.metric' 'new' class='btn btn-default pull-right btn-block'}}
+                                    Create Metric
+                                {{/link-to}}
+                              </div>
+                          </div>
+
+                          <div class="row">
+                              <div class="col-md-9">
+                                {{table.dimensionct}} Dimensions on this table
+                                {{#if table.dimensionct}}
+
+                                {{else}}
+                                    <span> At least 1 Dimension must exist. </span>
+                                    <span class="fa-stack fa-sm">                                 <i
+                                            class="fa fa-circle fa-stack-2x text-lightred"></i>                                 <i
+                                            class="fa fa-times fa-stack-1x fa-inverse"></i>                               </span>
+                                {{/if}}
+                              </div>
+                              <div class="col-md-3">
+                                {{#link-to 'factors.dimension' 'new' class='btn btn-default pull-right btn-block'}}
+                                    Create Dimension
+                                {{/link-to}}
+                              </div>
+                          </div>
+                          <div class="row">
+                              <div class="col-md-9">
+                                {{#if table.date}}
+                                    Date Dimension has been identified for newsfeed.
+                                 {{else}}
+                                    <span>A Date dimension must exist before newsfeed can be created. </span>
+                                    <span class="fa-stack fa-sm">                                 <i
+                                            class="fa fa-circle fa-stack-2x text-lightred"></i>                                 <i
+                                            class="fa fa-times fa-stack-1x fa-inverse"></i>                               </span>
+                                {{/if}}
+                              </div>
+                              <div class="col-md-3">
+                                {{#link-to 'schema' class='btn btn-default pull-right btn-block'}}
+                                    Map Date
+                                {{/link-to}}
+                              </div>
+                          </div>
+                          <div class="row">
+                              <div class="col-md-9">
+                                {{#if table.date}}
+                                    Event Count Metric has been identified.
+                                 {{else}}
+                                    <span>A metric that counts the number of events in any segment must be identified. </span>
+                                    <span class="fa-stack fa-sm">                                 <i
+                                            class="fa fa-circle fa-stack-2x text-lightred"></i>                                 <i
+                                            class="fa fa-times fa-stack-1x fa-inverse"></i>                               </span>
+                                {{/if}}
+                              </div>
+                              <div class="col-md-3">
+                                {{#link-to 'schema' class='btn btn-default pull-right btn-block'}}
+                                    Map Event Count Metric
+                                {{/link-to}}
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+              {{/each}}
+            </div>
+        </div>
+        <div class="row space-box">
+            <div class="col-md-1">
+              {{fa-icon icon="bar-chart" size="3"}}
+            </div>
+            <div class="col-md-11">
+                <div class="row">
+                    <div class="col-md-12">
+                        <strong>Metrics</strong>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                      {{#if model.metrics}}
+                          You have defined {{model.metrics.length}} metrics.
+                          <span class="fa-stack fa-sm">
+                                      <i class="fa fa-circle fa-stack-2x text-lightgreen"></i>
+                                      <i class="fa fa-check fa-stack-1x fa-inverse"></i>
+                                    </span>
+                      {{else}}
+                          At least one metric must be defined.
+                          <span class="fa-stack fa-sm">                                 <i
+                                  class="fa fa-circle fa-stack-2x text-lightred"></i>                                 <i
+                                  class="fa fa-times fa-stack-1x fa-inverse"></i>                               </span>
+                      {{/if}}
+                    </div>
+                    <div class="col-md-3">{{#link-to 'factors' class='btn btn-default btn-block'}}Edit{{/link-to}}</div>
+                    <div class="col-md-3">{{#link-to 'factors.metric' 'create' class='btn btn-default btn-block'}}Create
+                        Metric{{/link-to}}</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row space-box">
+            <div class="col-md-1">
+              {{fa-icon icon="cube" size="3"}}
+            </div>
+            <div class="col-md-11">
+                <div class="row">
+                    <div class="col-md-12">
+                        <strong>Dimensions</strong>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                      {{#if model.dimensions}}
+                          You have defined {{model.dimensions.length}} dimensions.
+                          <span class="fa-stack fa-sm">                                 <i
+                                  class="fa fa-circle fa-stack-2x text-lightgreen"></i>                                 <i
+                                  class="fa fa-check fa-stack-1x fa-inverse"></i>                               </span>
+                      {{else}}
+                          At least one dimension must be defined.
+                          <span class="fa-stack fa-sm">                                 <i
+                                  class="fa fa-circle fa-stack-2x text-lightred"></i>                                 <i
+                                  class="fa fa-times fa-stack-1x fa-inverse"></i>                               </span>
+                      {{/if}}
+                    </div>
+                    <div class="col-md-3">{{#link-to 'factors' class='btn btn-default btn-block'}}Edit{{/link-to}}</div>
+                    <div class="col-md-3">{{#link-to 'factors.dimension' 'create' class='btn btn-default btn-block'}}
+                        Create
+                        Dimension{{/link-to}}</div>
+                </div>
+            </div>
+        </div>
+        <div class="row space-box">
+            <div class="col-md-1">
+              {{fa-icon icon="magic" size="3"}}
+            </div>
+            <div class="col-md-11">
+                <div class="row">
+                    <div class="col-md-12">
+                        <strong>Cuberon's Pattern Detection</strong>
+                    </div>
+                </div>
+                <div class="row text-grey">
+                    <div class="col-md-9">
+                        <em><strong>Scanning Cubes</strong></em>
+                      {{#if patterns.newscubes.isCompleted}}
+                          <span class="fa-stack fa-sm">                                 <i
+                                  class="fa fa-circle fa-stack-2x text-lightgreen"></i>                                 <i
+                                  class="fa fa-check fa-stack-1x fa-inverse"></i>                               </span>
+                      {{else if patterns.newscubes.isRunning}}
+
+                          <i class="fa fa-refresh fa-spin"></i>
+                      {{else}}
+                          <span class="fa-stack fa-sm">                                 <i
+                                  class="fa fa-circle fa-stack-2x text-lightred"></i>                                 <i
+                                  class="fa fa-times fa-stack-1x fa-inverse"></i>                               </span>
+                      {{/if}}
+                        <em>
+                          {{#if patterns.newscubes.lastCompletedTime}}
+                              Successfully generated {{date-fmt patterns.newscubes.lastCompletedTime}}.
+                          {{/if}}
+                          {{#if patterns.newscubes.lastErrorTime}}
+                              <span class="text-lightred">
+                              {{#if patterns.newscubes.lastError}}
+                                {{bootstrap-popover text="Error " title="Error Message" message=patterns.newscubes.lastError}}
+                              {{else}}
+                                  Error
+                              {{/if}}
+                                {{date-fmt patterns.newscubes.lastErrorTime}}
+                              </span>
+                          {{/if}}
+                          {{#if patterns.newscubes.isRunning}}
+                              Started {{date-fmt patterns.newscubes.checkStartedTime}}
+                          {{/if}}
+                        </em>
+                    </div>
+                </div>
+                <div class="row text-grey">
+                    <div class="col-md-9">
+                        <em><strong>Finding Anamolies</strong></em>
+                      {{#if patterns.news.isCompleted}}
+                          <span class="fa-stack fa-sm">                                 <i
+                                  class="fa fa-circle fa-stack-2x text-lightgreen"></i>                                 <i
+                                  class="fa fa-check fa-stack-1x fa-inverse"></i>                               </span>
+                      {{else if patterns.news.isRunning}}
+
+                          <i class="fa fa-refresh fa-spin"></i>
+                      {{else}}
+                          <span class="fa-stack fa-sm">                                 <i
+                                  class="fa fa-circle fa-stack-2x text-lightred"></i>                                 <i
+                                  class="fa fa-times fa-stack-1x fa-inverse"></i>                               </span>
+                      {{/if}}
+                        <em>
+                          {{#if patterns.news.lastCompletedTime}}
+                              Successfully generated {{date-fmt patterns.news.lastCompletedTime}}.
+                          {{/if}}
+                          {{#if patterns.news.lastErrorTime}}
+                              <span class="text-lightred">
+                              {{#if patterns.news.lastError}}
+                                  {{bootstrap-popover text="Error " title="Error Message" message=patterns.news.lastError}}
+                              {{else}}
+                                  Error
+                              {{/if}}
+                                {{date-fmt patterns.news.lastErrorTime}}
+                              </span>
+                          {{/if}}
+                          {{#if patterns.news.isRunning}}
+                              Started {{date-fmt patterns.news.checkStartedTime}}
+                          {{/if}}
+                        </em>
+                    </div>
+                </div>
+                <div class="row text-grey">
+                    <div class="col-md-9">
+                        <em><strong>Explaining Anamolies</strong></em>
+                      {{#if patterns.newswhy.isCompleted}}
+                          <span class="fa-stack fa-sm">                                 <i
+                                  class="fa fa-circle fa-stack-2x text-lightgreen"></i>                                 <i
+                                  class="fa fa-check fa-stack-1x fa-inverse"></i>                               </span>
+                      {{else if patterns.newswhy.isRunning}}
+
+                          <i class="fa fa-refresh fa-spin"></i>
+                      {{else}}
+                          <span class="fa-stack fa-sm">                                 <i
+                                  class="fa fa-circle fa-stack-2x text-lightred"></i>                                 <i
+                                  class="fa fa-times fa-stack-1x fa-inverse"></i>                               </span>
+                      {{/if}}
+                        <em>
+                          {{#if patterns.newswhy.lastCompletedTime}}
+                              Successfully generated {{date-fmt patterns.newswhy.lastCompletedTime}}.
+                          {{/if}}
+                          {{#if patterns.newswhy.lastErrorTime}}
+                              <span class="text-lightred">
+                              {{#if patterns.newswhy.lastError}}
+                                {{bootstrap-popover text="Error " title="Error Message" message=patterns.newswhy.lastError}}
+                              {{else}}
+                                  Error
+                              {{/if}}
+                                {{date-fmt patterns.newswhy.lastErrorTime}}
+                              </span>
+                          {{/if}}
+                          {{#if patterns.newswhy.isRunning}}
+                              Started {{date-fmt patterns.newswhy.checkStartedTime}}
+                          {{/if}}
+                        </em>
+                    </div>
+                </div>
+                <div class="row text-grey">
+                    <div class="col-md-9">
+                        <em><strong>Explaining Custom Why's</strong></em>
+                      {{#if patterns.why.isCompleted}}
+                          <span class="fa-stack fa-sm">                                 <i
+                                  class="fa fa-circle fa-stack-2x text-lightgreen"></i>                                 <i
+                                  class="fa fa-check fa-stack-1x fa-inverse"></i>                               </span>
+                      {{else if patterns.why.isRunning}}
+
+                          <i class="fa fa-refresh fa-spin"></i>
+                      {{else}}
+                          <span class="fa-stack fa-sm">                                 <i
+                                  class="fa fa-circle fa-stack-2x text-lightred"></i>                                 <i
+                                  class="fa fa-times fa-stack-1x fa-inverse"></i>                               </span>
+                      {{/if}}
+                        <em>
+                          {{#if patterns.why.lastCompletedTime}}
+                              Successfully generated {{date-fmt patterns.why.lastCompletedTime}}.
+                          {{/if}}
+                          {{#if patterns.why.lastErrorTime}}
+                              <span class="text-lightred">
+                              {{#if patterns.why.lastError}}
+                                {{bootstrap-popover text="Error " title="Error Message" message=patterns.why.lastError}}
+                              {{else}}
+                                  Error
+                              {{/if}}
+                                {{date-fmt patterns.why.lastErrorTime}}
+                              </span>
+                          {{/if}}
+                          {{#if patterns.why.isRunning}}
+                              Started {{date-fmt patterns.why.checkStartedTime}}
+                          {{/if}}
+                        </em>
+                    </div>
+                </div>
+                <div class="row text-grey">
+                    <div class="col-md-9">
+                        <em><strong>Explaining Changes in Charts</strong></em>
+                      {{#if patterns.defaultwhy.isCompleted}}
+                          <span class="fa-stack fa-sm">                                 <i
+                                  class="fa fa-circle fa-stack-2x text-lightgreen"></i>                                 <i
+                                  class="fa fa-check fa-stack-1x fa-inverse"></i>                               </span>
+                      {{else if patterns.defaultwhy.isRunning}}
+
+                          <i class="fa fa-refresh fa-spin"></i>
+                      {{else}}
+                          <span class="fa-stack fa-sm">                                 <i
+                                  class="fa fa-circle fa-stack-2x text-lightred"></i>                                 <i
+                                  class="fa fa-times fa-stack-1x fa-inverse"></i>                               </span>
+                      {{/if}}
+                        <em>
+                          {{#if patterns.defaultwhy.lastCompletedTime}}
+                              Successfully generated {{date-fmt patterns.defaultwhy.lastCompletedTime}}.
+                          {{/if}}
+                          {{#if patterns.defaultwhy.lastErrorTime}}
+                              <span class="text-lightred">
+                              {{#if patterns.defaultwhy.lastError}}
+                                {{bootstrap-popover text="Error " title="Error Message" message=patterns.defaultwhy.lastError}}
+                              {{else}}
+                                  Error
+                              {{/if}}
+                                {{date-fmt patterns.defaultwhy.lastErrorTime}}
+                              </span>
+                          {{/if}}
+                          {{#if patterns.defaultwhy.isRunning}}
+                              Started {{date-fmt patterns.defaultwhy.checkStartedTime}}
+                          {{/if}}
+                        </em>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3"></div>
+</div>

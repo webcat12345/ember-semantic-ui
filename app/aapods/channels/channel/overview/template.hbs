@@ -1,0 +1,90 @@
+{{!-- #if topChart}}
+    <div>{{explain-chart currentControllerBinding="controller"
+    dataset=model.dataset
+    selectedMetricId=topChart.metric.id
+    selectedDimensionId=(unbound topChart.dimension.id)
+    startDate=model.window.startDate
+    endDate=model.window.endDate
+    type=topChart.type
+    group_by=topChart.group_by
+    dashboard=model.dashboard
+    metrics=model.metrics
+    f=topChart.filter
+    spark_only=features.spark_only
+    chart_name = topChart.metric.name
+    chart_subtitle = topChart.subTitle
+    editing=editing
+    showModal=(action 'modal')}}</div>
+{{/if--}}
+{{dashboard-group/history-stories stories=model.stories metrics=model.dataset.metrics}}
+
+<div id="charts" class="">
+  {{#each chartCards as |chart|}}
+      <div class="ui raised segment">
+        {{explain-chart currentControllerBinding="controller"
+        dataset=model.dataset
+        selectedMetricId=chart.metric.id
+        selectedDimensionId=(unbound chart.dimension.id)
+        window=model.window
+        startDate=model.window.startDate
+        endDate=model.window.endDate
+        type=chart.type
+        group_by=chart.group_by
+        dashboard=model.dashboard
+        metrics=model.metrics
+        f=chart.filter
+        spark_only=features.spark_only
+        chart_name = chart.metric.name
+        chart_subtitle = chart.subTitle
+        chart_id = chart.id
+        editing=editing
+        contextDashboard=true
+        pinChart="pinChart"
+        showModal=(action 'modal')}}
+      </div>
+  {{!--
+  <div class="ui blue link card" {{action 'showChart' chart}}>
+      <div class="content">
+          <i class="fa fa-times right floated hand" {{action 'pinChart' chart.id}}></i>
+
+          <div class="header">
+            {{chart.metric.name}}
+          </div>
+          <div class="meta">
+            {{chart.subTitle}}
+          </div>
+          <div class="description">
+            {{#if chart.loading}}
+              {{fa-icon icon="refresh" spin=true size="4"}}
+            {{else if chart.change}}
+                <div class="ui horizontal statistic">
+                    <div class="value">
+                      {{number-fmt 'metric' chart.change.a.om}}{{chart.metric.unit_type}}
+                    </div>
+                    <div class="label">
+                        <i class={{if chart.change.diff.isHigher "fa fa-long-arrow-up text-green" "fa fa-long-arrow-down text-red"}}></i>
+                        {{number-fmt 'int' chart.change.diff.pm}}%
+                    </div>
+                </div>
+            {{else}}
+                Error
+            {{/if}}
+          </div>
+      </div>
+
+      <div class="extra content">
+          <button class="ui basic button right floated">
+              explore
+          </button>
+      </div>
+  </div>
+  --}}
+  {{else}}
+      <div class="ui raised segment">
+          <h4>You don't have a chart saved yet. Go to the {{#link-to "chart.advanced_chart" model.dataset.id}}
+              Chart {{/link-to}}
+              screen to
+              create one.</h4>
+      </div>
+  {{/each}}
+</div>

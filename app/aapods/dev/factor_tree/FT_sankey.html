@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<!-- saved from url=(0034)https://bost.ocks.org/mike/sankey/ -->
+<html class="ocks-org do-not-copy" data-ember-extension="1"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><meta charset="utf-8">
+<title>Factor Tree</title>
+<style>
+
+@import url(../style.css?aea6f0a);
+
+#chart {
+  height: 500px;
+}
+
+.node rect {
+  cursor: move;
+  fill-opacity: .9;
+  shape-rendering: crispEdges;
+}
+
+.node text {
+  pointer-events: none;
+  text-shadow: 0 1px 0 #fff;
+}
+
+.link {
+  fill: none;
+  stroke: #000;
+  stroke-opacity: .2;
+}
+
+.link:hover {
+  stroke-opacity: .5;
+}
+
+</style>
+<style type="text/css"></style></head><body>
+
+<header>
+  <aside>May 22, 2012</aside>
+  <a href="https://bost.ocks.org/mike/" rel="author">Mike Bostock</a>
+</header>
+
+<h1>Factor Tree</h1>
+
+<p id="chart">
+
+</p><p>Many thanks to Tom Counsell, whose <a href="http://tamc.github.com/Sankey/">Sankey library</a> provided inspiration for this example.
+
+</p><footer>
+  <aside>May 22, 2012</aside>
+  <a href="https://bost.ocks.org/mike/" rel="author">Mike Bostock</a>
+</footer>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+
+<script src="https://d3js.org/d3.v2.min.js" charset="utf-8"></script>
+<script src="https://bost.ocks.org/mike/sankey/sankey.js"></script>
+<script>
+
+var margin = {top: 1, right: 1, bottom: 6, left: 1},
+    width = 960 - margin.left - margin.right,
+    height = 500 - margin.top - margin.bottom;
+
+var formatNumber = d3.format(",.0f"),
+    format = function(d) { return formatNumber(d) + " $"; },
+    color = d3.scale.category20();
+
+var svg = d3.select("#chart").append("svg")
+    .attr("width", width + margin.left + margin.right)
+    .attr("height", height + margin.top + margin.bottom)
+  .append("g")
+    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+var sankey = d3.sankey()
+    .nodeWidth(15)
+    .nodePadding(10)
+    .size([width, height]);
+
+var path = sankey.link();
+// http://dev04.cuberonlabs.com:7000/pattern/factor_tree/?dataset_id=groupon
+d3.json("data/nfl_teams.json", function(energy) {
+
+  var nodes_array=[]
+  var edges_array=[]
+  var node_idx_to_name_map = {}
+  var idx=0;
+  $.each(energy.pts, function(key, value){
+    node_idx_to_name_map[value.id]=idx
+    value['name']=value['value']
+    delete value['value']
+    nodes_array.push(value)
+    idx++
+  })
+  $.each(energy.conn, function(idx,one_link){
+    var link_node={}
+    link_node['source']=node_idx_to_name_map[one_link['source']]
+    link_node['target']=node_idx_to_name_map[one_link['destination']]
+    link_node['value']=one_link['metrics']['bookings']
+    edges_array.push(link_node)
+  })
+  sankey
+      .nodes(nodes_array)
+      .links(edges_array)
+      .layout(32);
+
+  var link = svg.append("g").selectAll(".link")
+      .data(edges_array)
+      .enter().append("path")
+      .attr("class", "link")
+      .attr("d", path)
+      .style("stroke-width", function(d) { return Math.max(1, d.dy); })
+      .sort(function(a, b) { return b.dy - a.dy; });
+
+  link.append("title")
+      .text(function(d) { return d.source.name + " → " + d.target.name + "\n" + format(d.value); });
+
+  var node = svg.append("g").selectAll(".node")
+      .data(nodes_array)
+    .enter().append("g")
+      .attr("class", "node")
+      .attr("transform", function(d) { return "translate(" + d.x + "," + d.y + ")"; })
+    .call(d3.behavior.drag()
+      .origin(function(d) { return d; })
+      .on("dragstart", function() { this.parentNode.appendChild(this); })
+      .on("drag", dragmove));
+
+  node.append("rect")
+      .attr("height", function(d) { return d.dy; })
+      .attr("width", sankey.nodeWidth())
+      .style("fill", function(d) { return d.color = color(d.name.replace(/ .*/, "")); })
+      .style("stroke", function(d) { return d3.rgb(d.color).darker(2); })
+    .append("title")
+      .text(function(d) { return d.name + "\n" + format(d.value); });
+
+  node.append("text")
+      .attr("x", -6)
+      .attr("y", function(d) { return d.dy / 2; })
+      .attr("dy", ".35em")
+      .attr("text-anchor", "end")
+      .attr("transform", null)
+      .text(function(d) { return d.name; })
+    .filter(function(d) { return d.x < width / 2; })
+      .attr("x", 6 + sankey.nodeWidth())
+      .attr("text-anchor", "start");
+
+  function dragmove(d) {
+    d3.select(this).attr("transform", "translate(" + d.x + "," + (d.y = Math.max(0, Math.min(height - d.dy, d3.event.y))) + ")");
+    sankey.relayout();
+    link.attr("d", path);
+  }
+});
+
+</script>
+<script>
+
+GoogleAnalyticsObject = "ga", ga = function() { ga.q.push(arguments); }, ga.q = [], ga.l = +new Date;
+ga("create", "UA-48272912-3", "ocks.org");
+ga("send", "pageview");
+
+</script>
+<script async="" src="./FT_sankey_files/analytics.js"></script>
+</body></html>

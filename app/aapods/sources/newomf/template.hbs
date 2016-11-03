@@ -1,0 +1,37 @@
+<div class="row text-center">
+  <h2>Add Source: Omniture Feed</h2>
+</div>
+<div class="row text-center">
+  <div class="row">
+    <strong>First please copy file to Cuberon Dropbox. Email support@cuberonlabs.com for instructions.</strong>
+  </div>
+  <div class="row">
+    <div class="row space-box">
+      <form class="form-inline" role="form">
+        <div class="form-group">
+          {{input type="text"
+          value=name
+          required=true
+          placeholder="Source Name"
+          class="form-control"
+          }}
+        </div>
+      </form>
+    </div>
+    <div class="row space-box">
+      <form class="form-inline" role="form">
+        <div class="form-group">
+          {{input type="text"
+          value=dirPath
+          required=true
+          placeholder="Path to Omniture dump directory"
+          class="form-control"
+          }}
+        </div>
+      </form>
+    </div>
+  </div>
+  <div class="row">
+    <a class="btn btn-primary {{if disableAdd 'disabled'}}" {{action "createsource"}}>Add Source</a>
+  </div>
+</div>

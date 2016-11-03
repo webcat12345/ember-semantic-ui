@@ -1,0 +1,39 @@
+<div class="horizontal-sep">
+    <div class="page-header-section">
+        <h4 class="title semibold">{{name}}</h4>
+      {{#if can_edit}}
+        {{#if editing}}
+            <i {{action "toggleedit"}}class="fa fa-floppy-o settings" style="cursor: pointer;"></i>
+        {{else}}
+            <i {{action "toggleedit"}}class="fa fa-cog settings" style="cursor: pointer;"></i>
+        {{/if}}
+      {{/if}}
+
+    </div>
+</div>
+{{#if topicpage}}
+    <small>{{pagetitle}}</small>
+{{/if}}
+
+<ul class="nav nav-tabs">
+  {{#if charts}}
+      <div class="chart_type--selector">{{view 'select'
+      class='form-control'
+      content=charts
+      value=selectedChart
+      prompt="All Charts"
+      optionLabelPath="content.chart_name"
+      optionValuePath="content.id"}}
+      </div>
+  {{/if}}
+  {{#link-to 'channels.channel.overview' tagName='li'}}
+    {{#link-to 'channels.channel.overview'}}<i class="fa fa-dashcube"></i> Overview{{/link-to}}
+  {{/link-to}}
+
+  {{#link-to 'channels.channel.feed' tagName='li'}}
+    {{#link-to 'channels.channel.feed' feed.id (query-params query='null' likes='null')}}<i class="fa fa-newspaper-o"></i>
+        Feed{{/link-to}}
+  {{/link-to}}
+</ul>
+
+

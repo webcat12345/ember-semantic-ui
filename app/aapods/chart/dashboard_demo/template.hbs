@@ -1,0 +1,90 @@
+<div class="ui padded grid middle aligned ">
+
+    <!-- Date Filters -->
+    <div class="row">
+        <div class="two wide column big">
+            <div class="col-sm-2">Date&nbsp;Range</div>
+        </div>
+        <div class="four wide column">
+            <div class="ui input fluid">
+                {{daterange-picker
+                startDate=startDate
+                endDate=endDate
+                minDate=model.window.startDate
+                maxDate=model.window.endDate
+                default=true class=""}}
+            </div>
+        </div>
+        {{#if isAdmin}}
+            <div class="form-group">
+                <div class="col-sm-2">
+                    {{input
+                    type="checkbox"
+                    class="ui input"
+                    checked=useDateRange}}
+                </div>
+                <label class="col-sm-1 control-label">Use&nbsp;Date&nbsp;Range</label>
+            </div>
+        {{/if}}
+    </div>
+
+
+</div>
+
+<div class="ui divider explore--main-divider"></div>
+
+<!-- Charts -->
+{{#each queryParams as |queryParam|}}
+  {{#if queryParam.complete}}
+    {{#if (and queryParam.group_by_id queryParam.loadingGroupByValues)}}
+        <div class="whitebox text-center">
+            <h1>Loading...</h1>
+          {{fa-icon icon="refresh" spin=true size="4"}}
+        </div>
+    {{else}}
+        <div class="ui padded grid">
+            <div class="padded row explore--main-row">
+                <div class="sixteen wide column right aligned">
+                    {{#link-to 'chart.advanced_query'
+                    (query-params queryName=queryParam.queryName
+                    startDate=startDate endDate=endDate)}}
+                        Explore
+                    {{/link-to}}
+                </div>
+                <div class="sixteen wide column">
+                  {{charts/col-chart dataset=model.dataset
+                  selectedMetricId=queryParam.m
+                  selectedDimensionId=queryParam.d
+                  startDate=queryParam.startDate
+                  endDate=queryParam.endDate
+                  filter=queryParam.filter
+                  group_by_id=queryParam.group_by_id
+                  group_vals=queryParam.group_vals
+                  query_id=queryParam.query_id
+                  qp_params=queryParam.qp_params
+                  num_id=queryParam.num_id
+                  denom_id=queryParam.denom_id
+                  spark_only=true
+
+                  dashboard=model.dashboard
+
+                  type=queryParam.plotType
+                  stackingType=queryParam.stackingType
+                  yAxisName=queryParam.yAxisName
+                  xAxisName=queryParam.xAxisName
+
+                  showAddToDashboard=false
+                  title=queryParam.title
+                  showTitle=false
+                  showTimeZoom=false
+                  showDateCompare=false
+                  yAxisEnabled=true
+                  rangeSelectEnabled=true
+
+                  charttype='advanced_query'}}
+                </div>
+            </div>
+        </div>
+    {{/if}}
+  {{/if}}
+{{/each}}

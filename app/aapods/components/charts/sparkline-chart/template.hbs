@@ -1,0 +1,10 @@
+<div class="row">
+  {{#if loading}}
+    <div class="whitebox text-center">
+      {{fa-icon icon="refresh" spin=true size="1"}}
+    </div>
+  {{else if serverChart}}
+    {{charts/high-chart config=chart}}
+  {{else}}
+  {{/if}}
+</div>

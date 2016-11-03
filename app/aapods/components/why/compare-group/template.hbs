@@ -1,0 +1,84 @@
+<div class="row">
+  <hr>
+  {{#if showChart}}
+    <div class="row">
+      <div class="col-md-3"></div>
+      <div class="col-md-6">
+        <h4 class="text-purple">
+          {{f.name}}
+          {{#if isAdmin}}
+          <span class="hand" {{action 'removeFactor' f}}>
+                    {{fa-icon icon="times"}}
+                  </span>
+          {{/if}}
+          <a {{action 'toggleChart'}} class="btn btn-default">See Data</a>
+        </h4>
+      </div>
+      <div class="col-md-3">
+
+      </div>
+    </div>
+    <div class="row">
+      <em>{{f.k}}</em>
+    </div>
+    <div class="row">
+      {{charts/high-chart config=chart}}
+    </div>
+  {{else}}
+    <div class="row">
+      <div class="row space-box">
+        <div class="col-md-3 border-right text-right">
+          <div class="text-purple font-extra-bold">
+            {{f.name}}
+            {{#if isAdmin}}
+            <span class="hand" {{action 'removeFactor' f}}>
+                        {{fa-icon icon="times"}}
+                      </span>
+            {{/if}}
+          </div>
+          <br>
+
+          <div>
+            <strong>{{f.k}}</strong>
+          </div>
+        </div>
+        <div class="col-md-2 text-black font-bold border-right">
+          Metric / Count
+        </div>
+        <div class="col-md-2 text-black font-bold border-right">
+          Metric / Count
+        </div>
+        <div class="col-md-3 text-black font-bold">
+          Contribution
+        </div>
+        <div class="col-md-2 text-black font-bold">
+          <a {{action 'toggleChart'}} class="btn btn-default">Show Chart</a>
+        </div>
+      </div>
+      {{#each f.list as |facet|}}
+        <div class="row space-box">
+          <div class="col-md-3 border-right text-right">
+            <a href="" {{action 'selectFacet' facet}}>{{facet.n}}</a>
+            {{#if isAdmin}}
+            <span class="hand" {{action 'removeFacet' facet}}>
+                          {{fa-icon icon="times"}}
+                      </span>
+            {{/if}}
+          </div>
+          <div class="col-md-2 border-right">
+            {{number-fmt 'metric' facet.m.a.om}}{{compare.schemaFilter.metric.unit_type}}
+            / {{number-fmt 'commas' facet.m.a.ct}}
+          </div>
+          <div class="col-md-2 border-right">
+            {{number-fmt 'metric' facet.m.b.om}}{{compare.schemaFilter.metric.unit_type}}
+            / {{number-fmt 'commas' facet.m.b.ct}}
+          </div>
+          <div class="col-md-3 font-extra-bold">
+            {{number-fmt 'metric' facet.contribdiff}}% {{facet.m.b.direction}}
+          </div>
+          <div class="col-md-2"></div>
+        </div>
+      {{/each}}
+    </div>
+  {{/if}}
+</div>

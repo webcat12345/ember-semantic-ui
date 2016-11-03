@@ -1,0 +1,20 @@
+<label {{action "addFilter"}} class="hand">
+    Filters <a style="color:#333;"><i
+        class="fa fa-plus-circle"></i>
+    new</a>
+</label>
+<br>
+
+<div class="ui grid">
+    {{#each filters as |filter|}}
+        <div class="three wide column">
+            <a {{action "removeFilter" filter.filter_id}}
+                    class="pull-right hand" id="close">
+                <i class="fa fa-times"></i>
+            </a><br>
+            <div>
+              {{filters-form dimensions=model.dimensions parentFilters=filters filter_id=filter.filter_id filter=filter setFilters=(action 'setFilters')}}
+            </div>
+        </div>
+    {{/each}}
+</div>

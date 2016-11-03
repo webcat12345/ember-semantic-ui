@@ -1,0 +1,309 @@
+<div>
+    <h1>Chart Name </h1>   <i class="fa fa-pencil" aria-hidden="true"></i>
+    <span style="float:right">Add</span>
+</div>
+<div class="ui divider explore--main-divider"></div>
+
+<div class="ui padded top aligned grid">
+    <div class="padded row thin-row">
+        <div class="fourteen wide column explore--main-form">
+            <div class="ui padded middle aligned grid">
+                <div class="padded row explore--formtoprow">
+                    <div class="explore--leftlabel two wide column right aligned" style="width: 100px !important">
+                    </div>
+                    <div class="five wide column">
+                        <strong>YOUR AUDIENCE</strong>
+                    </div>
+                    <div class="five wide column"></div>
+                    <div class="four wide column">
+                        <strong>GROUP BY ATTRIBUTE</strong>
+                    </div>
+                </div>
+                <div class="padded row explore--main-row">
+                    <div class="explore--leftlabel two wide column right aligned" style="width: 100px !important">
+                        <strong>Plot</strong>
+                    </div>
+                    <div class="five wide column">
+                      {{semantic-select
+                      content=model.funnels
+                      optionValuePath='content.id'
+                      optionLabelPath='content.name'
+                      selection=qsd
+                      style='explore--coloredbutton'
+                      text_color='text-white'
+                      prompt="Pick a funnel"
+                      id='selectmetric'
+                      required=true}}
+                    </div>
+                    <div class="three wide column">
+                        <div class="ui buttons">
+                            <button class="ui button"><i class="fa fa-pencil" aria-hidden="true"></i> |</button>
+                            <button class="ui button active">+ New Funnel</button>
+                        </div>
+                    </div>
+                    <div class="two wide column"></div>
+                    <div class="four wide column">
+                      {{#if group_by_object}}
+                          <button class="ui basic button fluid explore--groupbyfilled"{{action 'selectGroupBy' null}}>
+                              <span style="float:left">{{group_by_object.name}} </span>
+                              <i class="fa fa-times pull right" style="float:right"></i>
+                          </button>
+                      {{else}}
+                        {{semantic-select
+                        content=model.dimensions
+                        optionValuePath='content.id'
+                        optionLabelPath='content.name'
+                        style='explore--groupbyempty'
+                        selection=group_by_object
+                        onSelect=(action 'selectGroupBy')
+                        prompt="+ pick attribute"
+                        id='selectdimension'
+                        required=true}}
+                      {{/if}}
+                    </div>
+                </div>
+              {{filters-form dimensions=model.dimensions dataset_id=model.dataset_id filters_query=filters_query}}
+            </div>
+        </div>
+        <div class="two wide column">
+            <div class="ui padded grid">
+                <div class="padded row explore--formtoprow">
+                    <div class="sixteen wide column">
+                        &nbsp;
+                    </div>
+                </div>
+                <div class="padded row explore--main-row">
+                    <div class="sixteen wide column middle aligned">
+                      {{#unless disableDraw}}
+                          <button class="ui green button" id="draw" {{action 'draw'}}>Compute</button>
+                      {{else}}
+                          <button class="ui green button disabled">Compute</button>
+                      {{/unless}}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="ui divider explore--main-divider"></div>
+
+<div class="padded row">
+    <div class="sixteen wide column">
+      {{#ui-accordion class="fluid"}}
+          <div class="content funnel--create-box {{unbound (unless qsd.id 'active')}}">
+              <div class="ui segment padded grid">
+                  <div class="padded row funnel--step-header">
+                      <div class="four wide column">
+                       Create a funnel
+                      </div>
+                      <div class="four wide column">
+                        {{#if qsd.isValid}}
+                            <button class="ui green button"
+                                    id="draw" {{action 'saveFunnel'}}>{{saveString}}</button>
+                            <button class="ui green button" id="draw" {{action 'redraw'}}>Cancel</button>
+                        {{else}}
+                            <button class="ui green button disabled">Save</button>
+                            <button class="ui green button disabled">Plot</button>
+                        {{/if}}
+                      </div>
+                  </div>
+                  <div class="padded row funnel--step-header">
+                      <div class="four wide column">
+                         Name
+                      </div>
+                      <div class="four wide column">
+                          <div class="ui input fluid">
+                            {{input
+                            type='text'
+                            value=qsd.name}}
+                          </div>
+                      </div>
+                  </div>
+
+
+                {{#each qsd.derivedSteps as |step index|}}
+                    <div class="padded row funnel--step-header">
+                        <div class="five wide column">
+                            <h4>Step {{index}} &nbsp;
+                                <a {{action "removeStep" index}} class="text-lightgrey hand">
+                                    <i class="fa fa-times"></i>
+                                </a>
+                            </h4>
+                        </div>
+                    </div>
+                    <div class="padded row funnel--step-header">
+                      {{filters-form dimensions=model.dimensions dataset_id=model.dataset_id filters_query=step.filterQueryString name=index}}
+                    </div>
+                    <div class="padded row funnel--step-header">
+                        <div class="two wide column">
+                            <i class="fa fa-arrow-down fa-2x text-orange"></i>
+                        </div>
+                    </div>
+                {{/each}}
+                  <div class="padded row funnel--step-header">
+                      <div class="six wide column">
+                          <a class="hand" {{action 'addStep'}}>Add a step <i class="fa fa-plus-circle"></i></a>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      {{/ui-accordion}}
+    </div>
+</div>
+
+<div class="ui divider explore--main-divider"></div>
+
+{{#if show}}
+  {{#if (and group_by_id loadingGroupByValues)}}
+      <div class="whitebox text-center">
+          <h1>Loading...</h1>
+        {{fa-icon icon="refresh" spin=true size="4"}}
+      </div>
+  {{else}}
+
+      <div class="ui padded grid">
+          <div class="padded row">
+              <div class="thirteen wide column">
+                  <div class="ui padded grid">
+                      <div class="row">
+                          <div class="four wide column">
+
+                          </div>
+                          <div class="six wide column"></div>
+                          <div class="two wide column"></div>
+                          <div class="four wide column no_padding_right">
+                            {{daterange-picker startDate=qstartDate endDate=qendDate
+                            minDate=model.window.startDate maxDate=model.window.endDate default=true }}
+
+                          </div>
+                        {{!--
+                          <div class="two wide column no_padding_right">
+                              <button type="button"
+                                      class="ui basic button tiny explore--pin_chart" {{action 'pinChart'}}>
+                                  <span class="fa fa-thumb-tack"></span>
+                              </button>
+                          </div>
+                          --}}
+                      </div>
+                      <div class="row">
+                          <div class="sixteen wide column no_padding_right">
+                              <div class="explore--display-series-container">
+                                {{#if qgrpvals}}
+                                  {{#each series as |serie|}}
+                                    {{#if serie.should_display}}
+                                        <span class="explore--display-series" {{action "toggle_serie" serie}}
+                                              style="cursor: pointer">
+                                    <a class="ui empty circular label"
+                                       style="background-color:{{serie.color}}"></a>
+                                          {{str-fmt serie.name 15}} <i class="fa fa-times"></i>
+                                </span>
+                                    {{/if}}
+                                  {{/each}}
+                                {{else}}
+                                    <span class="explore--display-series"
+                                          style="cursor: pointer">
+                                    <a class="ui empty circular label"
+                                       style="background-color:#7cb5ec"></a>
+                                    All users <i class="fa fa-times"></i>
+                                  </span>
+                                {{/if}}
+                              </div>
+                          </div>
+
+                      </div>
+                      <div class="row">
+                          <div class="sixteen wide column">
+                            {{#if loading}}
+                                <div class="padded row">
+                                    <div class="sixteen wide column">
+                                        <div class="whitebox text-center">
+                                            <h2>Loading Chart...</h2>
+                                          {{fa-icon icon="refresh" spin=true size="4"}}
+                                        </div>
+                                    </div>
+                                </div>
+                            {{else if error}}
+                                <br><br>
+                                <div class="padded row">
+                                    <div class="two wide column"></div>
+                                    <div class="four wide column"><img src="/assets/images/cuberon_error_logo.png"
+                                                                       width="150px"/></div>
+                                    <div class="eight wide column">
+                                        <h3>Sorry, this chart isn't loading properly </h3>
+                                        <hr>
+                                        I detected that my server is redirecting the request for this chart in a way
+                                        that will
+                                        never complete. Can you try reloading the page? I have been told it often works.
+                                    </div>
+                                </div>
+                            {{else}}
+                              {{charts/time-view
+                              series=series
+                              reset_point=reset_point
+                              setCompare=(action 'setCompare')
+                              setPoint=(action 'setPoint')
+                              chart_state=chart_state
+                              }}
+                            {{/if}}
+                          </div>
+                      </div>
+                      <div class="row">
+                          <div class="five wide column">
+                            {{!-- <form {{action "search" on="submit"}}>
+                                  SEARCH {{input type="text" class="ui input" value=search_string}}
+                              </form> --}}
+                          </div>
+                          <div class="nine wide column">
+
+                          </div>
+                          <div class="two wide column">
+                            {{#unless loading}}
+                              {{download-csv data=series}}
+                            {{/unless}}
+                          </div>
+                      </div>
+                      <div class="row ">
+                          <div class="sixteen wide column tableview--container">
+                              <div id="ember6673" class="ember-view">
+                                  <table class="ui selectable definition celled table table--table">
+
+                                      <tbody>
+                                      <tr>
+                                          <td class="table--td table--fixed table--header table--segment ignored">
+                                              Segment
+                                          </td>
+                                          <td class="table--td table--header">Completion Rate</td>
+                                          <td class="table--td table--header">#1 homepage</td>
+                                          <td class="table--td table--header">#2 test</td>
+                                      </tr>
+                                      <tr data-ember-action="6674">
+                                          <td class="table--td table--fixed ignored"><a class="ui empty circular label"
+                                                                                        style="background-color:#7cb5ec"></a>
+                                              All users
+                                          </td>
+
+                                          <td class="table--td">1.05%</td>
+                                          <td class="table--td">123.234 (1.21%)</td>
+                                          <td class="table--td">123.134 (1.21%)</td>
+                                      </tr>
+                                      </tbody>
+                                  </table>
+                              </div>
+                          </div>
+                      </div>
+
+                  </div>
+              </div>
+              <div class="three wide column no_padding">
+                {{profile-chart chart_state=chart_state apt=apt bpt=bpt comp=(action 'comp')
+                reset_point=reset_point
+                startDate=model.window.startDate
+                endDate=model.window.endDate
+                loading=loading
+                dataset=model.dataset compareObject=compareObject setPoint=(action 'setPoint')}}
+              </div>
+          </div>
+      </div>
+  {{/if}}
+{{/if}}

@@ -1,0 +1,56 @@
+{{#main-modal title=model.title ok='done' close='removeModal' showFooter=false}}
+  <table class="table table-responsive">
+      <tbody>
+          <tr>
+             <td><strong>Factor Name</strong></td>
+             <td>{{model.title}}</td>
+          </tr>
+          <tr>
+              <td><strong>Factor Class</strong></td>
+              <td>{{model.class}}</td>
+          </tr>
+          <tr>
+              <td><strong>Description</strong></td>
+              <td>{{model.description}}</td>
+          </tr>
+          <tr>
+              <td><strong>Data Type</strong></td>
+              <td>{{model.dataType}}</td>
+          </tr>
+          <tr>
+              <td><strong>Data Transformation</strong></td>
+              <td>{{model.underlying}}</td>
+          </tr>
+          {{#if model.classValues}}
+              <tr>
+                  <td><strong>Possible Values</strong></td>
+                  <td>{{model.classValues}}</td>
+              </tr>
+          {{/if}}
+          {{#if model.renderType}}
+            <tr>
+                <td><strong>Render As</strong></td>
+                <td>{{model.renderType}}</td>
+            </tr>
+          {{/if}}
+          {{#if model.unitType}}
+              <tr>
+                  <td><strong>Unit</strong></td>
+                  <td>{{model.unitType}}</td>
+              </tr>
+          {{/if}}
+          {{#if model.isRange}}
+              <tr>
+                  <td><strong>Is Range</strong></td>
+                  <td>{{model.isRange}}</td>
+              </tr>
+          {{/if}}
+          {{#if model.defaultTime}}
+              <tr>
+                  <td><strong>Default Time Window</strong></td>
+                  <td>{{model.defaultTime}}</td>
+              </tr>
+          {{/if}}
+      </tbody>
+  </table>
+{{/main-modal}}

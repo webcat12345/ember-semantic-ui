@@ -1,0 +1,44 @@
+{{#if numstories}}
+    <div class="row">
+        <div class="panel panel-default">
+            <div class="container">
+                <div class="row">
+                    <div class="panel-heading">
+                        <div class="col-md-9">
+                            <h4 class="panel-title">
+                                <h4>Recently Visited</h4>
+                            </h4>
+                        </div>
+                        <div class="col-md-3">
+                        </div>
+                    </div>
+                    <div class="panel-body">
+                        <table class="table table-striped" id="bookmarks" data-order='[[ 1, "desc"]]'>
+                            <thead>
+                            <tr>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                            </tr>
+                            </thead>
+                            <tbody>
+
+                            {{#each topstories as |story|}}
+                              {{why/story-header story=story metrics=metrics trashstory="trashstory"}}
+                            {{/each}}
+
+                            </tbody>
+                          {{#if showmore}}
+                              <br/>
+                              <button {{action 'toggleMore'}}>{{#if more}}Show less results{{else}}Show more
+                                  results{{/if}}</button>
+                          {{/if}}
+                        </table>
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+{{/if}}

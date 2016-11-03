@@ -1,0 +1,95 @@
+{{!--number-fmt 'percunit' point.facet.significance.pvalue--}}
+  {{#bootstrap-popover title="More Details"
+  linktext=(if (eq significance.pvalue -1) "N/A" (number-fmt 'percunit' significance.pvalue))}}
+    {{#if (eq significance.method 'ttest')}}
+        % change in Metric : {{number-fmt 'metric' significance.diff_mean_pct}} %<br>
+        {{#if (eq significance.pvalue -1)}}
+            The data for this segment is not sufficient to calculate statistical significance
+        {{else}}
+            Confidence Interval at 95% for % change in Metric is between
+            {{number-fmt 'changeperc' significance.confidence_interval.lowerpct}}
+            %
+            and
+            {{number-fmt 'changeperc' significance.confidence_interval.upperpct}}
+            %<br>
+        <table class="table table-striped">
+            <thead>
+            <tr>
+              <th></th>
+              <th>Baseline</th>
+              <th>Variation</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+              <td>Sum of Squares</td>
+              <td>{{number-fmt 'metric' significance.ss_a}}</td>
+              <td>{{number-fmt 'metric' significance.ss_b}}</td>
+            </tr>
+            <tr>
+                <td>Total</td>
+                <td>{{number-fmt 'metric' significance.total_a}}</td>
+                <td>{{number-fmt 'metric' significance.total_b}}</td>
+            </tr>
+            <tr>
+                <td>Mean</td>
+                <td>{{number-fmt 'metric' significance.mean_a}}</td>
+                <td>{{number-fmt 'metric' significance.mean_b}}</td>
+            </tr>
+            <tr>
+                <td>Count</td>
+                <td>{{number-fmt 'metric' significance.count_a}}</td>
+                <td>{{number-fmt 'metric' significance.count_b}}</td>
+            </tr>
+            <tr>
+                <td>Std Dev</td>
+                <td>{{number-fmt 'metric' significance.std1}}</td>
+                <td>{{number-fmt 'metric' significance.std2}}</td>
+            </tr>
+            </tbody>
+        </table>
+        {{/if}}
+    {{else if (or (eq significance.method 'chi2_contingency') (eq significance.method 'fisher_exact'))}}
+        % change in {{significance.ratio_str}} : {{number-fmt 'metric' significance.ratepct}} %<br>
+        {{#if (eq significance.pvalue -1)}}
+            The data for this segment is not sufficient to calculate statistical significance
+        {{else}}
+            Confidence Interval at 95% for % change in {{significance.ratio_str}} is between
+            {{number-fmt 'changeperc' significance.confidence_interval.lowerpct}}
+            %
+            and
+            {{number-fmt 'changeperc' significance.confidence_interval.upperpct}}
+            %<br>
+        Contingency Table :
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th></th>
+                <th>Baseline</th>
+                <th>Variation</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td></td>
+                <td>{{number-fmt 'int' significance.stat_sig_params_used.N11}}</td>
+                <td>{{number-fmt 'int' significance.stat_sig_params_used.N21}}</td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>{{number-fmt 'int' significance.stat_sig_params_used.N12}}</td>
+                <td>{{number-fmt 'int' significance.stat_sig_params_used.N22}}</td>
+            </tr>
+            <tr>
+                <td>{{significance.ratio_str}}</td>
+                <td>{{number-fmt 'metric' significance.rate1}} %</td>
+                <td>{{number-fmt 'metric' significance.rate2}} %</td>
+            </tr>
+            </tbody>
+        </table>
+            {{#if (eq significance.method 'chi2_contingency')}}
+                Chi-square : {{number-fmt 'metric' significance.chisq_metric}}<br>
+            {{/if}}
+        {{/if}}
+    {{/if}}
+  {{/bootstrap-popover}}

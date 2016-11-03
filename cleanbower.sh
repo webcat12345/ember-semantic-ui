@@ -1,0 +1,13 @@
+rm -rf `find bower_components -name "less"`
+rm -rf `find bower_components -name "src"`
+rm -rf `find bower_components -name "grunt"`
+rm -rf `find bower_components -name "scss"`
+rm -rf `find bower_components -name "doc"`
+rm -rf `find bower_components -name "test"`
+rm -rf `find bower_components -name ".jshintrc"`
+rm -rf `find bower_components -name ".gitignore"`
+rm -rf `find bower_components -name "*.txt"`
+rm -rf `find bower_components -name "*.md"`
+rm -rf `find bower_components -name ".travis.yml"`
+rm -rf `find bower_components -name "Gruntfile.js"`
+rm -rf `find bower_components -name "LICENSE"`

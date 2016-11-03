@@ -1,0 +1,815 @@
+<div class="ui padded grid middle aligned ">
+
+    <!-- Save & Retrieve -->
+    <div class="row">
+        <div class="two wide column big">
+            <div class="col-sm-2">Choose:&nbsp;</div>
+        </div>
+        <div class="three wide column big">
+            {{semantic-select
+            content=allQueries
+            optionValuePath='content.id'
+            optionLabelPath='content.name'
+            selection=selQuery
+            uiType="inline"
+            prompt="________"}}
+        </div>
+    </div>
+    {{#if isAdmin}}
+        <div class="row">
+            <div class="two wide column big">
+                <div class="col-sm-2">Save&nbsp;as:&nbsp;</div>
+            </div>
+            <div class="four wide column big">
+                {{input
+                type="text"
+                class="ui input"
+                placeholder="Name..."
+                value=newQueryName}}
+            </div>
+            {{#unless disableSave}}
+                <button class="ui green button" id="save" {{action 'save'}}>
+                    Save
+                </button>
+            {{else}}
+                <button class="ui green button disabled">Save</button>
+            {{/unless}}
+        </div>
+    {{/if}}
+
+    <!-- Date Filters -->
+    <div class="row">
+        <div class="two wide column big">
+            <div class="col-sm-2">Date&nbsp;Range</div>
+        </div>
+        <div class="four wide column">
+            <div class="ui input fluid">
+                {{daterange-picker
+                startDate=startDate
+                endDate=endDate
+                minDate=model.window.startDate
+                maxDate=model.window.endDate
+                default=true class=""}}
+            </div>
+        </div>
+        {{#if isAdmin}}
+            <div class="form-group">
+                <div class="col-sm-2">
+                    {{input
+                    type="checkbox"
+                    class="ui input"
+                    checked=useDateRange}}
+                </div>
+                <label class="col-sm-1 control-label">Use&nbsp;Date&nbsp;Range</label>
+            </div>
+        {{/if}}
+    </div>
+
+    <!-- Dynamic Dimensions -->
+    {{#if isAdmin}}
+        <div class="eleven wide column">
+            {{#each dynamicDims as |dynamicDim|}}
+                <div class="row space-box">
+                    {{#if dynamicDim.deletable}}
+                        <a {{action "removeDimension" dynamicDim.id}}
+                            class="text-lightgrey pull-left hand">
+                            <i class="fa fa-times"></i>
+                        </a>
+                    {{/if}}
+                    <span class="big">
+                        <i>Attach to</i>
+                        {{#unless dynamicDim.complete}}
+                            {{semantic-select
+                            content=levelDims
+                            optionValuePath='content.id'
+                            optionLabelPath='content.name'
+                            selection=dynamicDim.level
+                            onSelect=(action 'selectLevel')
+                            uiType="inline"
+                            prompt="________"
+                            required=true}}
+                        {{else}}
+                            <b>{{dynamicDim.level.name}}</b>
+                        {{/unless}}
+                        <i>attribute</i>
+                        {{input
+                        type="text"
+                        class="ui input"
+                        placeholder="Name..."
+                        value=dynamicDim.label
+                        disabled=dynamicDim.complete}}
+                    </span>
+                </div>
+                <div class="row space-box">
+                    <span class="big">
+                        <i>as</i>
+                        {{#unless dynamicDim.complete}}
+                            {{semantic-select
+                            content=aggFuncs
+                            optionValuePath='content.id'
+                            optionLabelPath='content.name'
+                            selection=dynamicDim.func
+                            onSelect=(action 'selectFunc')
+                            uiType="inline"
+                            prompt="________"
+                            required=true}}
+                        {{else}}
+                            <b>{{dynamicDim.func.name}}</b>
+                        {{/unless}}
+                        (
+                        {{#each dynamicDim.funcArgs as |funcArg|}}
+                            {{#unless dynamicDim.complete}}
+                                {{semantic-select
+                                content=dynamicDim.legalArgs
+                                optionValuePath='content.id'
+                                optionLabelPath='content.name'
+                                selection=funcArg
+                                onSelect=(action 'selectFuncArg')
+                                uiType="inline"
+                                prompt="________"
+                                required=true}}
+                            {{else}}
+                                <b>{{funcArg.name}}</b>
+                            {{/unless}}
+                        {{/each}}
+                        )
+                    </span>
+                </div>
+                <!--Dynamic Dimension Filters-->
+                {{#each dynamicDim.filters as |filter|}}
+                    <div class="row space-box">
+                        <div class="form-group">
+                            {{#unless dynamicDim.complete}}
+                                {{#if filter.first}}
+                                    {{#unless dynamicDim.func.requireFilter}}
+                                        {{#if filter.deletable}}
+                                            <a {{action "removeDimFilter"}}
+                                                class="text-lightgrey pull-left hand">
+                                                <i class="fa fa-times"></i>
+                                            </a>
+                                        {{/if}}
+                                    {{/unless}}
+                                    <label class="col-sm-1 control-label">Where</label>
+                                {{else}}
+                                    {{#if filter.deletable}}
+                                        <a {{action "removeDimFilter"}}
+                                            class="text-lightgrey pull-left hand">
+                                            <i class="fa fa-times"></i>
+                                        </a>
+                                    {{/if}}
+                                    {{#unless filter.complete}}
+                                        {{semantic-select
+                                        content=filter.conjTypes
+                                        optionValuePath='content.id'
+                                        optionLabelPath='content.name'
+                                        selection=filter.conj
+                                        onSelect=(action 'selectDimFilterConj')
+                                        uiType="inline"
+                                        prompt="________"
+                                        required=true}}
+                                    {{else}}
+                                        <label class="col-sm-1 control-label">
+                                            {{filter.conj.name}}
+                                        </label>
+                                    {{/unless}}
+                                {{/if}}
+                                {{#unless filter.complete}}
+                                    {{semantic-select
+                                    content=allDims
+                                    optionValuePath='content.id'
+                                    optionLabelPath='content.name'
+                                    selection=filter.left
+                                    onSelect=(action 'selectDimFilterLeft')
+                                    uiType="inline"
+                                    prompt="________"
+                                    required=true}}
+                                {{else}}
+                                    {{filter.left.name}}
+                                {{/unless}}
+                                {{#unless filter.complete}}
+                                    {{semantic-select
+                                    content=filter.filterTypes
+                                    optionValuePath='content.id'
+                                    optionLabelPath='content.name'
+                                    selection=filter.filterType
+                                    onSelect=(action 'selectDimFilterType')
+                                    uiType="inline"
+                                    prompt="________"
+                                    required=true}}
+                                {{else}}
+                                    {{filter.filterType.name}}
+                                {{/unless}}
+                                {{#unless filter.isUnary}}
+                                    (
+                                    {{#unless filter.complete}}
+                                        {{semantic-select
+                                        content=filter.rightTypes
+                                        optionValuePath='content.id'
+                                        optionLabelPath='content.name'
+                                        selection=filter.rightType
+                                        onSelect=(action 'selectDimFilterRightType')
+                                        uiType="inline"
+                                        prompt="________"
+                                        required=true}}
+                                    {{else}}
+                                        {{filter.rightType.name}}
+                                    {{/unless}}
+                                    )
+                                    {{#unless filter.complete}}
+                                        {{#if filter.hasValues}}
+                                            {{semantic-select
+                                            content=filter.rightValues
+                                            optionValuePath='content.id'
+                                            optionLabelPath='content.name'
+                                            selection=filter.right
+                                            onSelect=(action 'selectDimFilterRight')
+                                            uiType="inline"
+                                            prompt="________"
+                                            required=true}}
+                                        {{else}}
+                                            {{input
+                                            type='text'
+                                            class="ui input"
+                                            placeholder="value..."
+                                            value=filter.right.name}}
+                                        {{/if}}
+                                    {{else}}
+                                        {{filter.right.name}}
+                                    {{/unless}}
+                                {{/unless}}
+                            {{else}}
+                                {{#if filter.first}}
+                                    <label class="col-sm-1 control-label">Where</label>
+                                {{else}}
+                                    <label class="col-sm-1 control-label">
+                                        {{filter.conj.name}}
+                                    </label>
+                                {{/if}}
+                                {{filter.left.name}}
+                                {{filter.filterType.name}}
+                                {{#unless filter.isUnary}}
+                                    ({{filter.rightType.name}})
+                                    {{filter.right.name}}
+                                {{/unless}}
+                            {{/unless}}
+                        </div>
+                    </div>
+                {{/each}}
+                {{#unless dynamicDim.complete}}
+                    <div class="row space-box">
+                        <div class="two wide column">
+                            <a {{action "addDimFilter"}} class="hand">
+                                <i class="fa fa-plus"></i>
+                                {{#unless dynamicDim.hasFilter}}
+                                    Where
+                                {{else}}
+                                    and/or
+                                {{/unless}}
+                            </a>
+                        </div>
+                    </div>
+                {{/unless}}
+                <div class="row space-box">
+                    <div class="ui divider explore--main-divider"></div>
+                </div>
+            {{/each}}
+            <div class="row space-box">
+                <a {{action "addDimension"}} class="hand">
+                    <i class="fa fa-plus"></i> Attribute
+                </a>
+            </div>
+        </div>
+    {{/if}}
+
+    <!-- X & Y -->
+    {{#if isAdmin}}
+        <div class="sixteen wide column">
+            <div class="row space-box">
+                <span class="bigger">Plot
+                    {{semantic-select
+                    content=yAggFuncs
+                    optionValuePath='content.id'
+                    optionLabelPath='content.name'
+                    selection=yMetric.func
+                    onSelect=(action 'selectYFunc')
+                    uiType="inline"
+                    prompt="________"
+                    required=true}}
+                    (
+                    {{#each yMetric.funcArgs as |funcArg|}}
+                        {{semantic-select
+                        content=yMetric.legalArgs
+                        optionValuePath='content.id'
+                        optionLabelPath='content.name'
+                        selection=funcArg
+                        onSelect=(action 'selectYFuncArg')
+                        uiType="inline"
+                        prompt="________"
+                        required=true}}
+                    {{/each}}
+                    )
+                    by
+                    {{semantic-select
+                    content=allDims
+                    optionValuePath='content.id'
+                    optionLabelPath='content.name'
+                    selection=xDim
+                    onSelect=(action 'selectX')
+                    uiType="inline"
+                    prompt="________"
+                    required=true}}
+                    {{#unless disableDraw}}
+                        <button class="ui green button" id="draw" {{action 'draw'}}>
+                            Go
+                        </button>
+                    {{else}}
+                        <button class="ui green button disabled">Go</button>
+                    {{/unless}}
+                </span>
+            </div>
+            <!-- Y-Metric Filters -->
+            {{#each yMetric.filters as |filter|}}
+                <div class="row space-box">
+                    <div class="form-group">
+                        {{#if filter.first}}
+                            <label class="col-sm-1 control-label">Where</label>
+                        {{else}}
+                            {{#if filter.deletable}}
+                                <a {{action "removeYFilter"}}
+                                    class="text-lightgrey pull-left hand">
+                                    <i class="fa fa-times"></i>
+                                </a>
+                            {{/if}}
+                            {{#unless filter.complete}}
+                                {{semantic-select
+                                content=filter.conjTypes
+                                optionValuePath='content.id'
+                                optionLabelPath='content.name'
+                                selection=filter.conj
+                                onSelect=(action 'selectYFilterConj')
+                                uiType="inline"
+                                prompt="________"
+                                required=true}}
+                            {{else}}
+                                <label class="col-sm-1 control-label">
+                                    {{filter.conj.name}}
+                                </label>
+                            {{/unless}}
+                        {{/if}}
+                        {{#unless filter.complete}}
+                            {{semantic-select
+                            content=allDims
+                            optionValuePath='content.id'
+                            optionLabelPath='content.name'
+                            selection=filter.left
+                            onSelect=(action 'selectYFilterLeft')
+                            uiType="inline"
+                            prompt="________"
+                            required=true}}
+                        {{else}}
+                            {{filter.left.name}}
+                        {{/unless}}
+                        {{#unless filter.complete}}
+                            {{semantic-select
+                            content=filter.filterTypes
+                            optionValuePath='content.id'
+                            optionLabelPath='content.name'
+                            selection=filter.filterType
+                            onSelect=(action 'selectYFilterType')
+                            uiType="inline"
+                            prompt="________"
+                            required=true}}
+                        {{else}}
+                            {{filter.filterType.name}}
+                        {{/unless}}
+                        {{#unless filter.isUnary}}
+                            (
+                            {{#unless filter.complete}}
+                                {{semantic-select
+                                content=filter.rightTypes
+                                optionValuePath='content.id'
+                                optionLabelPath='content.name'
+                                selection=filter.rightType
+                                onSelect=(action 'selectYFilterRightType')
+                                uiType="inline"
+                                prompt="________"
+                                required=true}}
+                            {{else}}
+                                {{filter.rightType.name}}
+                            {{/unless}}
+                            )
+                            {{#unless filter.complete}}
+                                {{#if filter.hasValues}}
+                                    {{semantic-select
+                                    content=filter.rightValues
+                                    optionValuePath='content.id'
+                                    optionLabelPath='content.name'
+                                    selection=filter.right
+                                    onSelect=(action 'selectYFilterRight')
+                                    uiType="inline"
+                                    prompt="________"
+                                    required=true}}
+                                {{else}}
+                                    {{input
+                                    type='text'
+                                    class="ui input"
+                                    placeholder="value..."
+                                    value=filter.right.name}}
+                                {{/if}}
+                            {{else}}
+                                {{filter.right.name}}
+                            {{/unless}}
+                        {{/unless}}
+                    </div>
+                </div>
+            {{/each}}
+            {{#if yMetric.hasFilter}}
+                <div class="row space-box">
+                    <div class="two wide column">
+                        <a {{action "addYFilter"}} class="hand">
+                            <i class="fa fa-plus"></i> and/or
+                        </a>
+                    </div>
+                </div>
+            {{/if}}
+            <!-- histogram params -->
+            {{#if isHistogram}}
+                <div class="row space-box">
+                    <div class="form-group">
+                        bin size:
+                        {{input
+                        type='number'
+                        class="ui input"
+                        placeholder="N"
+                        min=0
+                        max=1000
+                        value=xDim.binSize}}
+                    </div>
+                </div>
+            {{/if}}
+            <!-- bar chart params -->
+            {{#if isBarChart}}
+                <div class="row space-box">
+                    <div class="form-group">
+                        show top:
+                        {{input
+                        type='number'
+                        class="ui input"
+                        placeholder="N"
+                        min=0
+                        max=1000
+                        value=limit}}
+                    </div>
+                </div>
+            {{/if}}
+        </div>
+    {{else}}
+        <div class="sixteen wide column">
+            <div class="row space-box">
+                <span class="bigger">
+                    <button class="ui green button" id="draw" {{action 'draw'}}>
+                        Go
+                    </button>
+                </span>
+            </div>
+        </div>
+    {{/if}}
+
+    {{#if isAdmin}}
+        <!-- Global Filters -->
+        <div class="eleven wide column">
+            {{#each globalFilters as |filter|}}
+                <div class="row space-box">
+                    <div class="form-group">
+                        {{#if filter.deletable}}
+                            <a {{action "removeGlobalFilter"}}
+                                class="text-lightgrey pull-left hand">
+                                <i class="fa fa-times"></i>
+                            </a>
+                        {{/if}}
+                        {{#if filter.first}}
+                            <label class="col-sm-1 control-label">Where</label>
+                        {{else}}
+                            {{#unless filter.complete}}
+                                {{semantic-select
+                                content=filter.conjTypes
+                                optionValuePath='content.id'
+                                optionLabelPath='content.name'
+                                selection=filter.conj
+                                onSelect=(action 'selectGlobalFilterConj')
+                                uiType="inline"
+                                prompt="________"
+                                required=true}}
+                            {{else}}
+                                <label class="col-sm-1 control-label">
+                                    {{filter.conj.name}}
+                                </label>
+                            {{/unless}}
+                        {{/if}}
+                        {{#unless filter.complete}}
+                            {{semantic-select
+                            content=allDims
+                            optionValuePath='content.id'
+                            optionLabelPath='content.name'
+                            selection=filter.left
+                            onSelect=(action 'selectGlobalFilterLeft')
+                            uiType="inline"
+                            prompt="________"
+                            required=true}}
+                        {{else}}
+                            {{filter.left.name}}
+                        {{/unless}}
+                        {{#unless filter.complete}}
+                            {{semantic-select
+                            content=filter.filterTypes
+                            optionValuePath='content.id'
+                            optionLabelPath='content.name'
+                            selection=filter.filterType
+                            onSelect=(action 'selectGlobalFilterType')
+                            uiType="inline"
+                            prompt="________"
+                            required=true}}
+                        {{else}}
+                            {{filter.filterType.name}}
+                        {{/unless}}
+                        {{#unless filter.isUnary}}
+                            (
+                            {{#unless filter.complete}}
+                                {{semantic-select
+                                content=filter.rightTypes
+                                optionValuePath='content.id'
+                                optionLabelPath='content.name'
+                                selection=filter.rightType
+                                onSelect=(action 'selectGlobalFilterRightType')
+                                uiType="inline"
+                                prompt="________"
+                                required=true}}
+                            {{else}}
+                                {{filter.rightType.name}}
+                            {{/unless}}
+                            )
+                            {{#unless filter.complete}}
+                                {{#if filter.hasValues}}
+                                    {{semantic-select
+                                    content=filter.rightValues
+                                    optionValuePath='content.id'
+                                    optionLabelPath='content.name'
+                                    selection=filter.right
+                                    onSelect=(action 'selectGlobalFilterRight')
+                                    uiType="inline"
+                                    prompt="________"
+                                    required=true}}
+                                {{else}}
+                                    {{input
+                                    type='text'
+                                    class="ui input"
+                                    placeholder="value..."
+                                    value=filter.right.name}}
+                                {{/if}}
+                            {{else}}
+                                {{filter.right.name}}
+                            {{/unless}}
+                        {{/unless}}
+                    </div>
+                </div>
+            {{/each}}
+            <div class="row space-box">
+                <div class="two wide column">
+                    <a {{action "addGlobalFilter"}} class="hand">
+                        <i class="fa fa-plus"></i>
+                        {{#unless hasFilter}}
+                            Filter
+                        {{else}}
+                            and/or
+                        {{/unless}}
+                    </a>
+                </div>
+            </div>
+        </div>
+    {{else}}
+        <!-- Extra Filters -->
+        <div class="eleven wide column">
+            {{#each extraFilters as |filter|}}
+                <div class="row space-box">
+                    <div class="form-group">
+                        {{#if filter.deletable}}
+                            <a {{action "removeExtraFilter"}}
+                                class="text-lightgrey pull-left hand">
+                                <i class="fa fa-times"></i>
+                            </a>
+                        {{/if}}
+                        {{#if filter.first}}
+                            <label class="col-sm-1 control-label">Where</label>
+                        {{else}}
+                            {{#unless filter.complete}}
+                                {{semantic-select
+                                content=filter.conjTypes
+                                optionValuePath='content.id'
+                                optionLabelPath='content.name'
+                                selection=filter.conj
+                                onSelect=(action 'selectExtraFilterConj')
+                                uiType="inline"
+                                prompt="________"
+                                required=true}}
+                            {{else}}
+                                <label class="col-sm-1 control-label">
+                                    {{filter.conj.name}}
+                                </label>
+                            {{/unless}}
+                        {{/if}}
+                        {{#unless filter.complete}}
+                            {{semantic-select
+                            content=allDims
+                            optionValuePath='content.id'
+                            optionLabelPath='content.name'
+                            selection=filter.left
+                            onSelect=(action 'selectExtraFilterLeft')
+                            uiType="inline"
+                            prompt="________"
+                            required=true}}
+                        {{else}}
+                            {{filter.left.name}}
+                        {{/unless}}
+                        {{#unless filter.complete}}
+                            {{semantic-select
+                            content=filter.filterTypes
+                            optionValuePath='content.id'
+                            optionLabelPath='content.name'
+                            selection=filter.filterType
+                            onSelect=(action 'selectExtraFilterType')
+                            uiType="inline"
+                            prompt="________"
+                            required=true}}
+                        {{else}}
+                            {{filter.filterType.name}}
+                        {{/unless}}
+                        {{#unless filter.isUnary}}
+                            (
+                            {{#unless filter.complete}}
+                                {{semantic-select
+                                content=filter.rightTypes
+                                optionValuePath='content.id'
+                                optionLabelPath='content.name'
+                                selection=filter.rightType
+                                onSelect=(action 'selectExtraFilterRightType')
+                                uiType="inline"
+                                prompt="________"
+                                required=true}}
+                            {{else}}
+                                {{filter.rightType.name}}
+                            {{/unless}}
+                            )
+                            {{#unless filter.complete}}
+                                {{#if filter.hasValues}}
+                                    {{semantic-select
+                                    content=filter.rightValues
+                                    optionValuePath='content.id'
+                                    optionLabelPath='content.name'
+                                    selection=filter.right
+                                    onSelect=(action 'selectExtraFilterRight')
+                                    uiType="inline"
+                                    prompt="________"
+                                    required=true}}
+                                {{else}}
+                                    {{input
+                                    type='text'
+                                    class="ui input"
+                                    placeholder="value..."
+                                    value=filter.right.name}}
+                                {{/if}}
+                            {{else}}
+                                {{filter.right.name}}
+                            {{/unless}}
+                        {{/unless}}
+                    </div>
+                </div>
+            {{/each}}
+            <div class="row space-box">
+                <div class="two wide column">
+                    <a {{action "addExtraFilter"}} class="hand">
+                        <i class="fa fa-plus"></i>
+                        {{#unless hasExtraFilter}}
+                            Filter
+                        {{else}}
+                            and/or
+                        {{/unless}}
+                    </a>
+                </div>
+            </div>
+        </div>
+    {{/if}}
+
+    <!-- Compare/Segment -->
+    <div class="eleven wide column">
+        <div class="row space-box">
+            {{#if compareEnabled}}
+                <div class="form-group">
+                    <a {{action "enableCompare" false}}
+                       class="text-lightgrey pull-left hand">
+                        <i class="fa fa-times"></i>
+                    </a>
+                    <label class="col-sm-2 control-label">Compare by</label>
+                    {{semantic-select
+                    content=model.dimensions
+                    optionValuePath='content.id'
+                    optionLabelPath='content.name'
+                    selection=group_by_object
+                    onSelect=(action 'selectGroupBy')
+                    uiType="inline"
+                    prompt="________________"
+                    id='selectdimension'
+                    required=true}}
+                </div>
+            {{else}}
+                <div class="two wide column">
+                    <a {{action "enableCompare" true}} class="hand">
+                        <i class="fa fa-plus"></i>
+                        Compare
+                    </a>
+                </div>
+            {{/if}}
+        </div>
+    </div>
+
+</div>
+
+<div class="ui divider explore--main-divider"></div>
+
+<!-- Chart -->
+{{#if show}}
+  {{#if (and group_by_id loadingGroupByValues)}}
+      <div class="whitebox text-center">
+          <h1>Loading...</h1>
+        {{fa-icon icon="refresh" spin=true size="4"}}
+      </div>
+  {{else}}
+      <div class="ui padded grid">
+          <div class="padded row explore--main-row-head">
+              <div class="eight wide column left aligned">
+                  {{#if group_by_id}}
+                      <br>
+                      {{#power-select-multiple
+                      options=group_by_values
+                      selected=qgrpvals
+                      placeholder="Compare Values"
+                      onchange=(action 'updateGroupByValues')
+                      as |val|
+                      }}
+                        {{val}}
+                      {{/power-select-multiple}}
+                  {{/if}}
+              </div>
+              <div class="four wide column"></div>
+              <div class="two wide column">
+                  {{#if group_by_id}}
+                      {{semantic-select
+                      content=stackingTypes
+                      optionValuePath='content.id'
+                      optionLabelPath='content.name'
+                      selection=stackingType
+                      required=true}}
+                  {{/if}}
+              </div>
+              <div class="two wide column right aligned">
+                  {{semantic-select
+                  content=plotTypes
+                  optionValuePath='content.id'
+                  optionLabelPath='content.name'
+                  selection=plotType
+                  required=true}}
+              </div>
+          </div>
+          <div class="padded row explore--main-row">
+              <div class="sixteen wide column">
+                  {{charts/col-chart
+                  dataset=model.dataset
+                  selectedMetricId=query_params.m
+                  startDate=query_params.startDate
+                  endDate=query_params.endDate
+                  filter=filter_str
+                  group_by_id=(if group_by_id group_by_id null)
+                  group_vals=(if grpvals grpvals null)
+                  query_id=query_params.query_id
+                  qp_params=query_params.qp_params
+                  num_id=query_params.num_id
+                  denom_id=query_params.denom_id
+                  spark_only=true
+                  dashboard=model.dashboard
+                  chart_name=chart_name
+                  type=plotType.id
+                  stackingType=stackingType.id
+                  yAxisName=query_params.yAxisName
+                  xAxisName=query_params.xAxisName
+                  showAddToDashboard=false
+                  showTitle=false
+                  showTimeZoom=false
+                  showDateCompare=false
+                  yAxisEnabled=true
+                  rangeSelectEnabled=true
+                  charttype='advanced_query'
+                  onChartLoad='onChartLoad'}}
+              </div>
+          </div>
+      </div>
+  {{/if}}
+{{/if}}

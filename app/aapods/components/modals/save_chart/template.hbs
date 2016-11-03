@@ -1,0 +1,19 @@
+{{#main-modal ok='done' close='removeModal' showFooter=false showHeader=true showSave=true title="Save chart to dashboard" size=size}}
+
+    <div class="container">
+        <form class="form-horizontal">
+            <div class="form-group">
+                <label for="inputFeed" class="col-sm-2 control-label">Channel :</label>
+                <div class="col-sm-4">
+                  {{view 'select'
+                  content=model.feeds
+                  value=feed_id
+                  optionValuePath='content.id'
+                  optionLabelPath='content.name'
+                  classNames='form-control'}}
+                </div>
+            </div>
+        </form>
+    </div>
+
+{{/main-modal}}

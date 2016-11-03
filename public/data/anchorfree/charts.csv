@@ -1,0 +1,5 @@
+id,name,dashboard,chart_id
+1,Conversion Rate,1,Device Avg Conversion Rate by OS Version
+2,Avg Amount Spent,1,Device Avg Amount by Model
+3,Avg Session Length,1,Avg Session Length by OS Version
+4,Avg Transmitted Bytes,1,Avg Transmitted Bytes by Country

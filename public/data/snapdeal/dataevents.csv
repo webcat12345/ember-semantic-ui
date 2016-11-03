@@ -1,0 +1,7 @@
+id,name,type,level,description,url,urltext,image
+1,Missing Data,missing_data,danger,Data for table users_interests missing for 2015/01/23. 6 factors impacted,/slice/1,See table here,http://www.research.att.com/export/sites/att_labs/library/image_gallery/articles/2011_July-September/201109_ALFP_ed_anomaly.png
+2,Validation Failed,failed_validation,warning,"17,284 users have missing email address . Validation failed",/slice/1,See factor here,http://ecx.images-amazon.com/images/I/41NCDPVR4PL._AA160_.jpg
+3,Increased Validation Failures,failed_validation_change,danger,21% more users have missing session history this week vs last week,/slice/1,See users here,http://www.research.att.com/export/sites/att_labs/library/image_gallery/articles/2011_July-September/201109_ALFP_ed_anomaly.png
+4,Missing Data,missing_data,danger,Data for factor User Age is missing for last 18 days,,See factor here,http://www.research.att.com/export/sites/att_labs/library/image_gallery/articles/2011_July-September/201109_ALFP_ed_anomaly.png
+5,Fewer rows,fewer_rows,warning,8% fewer Users this week vs last,/slice/1,See users here,http://www.research.att.com/export/sites/att_labs/library/image_gallery/articles/2011_July-September/201109_ALFP_ed_anomaly.png
+6,Successful Load,successful_load,success,Data successfully loaded for Yesterday,,See data load history here,http://www.research.att.com/export/sites/att_labs/library/image_gallery/articles/2011_July-September/201109_ALFP_ed_anomaly.png

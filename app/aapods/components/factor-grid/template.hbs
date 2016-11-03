@@ -1,0 +1,53 @@
+<div class="panel">
+  <div class="panel-heading panel-primary">
+    <h4 class="panel-title">
+      {{input value=schemaFilter.factorSearch placeholder="Choose Factors" class="form-control input-sm"}}
+    </h4>
+  </div>
+  <div id="collapseOne" class="panel-collapse collapse in">
+    <div class="row space-box">
+      {{#if schemaFilter.entityType}}
+      {{#each schemaFilter.factorClasses as |fc|}}
+        {{#each fc.sorted as |f|}}
+          <div {{bind-attr class=":col-sm-4 f.hidden:hidden"}}>
+            <div class="row">
+              <div class="row">
+                <span class="hand" {{action 'toggleFactor' f}}>
+                  {{#if f.selected}}
+                    {{fa-icon icon="check-square-o"}}
+                  {{else}}
+                    {{fa-icon icon="square-o"}}
+                  {{/if}}
+                  {{f.name}}
+                </span>
+                <span class="hand" {{action 'toggleRemove' f}}>
+                  {{#if f.removed}}
+                    {{fa-icon icon="times-circle"}}
+                  {{else}}
+                    {{fa-icon icon="times"}}
+                  {{/if}}
+                </span>
+
+                <!-- <a href="" {{action 'showModal' 'factor-modal' f}}>
+                  {{fa-icon icon="question"}}
+                </a> -->
+              </div>
+              <div class="row hidden">
+                <div class="progress">
+                  <div class="progress-bar progress-bar-info" role="progressbar"
+                       aria-valuenow={{unbound f.score}} aria-valuemin="0"
+                       aria-valuemax="100" style="width: {{unbound f.score}}%">
+                    <span class="sr-only">{{unbound f.score}}% Complete (success)</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        {{/each}}
+      {{/each}}
+      {{else}}
+        Pick an Entity Type or Metric to see factors
+      {{/if}}
+    </div>
+  </div>
+</div>

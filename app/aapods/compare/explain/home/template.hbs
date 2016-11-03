@@ -1,0 +1,30 @@
+<div role="tabpanel" class="tab-pane active" id="home">
+  {{#if model.results.d.isHigher}}
+      <div class="alert alert-success" role="alert">
+          <strong>Anomaly caused by</strong> <br>
+        {{#each  answer.positive as |facet|}}
+          {{facet.name}}: <strong>{{facet.valstr}}</strong>,
+        {{/each}}
+      </div>
+      <div class="alert alert-danger" role="alert">
+          <strong>Anomaly NOT caused by</strong> <br>
+        {{#each answer.negative as |facet|}}
+            <em>{{facet.name}}: <strong>{{facet.valstr}}</strong></em>
+        {{/each}}
+      </div>
+  {{else}}
+      <div class="alert alert-danger" role="alert">
+          <strong>Anamoly caused by</strong> <br>
+        {{#each  answer.negative as |facet|}}
+            <em>{{facet.name}}: <strong>{{facet.valstr}}</strong></em>
+        {{/each}}
+      </div>
+
+      <div class="alert alert-success" role="alert">
+          <strong>Anomaly NOT caused by</strong> <br>
+        {{#each  answer.positive as |facet|}}
+          {{facet.name}}: <strong>{{facet.valstr}}</strong>,
+        {{/each}}
+      </div>
+  {{/if}}
+</div>

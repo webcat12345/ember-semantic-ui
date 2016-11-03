@@ -1,0 +1,20 @@
+<h1>Pick your dataset</h1>
+{{#each rows as |row|}}
+    <div class="row">
+      {{#each row as |dataset|}}
+          <div class="col-md-3">
+            {{#link-to "datasetroot" dataset.id tagName="li" href=false}}
+              {{#link-to "datasetroot" dataset.id id=dataset.id}}{{dataset.name}}{{/link-to}}
+            {{/link-to}}
+          </div>
+      {{/each}}
+    </div>
+{{/each}}
+{{#if isAdmin}}<br/>
+<button>
+  {{#link-to "datasetroot.create"  href=false}}
+    {{#link-to "datasetroot.create" }}
+        Create new dataset{{/link-to}}
+  {{/link-to}}
+</button>
+{{/if}}

@@ -1,0 +1,2 @@
+id,name,type,level,description,url,urltext,image
+1,Sales Dropped,metric_drop,warning,Sales for Pillows by Sleeptrain dropped 55% last week.,/clusters,See slice here,http://www.research.att.com/export/sites/att_labs/library/image_gallery/articles/2011_July-September/201109_ALFP_ed_anomaly.png

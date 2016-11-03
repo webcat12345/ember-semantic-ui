@@ -1,0 +1,142 @@
+{{#ui-accordion class="styled fluid"}}
+    <div class="{{formCollapsed}} title">
+        <i class="dropdown icon"></i>
+        Plot A|B Test
+    </div>
+    <div class="{{formCollapsed}} content">
+        <div class="ui form">
+            <div class="three fields">
+                <div class="field">
+                    <label>Set bucket size</label>
+                  {{semantic-select
+                  content=model.metrics
+                  optionValuePath='content.id'
+                  optionLabelPath='content.name'
+                  selection=qsm
+                  required=true}}
+                </div>
+                <div class="field">
+                    <label> Pick experiment Dimension </label>
+                  {{#ui-dropdown class=dimensionsDropdownClass id='group_by_id' fullTextSearch='exact' sort=true onChange=(action 'updateSelectedFactor')}}
+                      <div class="default text">Select a dimensions</div>
+                      <i class="dropdown icon"></i>
+                      <div class="menu">
+                        {{#each dimensions as |dimension|}}
+                            <div class="item" data-value="{{dimension.id}}">
+                              {{dimension.name}}
+                            </div>
+                        {{/each}}
+                      </div>
+                  {{/ui-dropdown}}
+                </div>
+                <div class="field">
+                    <label>For dates</label>
+                  {{daterange-picker startDate=qstartDate endDate=qendDate
+                  minDate=model.window.startDate maxDate=model.window.endDate default=true}}
+                </div>
+            </div>
+            <div class="field">
+                <label>
+                    <a {{action "addFilter"}} style="color:#333;" class="hand">
+                        Filter By: <i class="fa fa-plus-circle"></i> new
+                    </a>
+                </label>
+                <div class="fields">
+                  {{#each filters as |filter|}}
+                      <div class="three wide field one-filter">
+                          <a {{action "removeFilter" filter.id}}
+                                  style="color:lightgray"
+                                  class="pull-right hand"><i
+                                  class="fa fa-times"></i></a>
+                        {{filters-form dimensions=model.dimensions parentFilters=filters id=filter.id filter=filter setFilters=(action 'setFilters')}}
+                      </div>
+                  {{/each}}
+                </div>
+            </div>
+            <div class="field">
+              {{#unless disableDraw}}
+                  <button class="ui green button" id="draw" {{action 'draw'}}>Plot Distribution</button>
+              {{else}}
+                  <button class="ui green button disabled">Plot Distribution</button>
+              {{/unless}}
+            </div>
+        </div>
+    </div>
+{{/ui-accordion}}
+
+{{#unless model.metrics}}
+    <div class="row text-center">
+        <h3>At least one metric must exist. {{#link-to 'schema'}}Edit Schema Here{{/link-to}}</h3>
+    </div>
+{{else}}
+    <div class="ui raised segment">
+        <div class="ui padded grid">
+            <div class="padded row explore--main-row-head">
+                <div class="eight wide column">
+                    <strong style="padding-bottom: 14px">Select a metric to analyze:</strong>
+                  {{#ui-dropdown class="ui fluid search selection dropdown" fullTextSearch='exact' sort=true onChange=(action 'updateCompareMetric')}}
+                      <div class="default text">Select a metric to analyze</div>
+                      <i class="dropdown icon"></i>
+                      <div class="menu">
+                        {{#each model.metrics as |metric|}}
+                            <div class="item" data-value="{{metric.id}}">
+                              {{metric.name}}
+                            </div>
+                        {{/each}}
+                      </div>
+                  {{/ui-dropdown}}
+                </div>
+                <div class="eight wide column right aligned">
+                    <div class="container">
+                        <strong>Baseline:</strong> {{apt.name}}<br>
+                        <strong>Variation:</strong> {{bpt.name}}<br>
+                    </div>
+                  {{#if ptsSelected}}
+                      <a href="" {{action 'switch_points' apt bpt}}
+                         class="btn-compare">
+                          Switch
+                      </a>
+                    {{#if compareMetric}}
+                        <a href="" {{action 'comp' model.dataset._id compareObject apt.value bpt.value}}
+                           class="btn-compare">
+                          {{#if loading}}
+                            {{fa-icon icon="refresh" spin=true size="1"}}
+                          {{else}}
+                              Compare
+                          {{/if}}
+                        </a>
+                    {{else}}
+                        <button class="btn btn-compare disabled">Compare</button>
+                    {{/if}}
+                  {{else}}
+                      <button class="btn btn-compare disabled">Compare</button>
+                  {{/if}}
+                </div>
+            </div>
+            <div class="padded row explore--main-row">
+                <div class="sixteen wide column">
+                  {{charts/col-chart dataset=model.dataset
+                  selectedMetricId=sm
+                  selectedDimensionId=sd
+                  startDate=startDate
+                  endDate=endDate
+                  dashboard=model.dashboard
+                  sortm=sortm
+                  sortd=sortd
+                  type='area'
+                  topN=topN
+                  chart_name=chart_name
+                  charttype='abtest'
+                  filter=f
+                  group_by_id=group_by_id
+                  spark_only=features.spark_only
+                  baseline=baseline
+                  variation=variation
+                  setCompare=(action 'setCompare')
+                  setPoint=(action 'setPoint')}}
+                </div>
+            </div>
+        </div>
+    </div>
+{{/unless}}
+

@@ -1,0 +1,30 @@
+<div class="sixteen wide column filters--mainbox">
+    <div class="ui padded grid middle aligned filters--grid">
+      {{#each _filters as |filter index|}}
+          <div class="padded row filters{{filter.filter_id}} filters--row">
+              <!--we use that class fo jquery call inside the component-->
+              <div class="explore--leftlabel two wide column right aligned" style="width: 100px !important">
+                {{#if (eq index 0)}}
+                    <label>Where</label>
+                {{else}}
+                    <label>AND</label>
+                {{/if}}
+              </div>
+            {{filters-form/filters-group dimensions=dimensions parentFilters=_filters filter_id=filter.filter_id
+            filter=filter removeFilter=(action 'removeFilter')}}
+          </div>
+      {{/each}}
+        <div class="padded row filters--row">
+            <div class="explore--leftlabel two wide column right aligned" style="width: 100px !important">
+                <label></label>
+            </div>
+            <div class="one wide center aligned column">
+                <button class="tiny ui button" {{action "addFilter"}}>+</button>
+            </div>
+            <div class="four wide column">
+              {{filters-form/search-dropdown dataset_id=dataset_id filters=_filters}}
+            </div>
+        </div>
+    </div>
+</div>
+

@@ -1,0 +1,22 @@
+<div class="row">
+	<div class="col-lg-3 col-md-6">
+	<form role="form">
+	<label>Name</label>
+	{{input valueBinding="newdataset.name" class="form-control"}}
+	<br/>
+	<button type="submit" class="btn btn-default" {{action 'addDataset' target="controller"}}>add dataset</button>
+	</form>
+	</div>
+	<div class="col-lg-8 col-md-6">
+		<ul class="list-group ">
+		{{#each model.datasets as |d|}}
+		<li class="list-group-item clearfix">
+			{{d.name}}:{{d.id}}
+			<span class="pull-right button-group">
+			<button {{action 'deleteDataset' d.id target="controller"}} type="button" class="btn-small btn-danger"><span class="glyphicon glyphicon-remove"></span> Delete</button>
+			</span>
+		</li>
+		{{/each}}
+		</ul>
+	</div>
+</div>

@@ -1,0 +1,41 @@
+<h4>My Reports</h4>
+{{#data-tables tableid="example"}}
+<table class="table table-striped" id="example" data-order='[[ 1, "desc"]]'>
+    <thead>
+    <tr>
+        <th>Report</th>
+        <th>Requested</th>
+        <th>Status</th>
+        
+     {{#if isAdmin}}<th>Email</th>{{/if}}
+
+    </tr>
+    </thead>
+    <tbody>
+    {{#each model.adhocwhy as |f|}}
+          <tr>
+            <td> <a href={{f.url}}>{{f.factor_id}}:{{f.pointa}} vs {{f.pointb}}, {{f.metric_id}} {{f.filter}}</a></td>
+            <td data-order="{{f.submitted_time}}">{{date-fmt f.submitted_time "fromnow"}}</td>
+            <td>{{f.status}}</td>
+          {{#if isAdmin}}
+
+          <td>{{f.isNotified}} <br>
+
+          {{#if f.bool_status}}
+          <a href="" {{action 'sendemail' f.dataset_id f.filter f.metric_id f.factor_id f.pointa f.pointb}} class="btn btn-default">
+                Re-Send   
+              </a> 
+
+              {{else}}
+                  <button class="btn btn-default disabled">Re-Send</button>
+             
+              {{/if}}
+           </td>
+           {{/if}}
+          </tr>
+
+    {{/each}}
+
+    </tbody>
+</table>
+{{/data-tables}}

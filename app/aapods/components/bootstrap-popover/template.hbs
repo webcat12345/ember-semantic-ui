@@ -1,0 +1,26 @@
+{{#if text}}
+    <div class="{{textClass}} cell--title">{{text}}</div>
+    <i class="cell--infoicon" tabindex="0" data-toggle="popover" data-trigger="hover" data-placement="left"
+       title="{{title}}" data-content="{{message}}" class="fa fa-question-circle"></i>
+{{else if icon}}
+    <i class="cell--infoicon" tabindex="0" data-toggle="popover" data-trigger="hover" data-placement="auto"
+       data-container="body"
+       title="{{title}}" class="{{icon}}"></i>
+    <div id="content" style="display: none">
+      {{yield}}
+    </div>
+{{else if label}}
+    <span class={{label}} tabindex="0" data-toggle="popover" data-trigger="hover" data-placement="auto"
+          data-container="body"
+          title="{{title}}">{{label-text}}</span>
+    <div id="content" style="display: none">
+      {{yield}}
+    </div>
+{{else}}
+  	<div class="{{linkClass}} cell--title" tabindex="0" data-toggle="popover" data-trigger="hover" data-placement="auto"
+         data-container="body"
+         title="{{title}}" >{{linktext}}</div>
+    <div id="content" style="display: none">
+        {{yield}}
+    </div>
+{{/if}}

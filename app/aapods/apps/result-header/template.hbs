@@ -1,0 +1,56 @@
+<div class="row padded facet-table-header">
+    <div class="five wide column">
+      {{#if showSearch}}
+          <div class="ui search">
+              <div class="ui icon input">
+                {{input class="prompt" type="text"
+                placeholder="search..."
+                value=searchStr
+                action='setSearch'
+                on="enter"}}
+                  <i class="search icon" {{action 'setSearch'}}></i>
+              </div>
+          </div>
+      {{else}}
+          <span {{action 'showSearch' true}}
+                  class="hand facet-segment-header {{if displaySettings.boldtitle "facet-segment-header-bold"}}">
+              <i class="search icon"></i>{{displaySettings.segmentTitle}}
+          </span>
+      {{/if}}
+    </div>
+  {{#if (eq type "mevsrest")}}
+      <div class="five wide column hand">
+      </div>
+      <div class="three wide column hand" {{action 'setSort' displaySettings.sort}}>
+        {{displaySettings.resultTitle}}
+          <i class="{{if (eq selectedSortBy.id displaySettings.sort_asc) "facet-sort-selected" "facet-sort"}} fa fa-long-arrow-up"></i>
+          <i class="{{if (eq selectedSortBy.id displaySettings.sort_desc) "facet-sort-selected" "facet-sort"}} fa fa-long-arrow-down"></i>
+      </div>
+  {{else}}
+      <div class="six wide column hand" {{action 'setSort' displaySettings.sort}}>
+        {{displaySettings.resultTitle}}
+          <i class="{{if (eq selectedSortBy.id displaySettings.sort_asc) "facet-sort-selected" "facet-sort"}} fa fa-long-arrow-up"></i>
+          <i class="{{if (eq selectedSortBy.id displaySettings.sort_desc) "facet-sort-selected" "facet-sort"}} fa fa-long-arrow-down"></i>
+      </div>
+  {{/if}}
+  {{#if displaySettings.showSizeColumn}}
+      <div class="two wide column hand" {{action 'setSort' 'pct'}}>
+        {{displaySettings.sizeColName}}
+          <i class="{{if (eq selectedSortBy.id 'pct_asc') "facet-sort-selected" "facet-sort"}} fa fa-long-arrow-up"></i>
+          <i class="{{if (eq selectedSortBy.id 'pct_desc') "facet-sort-selected" "facet-sort"}} fa fa-long-arrow-down"></i>
+
+      </div>
+  {{/if}}
+    <div class="three wide column">
+      {{#if displaySettings.showSignificantCheckbox}}
+          <div class="ui mini checkbox" {{action 'toggleSignificant'}}>
+            {{#if statsig_only}}
+                <input type="checkbox" name="public" checked>
+            {{else}}
+                <input type="checkbox" name="public">
+            {{/if}}
+              <label>Significant First</label>
+          </div>
+      {{/if}}
+    </div>
+</div>

@@ -1,0 +1,16 @@
+<div class="row text-center">
+  <h2>Configure Explain</h2>
+</div>
+<div class="row text-center">
+<form role="form">
+  <button class="btn btn-default"{{action 'create'}}>{{saveText}}</button>
+  <h5>Choose Factors which will impact Why</h5>
+  {{#if loadingDimensions}}
+    Loading Dimensions...
+  {{else if dimensions}}
+    {{schema/factor-select type="Dimension" factors=dimensions selectedFactorIds=selectedFactorIds}}
+  {{else}}
+    <h5>No Valid Dimensions Found</h5>
+  {{/if}}
+</form>
+</div>

@@ -1,0 +1,202 @@
+{{#if editing}}
+    <h4 class="page-header">Metrics</h4>
+    {{#each model.follows.allmetrics as |metric|}}
+        <li style="display:inline">
+            <a href="javascript:void(0)">
+              {{j-check checked=metric.following action="follows" entity="metrics" entityval=metric.id}} {{metric.name}}</a>
+        </li>
+    {{/each}}
+    <h4 class="page-header">Dimensions</h4>
+    {{#each model.follows.alldimensions as |dimension|}}
+        <li style="display:inline">
+            <a href="javascript:void(0)">
+              {{j-check checked=dimension.following action="follows" entity="dimensions" entityval=dimension.id}} {{dimension.name}}</a>
+        </li>
+    {{/each}}
+    <h4 class="page-header">Story Type</h4>
+    {{#each model.follows.allstypes as |stype|}}
+        <li style="display:inline">
+            <a href="javascript:void(0)">
+              {{j-radio checked=stype.following action="follows" entity="stype" entityval=stype.name}} {{stype.name}}</a>
+        </li>
+    {{/each}}
+    <h4 class="page-header">Blacklists</h4>
+    {{#each model.blacklist as |blacklist|}}
+        <li style="display:inline">
+            <a href="">
+              {{j-check action="follows" entityval=blacklist.val entity=blacklist.name checked=true}}
+              {{blacklist.val}}</a>
+        </li>
+    {{/each}}
+{{else}}
+
+    <div class="row">
+        <div class="col-md-8 feed-filters">
+            Period:
+          {{#ui-dropdown class="ui inline dropdown" data-toggle="dropdown" role="button"
+          aria-haspopup="true" aria-expanded="false"}}
+              <div class="text">
+                {{#if (eq period '7')}}
+                    Week over Week
+                {{else if (eq period '364')}}
+                    Year over Year
+                {{else}}
+                    All
+                {{/if}}
+              </div>
+              <i class="dropdown icon"></i>
+
+              <div class="menu">
+                {{#link-to 'channels.channel.insights' (query-params period=null) class='item'}}
+                    All
+                {{/link-to}}
+
+                {{#link-to 'channels.channel.insights' (query-params period='7') class='item'}}
+                    Week over Week
+                {{/link-to}}
+
+                {{#link-to 'channels.channel.insights' (query-params period='364') class='item'}}
+                    Year over Year
+                {{/link-to}}
+
+              </div>
+          {{/ui-dropdown}}
+            Dates:
+          {{#ui-dropdown class="ui inline dropdown" data-toggle="dropdown" role="button"
+          aria-haspopup="true" aria-expanded="false"}}
+            {{#if isDate}}
+                <div class="text"><span>{{startDate}} to {{endDate}}  </span></div>
+            {{else}}
+                <div class="text"><span>{{selectedRange}}</span></div>
+            {{/if}}
+              <i class="dropdown icon"></i>
+
+              <div class="menu">
+                {{#each topranges as |range|}}
+                  {{#link-to 'channels.channel.insights'
+                  (query-params sortBy=sortBy startDate=range.startDate endDate=range.endDate) class='item'}}
+                    {{range.name}}
+                  {{/link-to}}
+                {{/each}}
+                  <a class="ui search icon input .dates--search_dropdown">Custom Dates: &nbsp;
+                      <div>
+                        {{daterange-picker startDate=qstartDate endDate=qendDate
+                        minDate=model.window.startDate maxDate=model.window.endDate}}
+                      </div>
+                  </a>
+              </div>
+          {{/ui-dropdown}}
+
+
+            Metrics:
+          {{#ui-dropdown class="ui inline dropdown" data-toggle="dropdown" role="button"
+          aria-haspopup="true" aria-expanded="false"}}
+              <div class="text"><span>{{searchedMetric}}</span>
+              </div>
+              <i class="dropdown icon"></i>
+
+              <div class="menu">
+                {{#link-to 'channels.channel.insights' (query-params query='overall' pagetitle=null) class='item'}}
+                    All
+                {{/link-to}}
+                {{#each model.follows.allmetrics as |metric|}}
+                  {{#if metric.following}}
+                    {{#link-to 'channels.channel.insights' (query-params query=metric.id pagetitle=metric.name) class='item'
+                    }}
+                      {{metric.name}}
+                    {{/link-to}}
+                  {{/if}}
+                {{/each}}
+              </div>
+          {{/ui-dropdown}}
+
+            Dimensions:
+          {{#ui-dropdown class="ui inline dropdown" data-toggle="dropdown" role="button"
+          aria-haspopup="true" aria-expanded="false"}}
+              <div class="text"><span>{{searchedDimension}}</span>
+              </div>
+              <i class="dropdown icon"></i>
+
+              <div class="menu">
+                {{#link-to 'channels.channel.insights' (query-params query=null pagetitle=null) class='item'}}
+                    All segments
+                {{/link-to}}
+                {{#link-to 'channels.channel.insights' (query-params query="overall" pagetitle=null) class='item'}}
+                    Overall
+                {{/link-to}}
+                {{#each model.follows.alldimensions as |dimension|}}
+                  {{#if dimension.following}}
+                    {{#link-to 'channels.channel.insights' (query-params query=dimension.id pagetitle=dimension.name) class='item'}}
+                      {{dimension.name}}
+                    {{/link-to}}
+                  {{/if}}
+                {{/each}}
+              </div>
+          {{/ui-dropdown}}
+
+            Story Type:
+          {{#ui-dropdown class="ui inline dropdown" data-toggle="dropdown" role="button"
+          aria-haspopup="true" aria-expanded="false"}}
+              <div class="text"><span>{{searchedStoryType}}</span>
+              </div>
+              <i class="dropdown icon"></i>
+
+              <div class="menu">
+                {{#link-to 'channels.channel.insights' (query-params likes='true') class='item'}}
+                    Likes
+                {{/link-to}}
+
+                {{#each model.follows.allstypes as |stype|}}
+                  {{#link-to 'channels.channel.insights' (query-params storyType=stype.name) class='item'}}
+                    {{stype.name}}
+                  {{/link-to}}
+                {{/each}}
+              </div>
+          {{/ui-dropdown}}
+        </div>
+        <div class="col-md-4 pull-right ">
+            <div class="input-group custom-search-form col-md-2 feed-search" style="float:right">
+              {{input class="form-control" type="text" value=queryField placeholder="Search..." insert-newline='search'}}
+                <span class="input-group-btn">
+      <button class="btn btn-default" {{action "search"}} type="button">
+          <i class="fa fa-search"></i>
+      </button>
+    </span>
+
+            </div>
+
+            <div class="dropdown pull-right feed-search">
+              {{view 'select'
+              class='form-control'
+              content=model.sortOptions
+              value=sortBy
+              optionLabelPath="content.name"
+              optionValuePath="content.value"}}
+            </div>
+        </div>
+    </div>
+{{/if}}
+<div class="row">
+  {{#if topicpage}}
+    {{feeds/top-segments pagetitle=pagetitle feed=feed}}
+  {{/if}}
+  {{#if feed}}
+
+      <div class="ui middle aligned padded grid">
+        {{#each feed as |f|}}
+          {{feeds/insight-small
+          f=f
+          window=model.window
+          dataset=model.dataset
+          user=model.user
+          feed_id=model.feed_id
+          model=model
+          action="reload"
+          isAdmin=isAdmin}}
+        {{/each}}
+      </div>
+  {{else}}
+      Nothing in this feed yet. Please check back later.
+  {{/if}}
+</div>
+

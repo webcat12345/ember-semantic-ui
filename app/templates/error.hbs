@@ -1,0 +1,73 @@
+<img src="/assets/images/cuberon_error_logo.png" class="img-responsive center-block horizontal-sep">
+<h1 class="text-center">I am sorry, looks like I hurt myself bad</h1>
+
+<p class="text-center">Please contact support@cuberonlabs.com </p>
+
+<br/>
+<br/>
+{{#if model.errors}}
+    <div class="alert alert-danger">
+      <strong>Message: </strong> {{model.message}} <br>
+      <strong>Error:</strong> {{model.name}}
+    </div>
+  {{#each model.errors as |e|}}
+      <div>
+         Status  {{e.status}}: {{e.title}}<br>
+      </div>
+      <a data-toggle="collapse" data-target="#errorcollapse" aria-expanded="false" aria-controls="collapseExample">
+          More Details
+      </a>
+      <div class="collapse" id="errorcollapse">
+          <div class="well">
+            {{{e.detail}}}
+          </div>
+      </div>
+  {{/each}}
+{{else if model.responseJSON}}
+    <div class="alert alert-danger">
+        <strong>Message: </strong> {{model.message}} <br>
+        <strong>Error:</strong> {{model.name}}
+    </div>
+    {{#each model.errors as |e|}}
+        <div>
+            Status  {{e.status}}: {{e.title}}<br>
+        </div>
+        <a data-toggle="collapse" data-target="#errorcollapse" aria-expanded="false" aria-controls="collapseExample">
+            More Details
+        </a>
+        <div class="collapse" id="errorcollapse">
+            <div class="well">
+              {{{e.detail}}}
+            </div>
+        </div>
+    {{/each}}
+{{else if model.responseText}}
+    <div class="alert alert-danger">
+        <strong>Status</strong> {{model.status}}
+        <a data-toggle="collapse" data-target="#errorcollapse" aria-expanded="false" aria-controls="collapseExample">
+            More Details
+        </a>
+        <div class="collapse" id="errorcollapse">
+            <div class="well">
+              {{{model.responseText}}}
+            </div>
+        </div>
+    </div>
+{{else}}
+    <div class="alert alert-danger">
+  {{json-pretty
+  obj=model
+  }}
+</div>
+{{/if}}
+
+
+<br>
+{{#if message}}
+  {{message}}
+{{/if}}
+{{#if stack}}
+    <pre>
+      {{stack}}
+    </pre>
+{{/if}}

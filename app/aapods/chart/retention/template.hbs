@@ -1,0 +1,243 @@
+<div class="ui padded grid middle aligned ">
+    <div class="padded row">
+        <div class="eleven wide column">
+            <span class="bigger">Plot
+              {{semantic-select
+              content=xaxis
+              optionValuePath='content.id'
+              optionLabelPath='content.name'
+              selection=qsd
+              uiType="inline"
+              required=true}} Retention
+              {{#if compareEnabled}}
+                  and compare by
+                {{semantic-select
+                content=model.dimensions
+                optionValuePath='content.id'
+                optionLabelPath='content.name'
+                selection=group_by_object
+                onSelect=(action 'selectGroupBy')
+                uiType="inline"
+                prompt="________"
+                id='selectdimension'
+                required=true}}
+                  <a {{action "enableCompare" false}}
+                          class="text-lightgrey hand small-text"><i
+                          class="fa fa-times"></i></a>
+
+              {{/if}}
+            </span>
+          {{#unless compareEnabled}}
+              <a {{action "enableCompare" true}} class="hand">
+                  <i class="fa fa-plus"></i> Compare by
+              </a>
+          {{/unless}}
+        </div>
+        <div class="four wide column">
+            <div class="ui input fluid">
+              {{daterange-picker startDate=qstartDate endDate=qendDate
+              minDate=model.window.startDate maxDate=model.window.endDate default=true class=""}}
+            </div>
+        </div>
+        <div class="one wide column explore--main-button">
+          {{#unless disableDraw}}
+              <button class="ui green button" id="draw" {{action 'draw'}}>Go</button>
+          {{else}}
+              <button class="ui green button disabled">Go</button>
+          {{/unless}}
+        </div>
+    </div>
+    <div class="padded row explore--main-row-head">
+      {{filters-form dimensions=model.dimensions dataset_id=model.dataset_id filters_query=filters_query}}
+    </div>
+</div>
+
+<div class="ui divider explore--main-divider"></div>
+{{#if show}}
+  {{#if (and group_by_id loadingGroupByValues)}}
+      <div class="whitebox text-center">
+          <h1>Loading...</h1>
+        {{fa-icon icon="refresh" spin=true size="4"}}
+      </div>
+  {{else}}
+      <div class="ui padded grid">
+          <div class="eight wide column">
+            {{compare-explain-chart chart_state=chart_state apt=apt bpt=bpt comp=(action 'comp')
+            reset_point=reset_point
+            startDate=model.window.startDate
+            endDate=model.window.endDate
+            loading=loading
+            restString="Users who did not retain"
+            dataset=model.dataset compareObject=compareObject setPoint=(action 'setPoint')}}
+          </div>
+          <div class="eight wide column right aligned">
+            {{#if group_by_id}}
+              {{#power-select-multiple
+              options=group_by_values
+              selected=qgrpvals
+              placeholder="Compare Values"
+              onchange=(action 'updateGroupByValues')
+              as |val|
+              }}
+                {{val}}
+              {{/power-select-multiple}}
+            {{/if}}
+          </div>
+          <div class="sixteen wide column">
+            {{charts/col-chart dataset=model.dataset
+            selectedMetricId=sm
+            selectedDimensionId=sd
+            startDate=startDate
+            endDate=endDate
+            dashboard=model.dashboard
+            type=type
+            chart_name=chart_name
+            filter=f
+            query_id="weekly_retention"
+            spark_only=true
+            group_by_id=(if grpvals group_by_id null)
+            group_vals=(if group_by_id grpvals null)
+            chart_state=chart_state
+            showNulls=false
+            reset_point=reset_point
+            qp_params=qp_params
+            showLegend=true
+            yAxisName="% Retained"
+            xAxisName=qsd.name
+            showAddToDashboard=false
+            rangeSelectEnabled=false
+            singlePtSelect=true
+            selectPtEnabled=model.dashboard.user_table.id_col
+            yAxisEnabled=true
+            maxYAxis=100
+            showTitle=false
+            showTimeZoom=false
+            showDateCompare=false
+            setCompare=(action 'setCompare')
+            setPoint=(action 'setPoint')}}
+          </div>
+      </div>
+      <div class="ui padded grid">
+          <div class="sixteen wide column">
+              <span class="bigger">{{qsd.name}} Cohorts </span>
+              <div class="ui buttons">
+                  <button class="ui {{if showPercentage 'black basic' 'secondary'}} mini button" {{action 'showPercentage' false}}>
+                      #
+                  </button>
+                  <button class="ui {{unless showPercentage 'black basic' 'secondary'}} mini button" {{action 'showPercentage' true}}>
+                      %
+                  </button>
+              </div>
+              <span class="small-text"> Click on a cell to profile users who retained vs those who did not.</span>
+          </div>
+        {{#if loadingCohorts}}
+            <div class="sixteen wide column center aligned">
+                <h1>Loading...</h1>
+              {{fa-icon icon="refresh" spin=true size="4"}}
+            </div>
+        {{else}}
+            <div class="sixteen wide column">
+
+                <table id='cohorttable' class="ui violet definition table"
+                       data-order='[[ 1, "desc"]]'
+                       data-dom='<"top"i>rt<"bottom"p><"clear">'
+                >
+                    <thead>
+                    <tr>
+                        <th>Segment</th>
+                      {{#each cohortTable.new_series.[0].data as |period|}}
+                          <th>
+                            {{#if (eq period.x 0)}}
+                                Users
+                            {{else}}
+                              {{period.x}}
+                            {{/if}}
+                          </th>
+                      {{/each}}
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {{#each updatedCohorts as |series|}}
+                      {{#if (or series.showMore showMore)}}
+                          <tr>
+                              <td>
+                                  <a class="ui no-link hand" data-tooltip="Click to add to chart"
+                                    {{action  'addGroupByValue' series.name}}>
+                                    {{series.name}}
+                                  </a>
+                              </td>
+                            {{#each series.data as |period|}}
+                              {{#if (eq period.x 0)}}
+                                  <td data-order={{period.dep_metrics.user_count}}>
+                                    {{#if (gt 20 period.dep_metrics.user_count)}}
+                                        <div class="ui"
+                                             data-tooltip="The segment is to small to be profiled">
+                                          {{number-fmt 'commas' period.dep_metrics.user_count}}
+                                        </div>
+                                    {{else}}
+                                      {{#link-to "apps.feature" model.dataset_id (query-params
+                                      fltr=week0Filter
+                                      mtype='metric' metric_id=model.dashboard.session_table.countmetric
+                                      sd=startDate ed=endDate num_id=null denom_id=null
+                                      factor_id=sd dim=null topN=null sort=null sort_dir=null
+                                      make_raw_slices=null search_str=null
+                                      a="rest" b=(concat cohortParams._segments.dim_id '==' series.name) group="Profile"
+                                      statsig_only=true stat_sig_level=null why_type="retention") target="_blank" class="no-link" bubbles=false}}
+                                        {{number-fmt 'commas' period.dep_metrics.user_count}}
+                                      {{/link-to}}
+                                    {{/if}}
+                                  </td>
+                              {{else}}
+                                {{#unless (eq period.y 0)}}
+                                    <td style={{period.bgcolor}}
+                                                data-order={{period.y}}>
+                                      {{#if (gt 20 period.dep_metrics.user_count)}}
+                                          <div class="ui"
+                                               data-tooltip="The segment is to small to be profiled">
+
+                                            {{#if showPercentage}}
+                                              {{number-fmt 'percunit' period.y}}
+                                            {{else}}
+                                              {{number-fmt 'commas' period.dep_metrics.user_count}}
+                                            {{/if}}
+                                          </div>
+                                      {{else}}
+                                        {{#link-to "apps.feature" model.dataset_id (query-params
+                                        fltr=period.profileFilter
+                                        mtype='metric' metric_id=model.dashboard.session_table.countmetric
+                                        sd=startDate ed=endDate num_id=null denom_id=null
+                                        factor_id=sd dim=null topN=null sort=null sort_dir=null
+                                        make_raw_slices=null search_str=null
+                                        a="rest" b=period.profileB group="Profile"
+                                        statsig_only=true stat_sig_level=null why_type="retention") target="_blank" class="no-link" bubbles=false}}
+
+                                          {{#if showPercentage}}
+                                            {{number-fmt 'percunit' period.y}}
+                                          {{else}}
+                                            {{number-fmt 'commas' period.dep_metrics.user_count}}
+                                          {{/if}}
+                                        {{/link-to}}
+                                      {{/if}}
+
+                                    </td>
+                                {{else}}
+                                    <td></td>
+                                {{/unless}}
+                              {{/if}}
+                            {{/each}}
+                          </tr>
+                      {{/if}}
+                    {{/each}}
+                    </tbody>
+                </table>
+              {{#if showMore}}
+                  <a class="hand" {{action 'showMore' false}}>Show Less</a>
+              {{else}}
+                  <a class="hand" {{action 'showMore' true}}>Show More</a>
+              {{/if}}
+            </div>
+        {{/if}}
+      </div>
+  {{/if}}
+{{/if}}
+

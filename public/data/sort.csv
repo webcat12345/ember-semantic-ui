@@ -1,0 +1,9 @@
+idx,id,name
+1,scores.best,Sort by Relevance
+2,scores.total,Sort by Size
+3,scores.delta,Sort by Delta
+4,scores.final,Sort by Metric
+5,scores.impact,Sort by Impact
+6,scores.sib,Sort by Sibling
+7,scores.btest,Sort by Statistical Signficance
+8,scores.lowimpact,Prefer lower size

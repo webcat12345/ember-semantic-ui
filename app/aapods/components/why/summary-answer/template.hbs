@@ -1,0 +1,13 @@
+<h4>{{title}}</h4>
+<ul id="answer" class="">
+{{#each summary as |dim|}}
+    <li>
+        {{factor-name factors=dimHash id=dim.object.factor.id}}
+        <ul>
+            {{#each dim.values as |val|}}
+                <li class=""><a href="" {{action "answerClick" val.facet.n}}>{{val.facet.n}}</a></li>
+            {{/each}}
+        </ul>
+    </li>
+{{/each}}
+</ul>

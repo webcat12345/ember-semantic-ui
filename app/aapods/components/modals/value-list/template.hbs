@@ -1,0 +1,13 @@
+{{#main-modal title=title ok='done' close='removeModal' showFooter=false}}
+    {{#if loadingValues}}
+        Loading...
+    {{else}}
+        <ul class="list-group">
+          {{#each values as |value|}}
+              <li class="list-group-item">
+                {{value.n}}
+              </li>
+          {{/each}}
+        </ul>
+    {{/if}}
+{{/main-modal}}

@@ -1,0 +1,220 @@
+<!-- Begin page -->
+<div id="wrapper">
+
+    <!-- Top Bar Start -->
+  {{#if showNav}}
+      <nav class="navbar navbar-inverse navbar-fixed-top">
+          <div class="container">
+
+              <!-- Mobile nav -->
+              <div class="navbar-header">
+                  <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"
+                          aria-expanded="false" aria-controls="navbar">
+                      <span class="sr-only">Toggle navigation</span>
+                      <span class="icon-bar"></span>
+                      <span class="icon-bar"></span>
+                      <span class="icon-bar"></span>
+                  </button>
+
+                  <!-- Logo -->
+                {{#link-to 'application' class="navbar-brand"}}<img
+                        src="/assets/images/cuberonLogoWhite.png"/>{{/link-to}}
+              </div>
+              <!-- Top Bar content -->
+              <div id="navbar" class="navbar-collapse">
+                  <ul class="nav navbar-nav navbar-left">
+                    {{#link-to "channels" dataset_id tagName="li" href=false}}
+                        <i class="fa fa-home"></i>
+                      {{#link-to "channels" dataset_id}}Home{{/link-to}}
+                    {{/link-to}}
+                    {{#link-to "chart" dataset_id tagName="li" href=false}}
+                        <i class="fa fa-bar-chart"></i>
+                      {{#link-to "chart" dataset_id}}Explore{{/link-to}}
+                    {{/link-to}}
+
+                      <li class="dropdown">
+                          <a href="#" id="dropdown" class="dropdown-toggle" data-toggle="dropdown" role="button"
+                             aria-haspopup="true" aria-expanded="false">
+                              Apps <span class="caret"></span>
+                          </a>
+                          <ul class="dropdown-menu">
+                            {{#link-to "apps.funnel" dataset_id (query-params fltr=null
+                            metric_id=null sd=null ed=null num_id=null denom_id=null
+                            factor_id=null dim=null topN=null sort=null sort_dir=null
+                            make_raw_slices=null search_str=null a=null b=null  result_tab=null mtype=null
+                            statsig_only=true stat_sig_level=null)
+                            tagName="li" href=false}}
+                              {{#link-to "apps.funnel" dataset_id (query-params fltr=null
+                              metric_id=null sd=null ed=null num_id=null denom_id=null
+                              factor_id=null dim=null topN=null sort=null sort_dir=null
+                              make_raw_slices=null search_str=null a=null b=null result_tab=null mtype=null
+                              statsig_only=true stat_sig_level=null) id='funnelAnalysis'}}Funnel Analysis{{/link-to}}
+                            {{/link-to}}
+
+                            {{#link-to "apps.retention" dataset_id (query-params fltr=null
+                            metric_id=null sd=null ed=null num_id=null denom_id=null
+                            factor_id=null dim=null topN=null sort=null sort_dir=null
+                            make_raw_slices=null search_str=null a=null b=null result_tab=null mtype=null
+                            statsig_only=true stat_sig_level=null)
+                            tagName="li" href=false}}
+                              {{#link-to "apps.retention" dataset_id (query-params fltr=null
+                              metric_id=null sd=null ed=null num_id=null denom_id=null
+                              factor_id=null dim=null topN=null sort=null sort_dir=null
+                              make_raw_slices=null search_str=null a=null b=null result_tab=null mtype=null
+                              statsig_only=true stat_sig_level=null)}}Retention Analysis{{/link-to}}
+                            {{/link-to}}
+                          </ul>
+
+                      </li>
+                    {{!--
+                   {{#link-to "apps.feature" dataset_id tagName="li" href=false}}
+                       <i class="fa fa-users"></i>
+                     {{#link-to "apps.feature" dataset_id }}Profile{{/link-to}}
+                   {{/link-to}}
+                   --}}
+
+                    {{#link-to "analysis" dataset_id tagName="li" href=false}}
+                        <i class="fa fa-clipboard"></i>
+                      {{#link-to "analysis" dataset_id }}My Analysis{{/link-to}}
+                    {{/link-to}}
+
+
+                  </ul>
+                  <ul class="nav navbar-nav navbar-right">
+                    {{#link-to "factors" dataset_id tagName="li" href=false}}
+                        <i class="fa fa-database"></i>
+                      {{#link-to "factors" dataset_id}}
+                          Data
+                      {{/link-to}}
+                    {{/link-to}}
+                      <li class="dropdown">
+                          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                             aria-expanded="false">Pick another dataset <span class="caret"></span></a>
+                          <ul class="dropdown-menu">
+                            {{#each model.datasets as |b|}}
+                              {{#link-to "datasetroot" b.id tagName="li" href=false}}
+                                {{#link-to "datasetroot" b.id}}{{b.name}}{{/link-to}}
+                              {{/link-to}}
+                            {{/each}}
+                            {{#if isAdmin}}
+                                <li role="separator" class="divider"></li>
+                                <li>
+                                  {{#link-to "datasetroot.create"  href=false}}
+                                    {{#link-to "datasetroot.create" }}
+                                        Create new dataset{{/link-to}}
+                                  {{/link-to}}
+                                </li>
+                            {{/if}}
+                          </ul>
+                      </li>
+                    {{#if isAdmin}}
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
+                               aria-haspopup="true" aria-expanded="false">Dev <span class="caret"></span></a>
+
+                            <ul class="dropdown-menu">
+                              {{#link-to "dev.cron" tagName="li" href=false}}
+                                {{#link-to "dev.cron" }}Cron{{/link-to}}
+                              {{/link-to}}
+                                <li role="separator" class="divider"></li>
+                              {{#link-to "dev.fresh" tagName="li" href=false}}
+                                {{#link-to "dev.fresh" }}Freshness{{/link-to}}
+                              {{/link-to}}
+                                <li role="separator" class="divider"></li>
+                                feature flags{{input type="checkbox" checked=features_flag}}
+
+                            </ul>
+                        </li>
+                    {{/if}}
+                      <li class="dropdown">
+                          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                             aria-expanded="false"><span class="thin">Hi</span> <strong
+                                  style="color: #fff">!</strong><img class="avatar"
+                                                                     src="/assets/images/profile_avatar.png"> <span
+                                  class="caret"></span> </a>
+                          <ul class="dropdown-menu">
+                              <li class="dropdown_title">Signed-in to<br> <strong>{{dataset.name}}</strong></li>
+                              <li role="separator" class="divider"></li>
+                              <li>
+                                  <a href="login.html">
+                                    {{#if session.isAuthenticated}}
+                                        <a {{ action 'invalidateSession' }}>Logout</a>
+                                    {{else}}
+                                      {{#link-to 'login'}}Login{{/link-to}}
+                                    {{/if}}
+                                  </a>
+                              </li>
+                          </ul>
+                      </li>
+                  </ul>
+              </div>
+          </div>
+      </nav>
+  {{/if}}
+    <!-- Top Bar End -->
+
+    <!-- ========== Left Sidebar Start ========== -->
+  {{#if showNav}}
+      <!-- ============================================================== -->
+      <!-- Start right Content here -->
+      <!-- ============================================================== -->
+
+      <div class="content-page">
+
+          <!-- Start content -->
+          <div class="content">
+              <div class="main ui container">
+
+                  <!-- TOP NAV -->
+                  <div class="row">
+                    {{outlet "topnav"}}
+                  </div>
+                  <!-- ACTUAL PAGES -->
+                {{outlet}}
+
+              </div>
+              <!-- container -->
+          </div>
+          <!-- content -->
+      </div>
+      <!-- ============================================================== -->
+      <!-- End Right content here -->
+      <!-- ============================================================== -->
+
+  {{else}}
+    {{outlet}}
+  {{/if}}
+
+
+
+
+
+    <div class="container-fluid">
+      {{#if messageSuccess}}
+          <div class="alert alert-success col-md-8">
+              <button type="button" class="close" {{action "dismissMessage" "success"}}>Ã—</button>
+            {{messageSuccess}}
+          </div>
+      {{/if}}
+
+      {{#if messageError}}
+          <div class="alert alert-danger col-md-8">
+              <button type="button" class="close" {{action "dismissMessage" "error"}}>Ã—</button>
+            {{messageError}}
+          </div>
+      {{/if}}
+
+      {{#if error}}
+        {{#if admin}}
+            <div class="alert alert-danger alert-dismissable">
+                <button type="button" class="close"  {{action 'dismissError'}}>Ã—</button>
+              {{error}}
+            </div>
+        {{/if}}
+      {{/if}}
+
+      {{outlet 'modal'}}
+    </div>
+
+</div>
+<!-- END wrapper -->

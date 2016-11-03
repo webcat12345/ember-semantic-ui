@@ -1,0 +1,149 @@
+<h2>Running Cron Status</h2>
+<table class="table table-striped">
+    <thead>
+    <tr>
+        <th>Dataset Id</th>
+        <th>type</th>
+        <th>name</th>
+        <th>started</th>
+        <th>time</th>
+        <th>total</th>
+        <th>completed</th>
+        <th>custom</th>
+        <th>Warnings</th>
+    </tr>
+    </thead>
+    <tbody>
+    {{#each model.tasks as |f|}}
+      {{#if f.isRunning}}
+          <tr class={{f.class_UI}}>
+              <td>{{f.datasetId}}</td>
+              <td>{{f.type}}</td>
+              <td>{{f.name}}</td>
+              <td>{{date-fmt f.checkStartedTime}}</td>
+              <td>{{f.runningTime}}</td>
+              <td>{{f.totalWork}}</td>
+              <td>{{f.completedWork}}</td>
+              <td>{{f.customMetric}}</td>
+              <td>
+                {{#if f.warnings}}
+                  {{#bootstrap-popover title="Warning Messages" linktext="Warnings"}}
+                      <b>{{f.warningCt}} Warnings</b>
+                      <table class="table">
+                          <thead>
+                          <tr>
+                              <th>File</th>
+                              <th>Line</th>
+                              <th>Func</th>
+                              <th>Exception</th>
+                              <th>Time</th>
+                              <th>Msg</th>
+                          </tr>
+                          </thead>
+                          <tbody>
+                            {{#each f.warnings as |w|}}
+                                <tr>
+                                    <td>{{w.file}}</td>
+                                    <td>{{w.line}}</td>
+                                    <td>{{w.func}}</td>
+                                    <td>{{w.exception}}</td>
+                                    <td>{{date-fmt w.time}}</td>
+                                    <td>{{w.msg}}</td>
+                                </tr>
+                            {{/each}}
+                          </tbody>
+                      </table>
+                  {{/bootstrap-popover}}
+                {{/if}}
+              </td>
+
+          </tr>
+      {{/if}}
+    {{/each}}
+
+    </tbody>
+</table>
+
+<h2>Finished Cron Status</h2>
+
+<table class="table table-striped">
+    <thead>
+    <tr>
+        <th>Dataset</th>
+        <th>type</th>
+        <th>name</th>
+        <th>started</th>
+        <th>completed</th>
+        <th>checked</th>
+        <th>time</th>
+        <th>state</th>
+        <th>total</th>
+        <th>completed</th>
+        <th>custom</th>
+        <th>Warnings</th>
+        <th>Errors</th>
+    </tr>
+    </thead>
+    <tbody>
+    {{#each model.tasks as |f|}}
+        <tr class={{f.class_UI}}>
+            <td>{{f.datasetId}}</td>
+            <td>{{f.type}}</td>
+            <td>{{f.name}}</td>
+            <td>{{date-fmt f.lastStartedTime}}</td>
+            <td>{{date-fmt f.lastCompletedTime}}</td>
+            <td>{{date-fmt f.checkStartedTime}}</td>
+            <td>{{f.timeTaken}}</td>
+            <td>{{f.state}}</td>
+            <td>{{f.lastTotalWork}}</td>
+            <td>{{f.lastCompletedWork}}</td>
+            <td>{{f.lastCustomMetric}}</td>
+            <td>
+              {{#if f.lastWarnings}}
+                {{#bootstrap-popover title="Warning Messages" linktext="warnings"}}
+                    <b>{{f.lastWarningCt}} Warnings</b>
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th>File</th>
+                            <th>Line</th>
+                            <th>Func</th>
+                            <th>Exception</th>
+                            <th>Time</th>
+                            <th>Msg</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {{#each f.lastWarnings as |lw|}}
+                            <tr>
+                                <td>{{lw.file}}</td>
+                                <td>{{lw.line}}</td>
+                                <td>{{lw.func}}</td>
+                                <td>{{lw.exception}}</td>
+                                <td>{{date-fmt lw.time}}</td>
+                                <td>{{lw.msg}}</td>
+                            </tr>
+                        {{/each}}
+                        </tbody>
+                    </table>
+                {{/bootstrap-popover}}
+              {{/if}}
+            </td>
+            <td>
+              {{#if f.lastError}}
+                {{#bootstrap-popover title="Error Message" linktext="Error"}}
+                  {{f.lastError.file}}<br>
+                    Line:{{f.lastError.line}}<br>
+                  {{f.lastError.func}}<br>
+                  {{f.lastError.code}}<br>
+                  {{f.lastError.exception}}<br>
+                  {{date-fmt f.lastError.time}} <br>
+                  {{f.lastError.msg}}
+                {{/bootstrap-popover}}
+              {{/if}}
+            </td>
+        </tr>
+    {{/each}}
+    </tbody>
+</table>
+

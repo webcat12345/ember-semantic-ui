@@ -1,0 +1,27 @@
+<div class="row text-center">
+  <h3>{{chart.chart.title.text}}</h3>
+  <h5>{{chart.chart.subtitle.text}}</h5>
+</div>
+<div class="row">
+  <table class="table table-striped table-responsive text-left">
+    <thead>
+      <tr>
+        <th>Category</th>
+        <th>Ct</th>
+        {{#each chart.series as |s|}}
+          <th>{{s.name}}</th>
+        {{/each}}
+
+      </tr>
+    </thead>
+    <tbody>
+      {{#each seriesAsList as |s|}}
+        <tr>
+          {{#each s as |c|}}
+            <td>{{c}}</td>
+          {{/each}}
+        </tr>
+      {{/each}}
+    </tbody>
+  </table>
+</div>

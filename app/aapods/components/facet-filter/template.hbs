@@ -1,0 +1,108 @@
+{{#if grid}}
+  <div class="row">
+    <div class="col-md-2"></div>
+    <div class="col-md-8">
+      <h4>
+        {{input value=facetSearch placeholder="Choose Filters" class="form-control"}}
+      </h4>
+    </div>
+    <div class="col-md-2"></div>
+  </div>
+  <div class="row row-flex row-flex row-flex-wrap text-center">
+    {{#each facetGroups as |fg|}}
+      {{#if fg.hidden}}
+      {{else}}
+      <div class="col-md-2 panel-collapse collapse in">
+        <ul class="list-group">
+          <li {{bind-attr class=":list-group-item"}}><strong>{{fg.name}} </strong>
+            <ul class="list-group">
+              {{#each f in fg.facets}}
+                <li {{bind-attr class=":list-group-item :hand f.hidden:hidden"}}>
+                  <span class="hand" {{action 'toggleFacet' f}}>
+                    {{#if f.selected}}
+                      {{fa-icon icon="check-square-o"}}
+                    {{else}}
+                      {{fa-icon icon="square-o"}}
+                    {{/if}}
+                    {{f.name}} <em>({{f.count}})</em>
+                  </span>
+                  {{#if isAdmin}}
+                  <span class="hand" {{action 'toggleRemove' f}}>
+                    {{#if f.removed}}
+                      {{fa-icon icon="times-circle"}}
+                    {{else}}
+                      {{fa-icon icon="times"}}
+                    {{/if}}
+                  </span>
+                  {{/if}}
+                </li>
+              {{/each}}
+              {{#if fg.tooBig}}
+                {{#if fg.showMore}}
+                  <li {{action 'showMore' fg}} class="list-group-item">
+                    <a href="">See Less</a>
+                  </li>
+                {{else}}
+                  <li {{action 'showMore' fg}} class="list-group-item">
+                    <a href="">See More</a>
+                  </li>
+                {{/if}}
+              {{/if}}
+            </ul>
+          </li>
+        </ul>
+      </div>
+      {{/if}}
+    {{/each}}
+  </div>
+{{else}}
+  <div class="panel">
+    <div class="panel-heading panel-primary">
+      <h4 class="panel-title">
+        {{input value=facetSearch placeholder="Choose Filters" class="form-control input-sm"}}
+      </h4>
+    </div>
+    <div id="collapseOne" class="panel-collapse collapse in">
+      <ul class="list-group">
+        {{#each fg in facetGroups}}
+          <li {{bind-attr class=":list-group-item fg.hidden:hidden"}}><strong>{{fg.name}} </strong>
+            <ul class="list-group">
+              {{#each fg.facets as |f|}}
+                <li {{bind-attr class=":list-group-item :hand f.hidden:hidden"}}>
+                  <span class="hand" {{action 'toggleFacet' f}}>
+                    {{#if f.selected}}
+                      {{fa-icon icon="check-square-o"}}
+                    {{else}}
+                      {{fa-icon icon="check-square-o"}}
+                    {{/if}}
+                    {{f.name}} <em>({{f.count}})</em>
+                  </span>
+                  {{#if isAdmin}}
+                  <span class="hand" {{action 'toggleRemove' f}}>
+                    {{#if f.removed}}
+                      {{fa-icon icon="times-circle"}}
+                    {{else}}
+                      {{fa-icon icon="times"}}
+                    {{/if}}
+                  </span>
+                  {{/if}}
+                </li>
+              {{/each}}
+              {{#if fg.tooBig}}
+                {{#if fg.showMore}}
+                  <li {{action 'showMore' fg}} class="list-group-item">
+                    <a href="">See Less</a>
+                  </li>
+                {{else}}
+                  <li {{action 'showMore' fg}} class="list-group-item">
+                    <a href="">See More</a>
+                  </li>
+                {{/if}}
+              {{/if}}
+            </ul>
+          </li>
+        {{/each}}
+      </ul>
+    </div>
+  </div>
+{{/if}}

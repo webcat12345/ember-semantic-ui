@@ -1,0 +1,11 @@
+<div class="container login_page">
+    <form class="form-signin" role="form" {{action 'authenticate' on='submit'}}>
+      <h3 class="form-signin-heading text-center">Welcome to<br><img src="/assets/images/CuberLogoWidth190.png"></h3>
+      {{#if errorMessage}}
+        <div class="alert alert-danger" role="alert">{{errorMessage}} <a href="mailto:admin@datasenselabs.com">Contact Us.</a></div>
+      {{/if}}
+      {{input id='identification' valueBinding='identification' placeholder='Enter Login' classNames='form-control' required='' autofocus=''}}
+        {{input id='password' type='password' valueBinding='password' classNames='form-control' placeholder='Enter Password' required=''}}
+        <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+    </form>
+</div>

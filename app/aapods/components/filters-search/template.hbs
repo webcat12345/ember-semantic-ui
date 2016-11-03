@@ -1,0 +1,24 @@
+<div class="ui segment filters--box">
+    <div class="ui grid">
+      {{#each filters as |filter|}}
+        {{filters-search/filter-button dimensions=dimensions filter_id=filter.id filter=filter dataset_id=dataset_id removeFilter=(action 'removeFilter')}}
+      {{else}}
+          <div class="ui basic black button tiny" style="margin-top:4px;margin-left: 5px;"> {{default_text}}</div>
+      {{/each}}
+
+        <div class="filters--add-filter">
+          {{#ui-dropdown class="ui fluid selection dropdown filters search search_engine basic button tiny"
+          onChange='updateSelectedFilter'}}
+              <div class="default text">Add filter</div>
+              <i class="dropdown icon"></i>
+              <div class="menu">
+                {{#each choices as |choice|}}
+                    <div class="item" data-id="{{choice.value}}" data-value="{{choice.value}}">
+                        <b>{{choice.name}}</b>
+                    </div>
+                {{/each}}
+              </div>
+          {{/ui-dropdown}}
+        </div>
+    </div>
+</div>

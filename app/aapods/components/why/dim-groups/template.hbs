@@ -1,0 +1,5 @@
+<ul class="nav nav-pills nav-stacked">
+{{#each valid as |funnel key|}}
+ <li class={{unbound (if (eq key 0) "active")}}><a data-toggle="pill" href=""{{action 'changeFunnel' funnel}}>{{funnel.name}}</a></li>
+{{/each}}
+</ul>

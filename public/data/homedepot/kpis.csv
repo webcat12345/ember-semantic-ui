@@ -1,0 +1,5 @@
+id,name,avg_value,color,icon,dashboard
+1,Conversion Rate,2%,panel panel-primary,fa fa-shopping-cart fa-5x,1
+2,Add to carts,8.5%,panel panel-green,fa fa-tasks fa-5x,1
+3,Page Views,1.5 billion,panel panel-red,fa fa-comments fa-5x,1
+4,Bounce Rate,60%,panel panel-red,fa fa-comments fa-5x,1

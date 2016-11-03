@@ -1,0 +1,47 @@
+<div class="ui padded grid">
+    <div class="padded row">
+    </div>
+
+    <div class="padded row explore--main-row">
+        <div class="sixteen wide column">
+            PROFILE<br>
+          {{#if bpt.name}}
+              <button type="button"
+                      class="small ui basic button" {{action "remove_point" "Bpt"}}
+                      style="max-width:220px"> {{bpt.name}}
+                  <b>X</b></button>
+
+              <br> <br> AGAINST<br>
+            {{#if apt.name}}
+                <button type="button"
+                        class="small ui basic button" style="max-width:220px"> {{apt.name}}
+                    <i class="fa fa-check" aria-hidden="true"></i></button>
+            {{/if}}
+
+            {{#each behavior in possible_behavior}}
+                <br>
+                <button type="button"
+                        class="small ui inline basic button" {{action "behavior" behavior}} style="max-width:220px">
+                  {{behavior.display}}
+                </button>
+            {{/each}}
+
+              <br> <br>
+            {{#if canCompare}}
+                <button {{action "send_comp" dataset._id compareObject apt.value bpt.value bpt.filter}}
+                        class="tiny ui primary button">
+                  {{#if loading}}
+                    {{fa-icon icon="refresh" spin=true size="1"}}
+                  {{else}}
+                      Profile
+                  {{/if}}
+                </button>
+            {{/if}}
+          {{else}}
+              <button class="ui basic profile-chart--empty-button" {{action 'start_compare'}}>
+                  + pick on the chart
+              </button>
+          {{/if}}
+        </div>
+    </div>
+</div>

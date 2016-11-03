@@ -1,0 +1,122 @@
+<div class="row">
+  <div class="col-md-2 border-right text-right">
+    <div class="btn-group-vertical" role="group" aria-label="...">
+      <button type="button" class="btn btn-default" {{action 'show' 'outlier'}}>Outlier Chart</button>
+      <button type="button" class="btn btn-default" {{action 'show' 'grid'}}>Data Grid</button>
+      {{#if isDeep}}
+        <button type="button" class="btn btn-default" {{action 'show' 'expected'}}>vs Overall</button>
+      {{/if}}
+      <div class="btn-group" role="group">
+        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          Save
+          <span class="caret"></span>
+        </button>
+        <ul class="dropdown-menu">
+          <li><a href="">I know this</a></li>
+          <li><a href="">Investigate Later</a></li>
+          <li><a href="">Already Investigated</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-8">
+    <div class="row text-center">
+      <span class="text-lg font-extra-bold">{{group.key}}</span> : {{number-fmt 'metric' group.metrics.final}}{{schemaFilter.metric.unit_type}} / {{number-fmt 'commas' group.metrics.total}}
+    </div>
+    {{#if showOutlier}}
+      {{charts/high-chart config=chart}}
+    {{/if}}
+    {{#if showExpected}}
+      {{charts/high-chart config=expectedChart}}
+    {{/if}}
+    {{#if showGrid}}
+      <div class="row text-center font-extra-bold">
+        <h5>
+          <a href="" {{action 'selectFactor' group.fid}}>{{group.name}}</a>
+          <span class="hand" {{action 'removeFactor' group.fid}}>
+            {{fa-icon icon="times"}}
+          </span>
+        </h5>
+      </div>
+      <hr>
+      <div class="row space-box">
+        <div class="col-md-4 font-extra-bold text-center border-right">Name</div>
+        {{#if isDeep}}
+          <div class="col-md-1 font-extra-bold text-center border-right">Delta</div>
+          <div class="col-md-1 font-extra-bold text-center border-right">Exp</div>
+        {{else}}
+          <div class="col-md-2 font-extra-bold text-center border-right">Delta</div>
+        {{/if}}
+        <div class="col-md-2 font-extra-bold text-center border-right">Metric</div>
+        <div class="col-md-2 font-extra-bold text-center border-right">Size</div>
+        <div class="col-md-2 font-extra-bold text-center">Links</div>
+      </div>
+      {{#each group.facets as |f|}}
+        <div class="row space-box {{if f.insight.hidden 'hidden'}}">
+          <div class="col-md-4 text-center border-right font-bold">
+            <span class="hand" {{action 'toggleFacet' f}}>
+              {{#if f.insight.selected}}
+                {{fa-icon icon="checked-square-o"}}
+              {{else}}
+                {{fa-icon icon="square-o"}}
+              {{/if}}
+            </span>&nbsp;
+            <a href="" {{action 'selectFacet' group.fid f.v}}>{{f.v}}</a>
+          <span class="hand" {{action 'removeFacet' group.fid f.v}}>
+              {{fa-icon icon="times"}}
+          </span>
+          </div>
+          {{#if isDeep}}
+            <div class="col-md-1 text-center text-{{f.klvl}} border-right">
+              <strong>{{number-fmt 'changeperc' f.kdelta}}%</strong>
+            </div>
+            <div class="col-md-1 text-center border-right">
+              <strong>{{number-fmt 'changeperc' f.edelta}}%</strong>
+            </div>
+          {{else}}
+            <div class="col-md-2 text-center text-{{f.klvl}} border-right">
+              <strong>{{number-fmt 'changeperc' f.kdelta}}%</strong>
+            </div>
+          {{/if}}
+          <div class="col-md-2 text-center text-{{f.klvl}} border-right">
+            <strong>
+              {{number-fmt 'metric' f.insight.scores.final}}{{schemaFilter.metric.unit_type}}
+            </strong>
+          </div>
+          <div class="col-md-2 text-center border-right">{{number-fmt 'commas' f.insight.scores.total}}</div>
+          <div class="col-md-2 text-center">
+            <a href="" {{action 'showModal' 'contrib-list' f.insight}}>More</a> /
+            <a href="" {{action 'saveInsight' f.insight}}>
+              {{#if f.insight.saved}}
+                {{fa-icon icon="bookmark"}}
+              {{else}}
+                {{fa-icon icon="bookmark-o"}}
+              {{/if}}
+            </a>
+          </div>
+        </div>
+      {{/each}}
+      {{#if group.more}}
+        {{#if showMore}}
+          <div {{action 'showMore'}} class="row text-center">
+            <a href="">See Less</a>
+          </div>
+        {{else}}
+          <div {{action 'showMore'}} class="row text-center">
+            <a href="">See More</a>
+          </div>
+        {{/if}}
+      {{/if}}
+    {{/if}}
+  </div>
+  <div class="col-md-2">
+    <div class="row space-box">
+      <h4>Pick two to compare</h4>
+      <strong>A:</strong> {{selectedA}}<br>
+      <strong>B:</strong> {{selectedB}}<br>
+      {{#if compare}}
+        {{#link-to 'compare' (query-params q=compare.id) class="btn btn-default"}}Compare{{/link-to}}
+      {{/if}}
+    </div>
+  </div>
+</div>

@@ -1,0 +1,40 @@
+<div class="ui secondary pointing menu">
+
+  {{#link-to "channels.channel.overview" model.feed_id class="item"}}Overview{{/link-to}}
+  {{#unless (eq model.dataset_id 'whoeasy')}}
+    {{#link-to "channels.channel.feed" model.feed_id class="item" tagName="div" href=false}}
+      {{#link-to "channels.channel.feed" model.feed_id
+      (query-params query="overall" filter=null storyType=null sortBy=null ranking=null
+      pageSize=null pagetype=null pagetitle=null
+      metric=null segment_name=null likes=null
+      startDate=null  endDate=null  period=null
+      displayType=null) class="no-link"}}
+          Feed
+      {{/link-to}}
+    {{/link-to}}
+  {{/unless}}
+  {{#link-to "channels.channel.insights" model.feed_id class="item" tagName="div" href=false}}
+    {{#link-to "channels.channel.insights" model.feed_id
+    (query-params query="overall" filter=null storyType=null sortBy=null ranking=null
+    pageSize=null pagetype=null pagetitle=null
+    metric=null segment_name=null likes=null
+    startDate=null  endDate=null  period=null
+    displayType=null) class="no-link"}}
+        Trends
+    {{/link-to}}
+  {{/link-to}}
+    <div class="pull right item">
+      {{#if editing}}
+          <button class="ui basic button" {{action "toggleedit"}}>
+              <i class="fa fa-floppy-o settings hand"></i>
+              Save Settings
+          </button>
+      {{else}}
+          <button class="ui basic button" {{action "toggleedit"}}>
+              <i class="fa fa-cog settings hand"></i>
+              Settings
+          </button>
+      {{/if}}
+    </div>
+</div>
+{{outlet}}

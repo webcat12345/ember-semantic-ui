@@ -1,0 +1,28 @@
+<div class="row">
+  <div class="col-md-3">
+    <div class="row">
+      {{#link-to 'schema.newcol' class='btn btn-default'}}Create {{type}}{{/link-to}}
+    </div>
+    <div class="row">
+    {{list-picker
+    content=columnArr
+    selection=selectedFactors
+    liveSearch=true
+    multiple=true
+    optionGroupPath="group"
+    optionLabelPath="content.name"
+    optionValuePath="content.id"}}
+    </div>
+  </div>
+  <div class="col-md-5">
+    <div class="row space-box">
+      <ul class="list-group">
+        {{#each selectedFactors as |m|}}
+          <li class="list-group-item">
+            {{m.name}}
+          </li>
+        {{/each}}
+      </ul>
+    </div>
+  </div>
+</div>

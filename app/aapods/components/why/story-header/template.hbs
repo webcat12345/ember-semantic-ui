@@ -1,0 +1,62 @@
+{{#unless currStory}}
+    Loading ...
+{{else}}
+    <tr>
+        <td>
+
+            <a href="" {{action "explore"}}><h4 class="media-heading">
+              {{#if is_story_computed}}
+
+                {{number-fmt 'int' currStory.change.diff.pm}}%
+                {{#if currStory.change.diff.isHigher}}
+                    increase in
+                {{else}}
+                    dip in
+                {{/if}}
+                  <span class="metric--name_title">{{factor-name id=currStory.metricId factors=metricHash}}</span>
+              {{else}}
+                  Story need to be computed
+              {{/if}}
+            </h4>
+                <p>
+                    comparing
+            <span class="bucket_style">
+                {{format-bucket currStory.change.a}}
+                <div class="actual_metric_value">
+                    ({{number-fmt 'metric' currStory.change.a.om}}{{model.metric.unit_type}})
+                </div>
+            </span>
+                    with
+          <span class="bucket_style">
+              {{format-bucket currStory.change.b}}
+              <div class="actual_metric_value">({{number-fmt 'metric' currStory.change.b.om}}{{model.metric.unit_type}})
+              </div>
+              </span>
+                    for
+                  {{#if currStory.change.displaystr}}
+                    {{#each currStory.change.displaystr as |df|}}
+                      {{df.name}}{{df.op}}{{df.value}}
+                    {{/each}}
+                  {{else}}
+                      Segment=Overall
+                  {{/if}}
+                </p>
+              {{#if currStory.change.diff.significance}}
+                {{#unless (eq currStory.change.diff.significance.pvalue -1)}}
+                    ( Statistical significance:
+                  {{number-fmt 'metric' currStory.change.diff.significance.pvalue}}%
+                    )
+                {{/unless}}
+              {{/if}}</a>
+
+        </td>
+        <td>{{date-fmt currStory.timestamp "fromnow2"}}</td>
+        <td>
+            <button type="button" class="btn btn-default btn-xs" {{action 'trash'}}>
+                <i class="fa fa-times" aria-hidden="true"></i> Trash
+            </button>
+        </td>
+
+    </tr>
+{{/unless}}
+<!-- Storu end -->

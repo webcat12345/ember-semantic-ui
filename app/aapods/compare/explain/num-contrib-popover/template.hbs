@@ -1,0 +1,96 @@
+{{#bootstrap-popover title="More Details"
+linktext=(change-fmt point.facet.facet_data.b.pmct point.facet.contribdiff "%")}}
+    <table class="table table-striped table-in-popover">
+        <thead>
+        <tr>
+            <th></th>
+            <th>
+              {{#if model.results.apt.bucket.[0].value }}
+                {{#if model.results.apt.bucket.[1] }}
+                  {{#each model.results.apt.bucket as |one_value|}}
+                    {{one_value.name}}{{one_value.op}}{{one_value.value}}
+                    <br>
+                  {{/each}}
+                {{else}}
+                  {{#if model.results.apt.bucket.[0] }}
+                    {{model.results.apt.bucket.[0].value}}
+                  {{/if}}
+                {{/if}}
+              {{else}}
+                {{model.results.apt.bucket}}
+              {{/if}}
+            </th>
+            <th>
+              {{#if model.results.bpt.bucket.[0].value }}
+                {{#if model.results.bpt.bucket.[1] }}
+                  {{#each model.results.bpt.bucket as |one_value|}}
+                    {{one_value.name}}{{one_value.op}}{{one_value.value}}
+                    <br>
+                  {{/each}}
+                {{else}}
+                  {{#if model.results.bpt.bucket.[0] }}
+                    {{model.results.bpt.bucket.[0].value}}
+                  {{/if}}
+                {{/if}}
+              {{else}}
+                {{model.results.bpt.bucket}}
+              {{/if}}
+            </th>
+            <th>Change</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td>Contribution</td>
+            <td>{{number-fmt 'perc' point.facet.facet_data.a.pmct}}
+                %
+            </td>
+            <td>{{number-fmt 'perc' point.facet.facet_data.b.pmct}}
+                %
+            </td>
+            <td class={{point.contribcolor}}>
+              {{number-fmt 'changeperc' point.facet.contribdiff}}%
+            </td>
+        </tr>
+        {{#if model.metric.calculation.numerator}}
+            <tr>
+                <td>
+                    Segment {{model.metric.calculation.numerator.name}}</td>
+                <td>{{number-fmt 'metric' point.facet.facet_data.a.mct}}{{model.metric.calculation.numerator.unit_type}}</td>
+                <td>{{number-fmt 'metric' point.facet.facet_data.b.mct}}{{model.metric.calculation.numerator.unit_type}}</td>
+                <td class={{point.numercolor}}>
+                  {{number-fmt 'changeperc' point.facet.netdiff}}{{model.metric.calculation.numerator.unit_type}}
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Overall {{model.metric.calculation.numerator.name}}</td>
+                <td>{{number-fmt 'metric' point.facet.facet_data.a.parent.mct}}{{model.metric.calculation.numerator.unit_type}}</td>
+                <td>{{number-fmt 'metric' point.facet.facet_data.b.parent.mct}}{{model.metric.calculation.numerator.unit_type}}</td>
+                <td class={{if model.results.d.isNumHigher "text-green" "text-red"}}>
+                  {{number-fmt 'changeperc' point.facet.parents_difference.mct}}{{model.metric.calculation.numerator.unit_type}}
+                </td>
+            </tr>
+        {{else}}
+            <tr>
+                <td>Segment {{model.metric.name}}</td>
+                <td>{{number-fmt 'metric' point.facet.facet_data.a.mct}}{{model.metric.unit_type}}</td>
+                <td>{{number-fmt 'metric' point.facet.facet_data.b.mct}}{{model.metric.unit_type}}</td>
+                <td class={{point.numercolor}}>
+                  {{number-fmt 'changeperc' point.facet.netdiff}}{{model.metric.unit_type}}
+                </td>
+            </tr>
+
+            <tr>
+                <td>Overall {{model.metric.name}}</td>
+                <td>{{number-fmt 'metric' point.facet.facet_data.a.parent.mct}}{{model.metric.unit_type}}</td>
+                <td>{{number-fmt 'metric' point.facet.facet_data.b.parent.mct}}{{model.metric.unit_type}}</td>
+                <td class={{if model.results.d.isNumHigher "text-green" "text-red"}}>
+                  {{number-fmt 'changeperc' point.facet.parents_difference.mct}}{{model.metric.unit_type}}
+                </td>
+            </tr>
+        {{/if}}
+
+        </tbody>
+    </table>
+{{/bootstrap-popover}}

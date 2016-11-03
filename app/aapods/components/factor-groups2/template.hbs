@@ -1,0 +1,79 @@
+<div class="row">
+    <div class="row">
+
+        <nav class="navbar navbar-default">
+            <div class="container-fluid">
+                <div class="pull-right">
+                    <button {{action 'newFunnel'}} type="button" class="btn btn-xs btn-default navbar-btn">
+                        <span class=""></span> New
+                    </button>
+                    <button {{action 'createFunnel'}} type="button"
+                                                      class=" {{if isDisabled 'disabled'}} btn btn-xs btn-default navbar-btn">
+                        <span class=""></span> Update
+                    </button>
+                    <button {{action 'selectAll' true}} type="button"
+                                                        class=" {{if isDisabled 'disabled'}} btn btn-xs btn-default navbar-btn">
+                        <span class=""></span> Select All
+                    </button>
+                    <button {{action 'selectAll' false}} type="button"
+                                                         class=" {{if isDisabled 'disabled'}} btn btn-xs btn-default navbar-btn">
+                        <span class=""></span> Unselect All
+                    </button>
+                  {{input type="checkbox" checked=fetchVals}} Fetch values
+                </div>
+                <ul class="nav navbar-nav">
+                  {{#each funnels as |funnel|}}
+
+                      <li><a href=""
+                             class="{{if (eq funnel.name currFunnel.name) 'active'}}" {{action 'changeFunnel' funnel}}>{{funnel.name}}</a>
+                      </li>
+                  {{/each}}
+                  {{#if loadingFunnels}}{{fa-icon icon="refresh" spin=true size="4"}}{{/if}}
+
+                </ul>
+            </div>
+        </nav>
+    </div>
+    <div class="alert alert-success" style="display:none" id="success-alert">
+        <button type="button" class="close" data-dismiss="alert">x</button>
+        <strong>Success! </strong>
+        Why dimensions have been updated!
+    </div>
+
+    <div class="row">
+        <div class="col-md-6">
+          {{#if currFunnel}}
+            {{#if order}}
+                <label>Order the steps</label><br/>
+
+            {{/if}}
+              <div class="form-group">
+                  <label>Group Name</label>{{input class="input-lg" type="text" value=currFunnel.name size="50"}}
+
+
+              </div>
+          {{/if}}
+        </div>
+    </div>
+    <div class="row">
+        <table class="table">
+            <thead>
+            <tr>
+                <th>Dimension</th>
+                <th>Values</th>
+            </tr>
+            </thead>
+            <tbody>
+            {{#each dmetrics as |dim|}}
+                <tr>
+                    <td>{{input type="checkbox" name=dim.text checked=dim.following}} {{dim.text}}</td>
+                    <td>{{#if fetchVals}}{{schema/dim-vals dimid=dim.id}}{{/if}}</td>
+                </tr>
+            {{/each}}
+
+            </tbody>
+        </table>
+    </div>
+
+
+</div>

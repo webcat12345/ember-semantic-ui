@@ -1,0 +1,127 @@
+
+.sidebar 
+	font-size: 15px !important
+	width: auto!important
+	min-width: 240px
+	position: fixed
+	top: 0
+	bottom: 0
+	left: 0
+	z-index: 1000
+	display: block
+	padding: 20px
+	overflow-x: hidden
+	overflow-y: auto
+	background: #2b2b2b
+	a
+		color: $white
+		margin-top: 2px
+		margin-bottom: 2px
+		padding-left: 24px!important
+	a:hover, a:focus
+		color: #333
+		border-top-right-radius: 4px
+		border-bottom-right-radius: 4px
+
+	i
+		margin-right: 8px
+.sidebar
+	.active
+		background-color: #eee
+		color: #333
+		border-top-right-radius: 4px
+		border-bottom-right-radius: 4px
+
+.sidebar--title
+	font-size: 14px
+	width: auto
+	padding-bottom: 2px
+	border-bottom: 1px solid #696969
+	color: #696969
+	margin-right: 16px
+	margin-top: 16px
+	margin-left: 0px
+	margin-bottom: 4px
+	i 
+		margin-right: 8px
+.sidebar--title--cta
+	font-size: 12px
+	float: right
+	a
+		color: #696969 !important
+	a:hover
+		color: #fff !important
+	a:focus
+		background: transparent
+	.active
+		background-color: #2b2b2b !important
+
+
+
+//.sidebar--section
+	//padding-bottom: 10px
+
+.sidebar--datasource
+	position: fixed
+	bottom: 0
+	height: 44px
+	background: #1D1C1C
+	left: 0
+	width: 250px
+	padding-top: 10px
+	padding-bottom: 8px
+	text-color: #000 !important
+	.button
+		cursor: pointer
+		padding-left: 24px
+		padding-right: 30px
+		color: #ddd
+	.caret
+		float: right
+		padding-top: 8px
+		border-top: 4px solid $blue
+  .dropdown
+    .open
+      background: transparent !important
+	.dropdown-menu
+		padding: 16px
+		li
+			padding-top: 4px
+			border: none
+			a
+				padding-left: 0 !important
+		.active
+			a
+				border-bottom: 2px solid $black
+				background: transparent
+				color: $black !important
+		a:hover
+			color: black !important
+
+@media (min-width: 768px)
+	.sidebar 
+		margin-top: 63px
+
+
+.caret-up 
+    /* Safari */
+    -webkit-transform: rotate(-180deg)
+    
+    /* Firefox */
+    -moz-transform: rotate(-180deg)
+    
+    /* IE */
+    -ms-transform: rotate(-180deg)
+
+    /* Opera */
+    -o-transform: rotate(-180deg)
+    
+    /* Internet Explorer */
+    filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=6)
+
+.drop-up
+    top: auto
+    bottom: 100% !important
+
+
+

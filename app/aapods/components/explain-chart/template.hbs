@@ -1,0 +1,47 @@
+<div class="ui padded grid">
+    <div class="padded row explore--main-row-head">
+        <div class="fourteen wide column">
+          {{compare-explain-chart chart_state=chart_state apt=apt bpt=bpt comp=(action 'comp')
+          reset_point=reset_point
+          loading=loading
+          startDate=window.startDate
+          endDate=window.endDate
+          chart_start_date=startDate
+          dataset=dataset compareObject=compareObject setPoint=(action 'setPoint')}}
+        </div>
+      {{#if contextDashboard}}
+          <div class="two wide column">
+              <i style=" cursor: pointer; cursor: hand;"
+                 class="fa fa-times pull-right dashboard-chart-menu" {{action 'pinChart' chart_id}}></i>
+          </div>
+      {{/if}}
+    </div>
+    <div class="padded row explore--main-row">
+        <div class="sixteen wide column">
+          {{charts/col-chart dataset=dataset
+          selectedMetricId=selectedMetricId
+          selectedDimensionId=selectedDimensionId
+          startDate=startDate
+          endDate=endDate
+          sortm=sortm
+          sortd=sortd
+          type=type
+          topN=topN
+          filter=f
+          preColorA=preColorA
+          preColorB=preColorB
+          group_by_id=group_by.id
+          chart_name=chart_name
+          chart_subtitle=chart_subtitle
+          dashboard=dashboard
+          spark_only=spark_only
+          chart_context='explain-chart'
+          exploreLink=true
+          showTimeZoom=false
+          chart_state=chart_state
+          reset_point=reset_point
+          setCompare=(action 'setCompare')
+          setPoint=(action 'setPoint')}}
+        </div>
+    </div>
+</div>

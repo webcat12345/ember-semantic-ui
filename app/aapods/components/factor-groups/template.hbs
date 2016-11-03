@@ -1,0 +1,43 @@
+<div class="row">
+    <div class="col-md-2">
+        <label>Existing groups</label>{{#if loadingFunnels}}{{fa-icon icon="refresh" spin=true size="4"}}{{/if}}<a
+            href="" {{action 'newFunnel'}}>
+        <small><i class="fa fa-plus-square"></i> New</small>
+    </a><br/>
+      {{#each funnels as |funnel|}}
+          <a href="" {{action 'changeFunnel' funnel}}>{{funnel.name}}</a>
+          <br/>
+      {{/each}}
+    </div>
+    <div class="col-md-4">
+        <label>Create a new one or Pick from existing</label>
+      {{select-2
+      content=dmetrics
+      multiple=true
+      value=currFunnel.metrics
+      placeholder="Choose"
+      }}
+
+    </div>
+    <div class="col-md-6">
+      {{#if currFunnel}}
+        {{#if order}}
+            <label>Order the steps</label><br/>
+
+        {{/if}}
+          <div class="form-group">
+              <label>Group Name</label><br/>{{input type="text" value=currFunnel.name size="50"}}<br/><br/>
+
+              <div class="col-md-4 btn btn-default btn-success inline {{if isDisabled 'disabled'}}" {{action 'createFunnel'}}>
+                  Create/Update Group
+              </div>
+            {{#if currFunnel.name}}
+                <div class="col-md-4 btn btn-default btn-failure inline" {{action 'deleteFunnel' currFunnel}}>
+                    Delete
+                </div>
+            {{/if}}
+
+          </div>
+      {{/if}}
+    </div>
+</div>

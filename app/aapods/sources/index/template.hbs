@@ -1,0 +1,71 @@
+<div class="row">
+    <div class="col-md-6">
+    <div class="row">
+        <div align="center" class="col-md-6">
+            <section class="card">
+  {{#link-to "source" "newmp"}}Mixpanel<br/><img class="sourceimg" src="/assets/images/mixpanel-logo.png"/>{{/link-to}}
+</section>
+</div>
+        <div align="center" class="col-md-6">
+         <section class="card">
+  {{#link-to "source" "newga"}}Google Analytics{{/link-to}}
+  <img class="sourceimg" src="/assets/images/analytics-logo.png"/>
+</section>   
+        </div>
+    </div>
+    <div align="center" class="row">
+        <div class="col-md-6">
+            <section class="card">
+  {{#link-to "source" "newomf"}}Adobe Omniture{{/link-to}}
+  <br/>
+  <img class="sourceimg" src="/assets/images/connector-adobe-analytics.png"/>
+</section>
+</div>
+        <div align="center" class="col-md-6">
+         <section class="card">
+  {{#link-to "source" "news3"}}Amazon S3<br/><img class="sourceimg" src="/assets/images/amazon-web-services-logo.png"/>{{/link-to}}
+  
+</section>   
+        </div>
+    </div>
+    <div align="center" class="row">
+        <div class="col-md-6">
+            <section class="card">
+  {{#link-to "source" "newCSFTP"}}SFTP<br/><img class="sourceimg" src="/assets/images/sftp.png"/>{{/link-to}}
+  
+</section>
+</div>
+        <div align="center" class="col-md-6">
+         <section class="card">
+  {{#link-to "source" "newfile"}}File<br/><img class="sourceimg" src="/assets/images/folder_web_upload.png"/>{{/link-to}}
+</section>
+        </div>
+    </div>
+    <div align="center" class="row">
+        <div class="col-md-6">
+            <section class="card">
+  {{#link-to "source" "newmysql"}}SQL<br/><img class="sourceimg" src="/assets/images/sql-logo.png"/>{{/link-to}}
+  
+</section>
+</div>
+        <div align="center" class="col-md-6">
+          
+
+        </div>
+    </div>
+</div>
+<div class="col-md-6"><h3> To get started we need your data into the system</h3><br/>Pick from these sources<br/>
+ <br/>Existing Sources<br/>
+ <ul class="list-group" id="collapseSources">
+  {{#each model as |s|}}
+      <li class="list-group-item">
+        {{#link-to 'source' s.id}}
+          {{s.name}}
+            <small>{{s.type}}</small>
+        {{/link-to}}
+      </li>
+  {{/each}}
+  
+</ul></div>
+
+</div>

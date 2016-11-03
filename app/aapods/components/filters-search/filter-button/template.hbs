@@ -1,0 +1,35 @@
+<div class="ui basic black button tiny" style="margin-top:2px;">
+
+  {{semantic-select
+  content=dimensions
+  optionValuePath='content.id'
+  optionLabelPath='content.name'
+  dropdown_class="filters"
+  selection=filter.dimsId
+  prompt="Pick dimenion"
+  uiType="inline"
+  required=true}}
+
+
+  {{semantic-select
+  content=filterTypes
+  optionValuePath='content.name'
+  optionLabelPath='content.name'
+  dropdown_class="filters"
+  selection=selectedFilterType
+  prompt="Pick filter type"
+  uiType="inline"
+  required=true}}
+
+  {{semantic-select
+  multiple=multiple
+  optionValuePath='content.name'
+  optionLabelPath='content.name'
+  dropdown_class="dimensionsValues"
+  selection=selectedDimensionValue
+  prompt="Pick value"
+  uiType="inline"
+  required=true}}
+
+    <i class="remove icon" {{action "removeFilter" filter_id}}></i>
+</div>

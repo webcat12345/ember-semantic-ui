@@ -1,0 +1,32 @@
+{{#if loadingResults}}
+    <div class="whitebox text-center sixteen wide column">
+        <h1>Loading...</h1>
+      {{fa-icon icon="refresh" spin=true size="4"}}
+    </div>
+{{else}}
+    <div class="ui middle aligned divided padded grid">
+        <div class="row">
+            <div class="seven wide column">
+              {{charts/scatter-plot
+              loading=false
+              serverChart=metricChart
+              title=displaySettings.metricChartName
+              xAxisTitle=resultDimension.name
+              yAxisTitle=displaySettings.metricYAxis}}
+            </div>
+            <div class="two wide column">
+            </div>
+            <div class="seven wide column">
+              {{charts/scatter-plot
+              loading=false
+              serverChart=sizeChart
+              title=displaySettings.sizeChartName
+              xAxisTitle=resultDimension.name
+              yAxisTitle=displaySettings.sizeYAxis}}
+            </div>
+
+        </div>
+
+    </div>
+{{/if}}
+

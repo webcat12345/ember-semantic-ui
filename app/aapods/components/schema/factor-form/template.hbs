@@ -1,0 +1,340 @@
+
+{{#if isMini}}
+    <form class="form-horizontal" id="factorform">
+        <div class="form-group">
+            <label class="col-sm-2 control-label">Name</label>
+            <div class="col-sm-4">
+              {{input
+              type='text'
+              class='form-control'
+              value=factor_name}}
+            </div>
+            <div id="helpBlock" class="help-block col-sm-6">Give it a unique name e.g. "Daily Active Users"</div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">Info</label>
+
+            <div class="col-sm-4">
+              {{textarea value=factor_description class='form-control' cols="80" rows="6"}}
+            </div>
+            <div id="helpBlock" class="help-block col-sm-6"></div>
+        </div>
+        <div class="row space-box">
+            <div class="col-sm-2"></div>
+            <div class="col-sm-4">
+              {{#if factor.id}}
+                  <div>
+                      <button class="btn btn-default" {{action 'cancel'}}>Cancel</button>
+                      <button class="btn btn-default" {{action 'save'}}>Save</button> {{saveText}}
+                  </div>
+              {{else}}
+                  <div>
+                      <button class="btn btn-default" {{action 'cancel'}}>Cancel</button>
+                      <button class="btn btn-default btn-danger" {{action 'save'}}>Save</button> {{saveText}}
+                      Create {{factor_type}}.
+                  </div>
+              {{/if}}
+            </div>
+        </div>
+    </form>
+{{else}}
+
+    <div class="row space-box">
+      {{#if factor.id}}
+          <i class="fa fa-circle text-{{factor.status}} icon"></i>
+          (status: <span class="text-{{factor.status}}">{{factor.status}}</span>)
+          <span class="h3"> &nbsp; {{factor.name}}</span>
+
+      {{else if isMetric}}
+          <span class="h3">Create Metric</span>
+      {{else }}
+          <span class="h3">Create Dimension</span>
+      {{/if}}
+    </div>
+    <div class="row horizontal-sep">
+        <div class="ui hidden divider"></div>
+    </div>
+
+    <div class="ui one column grid">
+        <div class="column">
+            <form class="ui form">
+
+                <div class="ui two column very relaxed  grid">
+                    <div class="column">
+                        <div class="field">
+                            <label>Pick Calculation Type</label>
+                          {{view 'select'
+                          content=calculationChoices
+                          optionValuePath='content.id'
+                          optionLabelPath='content.name'
+                          value=factor_calculation_type
+                          prompt="Pick Calculation Type"
+                          classNames='ui fluid dropdown'
+                          required=true}}
+                        </div>
+
+                      {{#if hasRatio}}
+                          <div class="field {{unless factor_calculation_num  "error"}}">
+                              <label>Numerator</label>
+                            {{semantic-select
+                            content=metrics
+                            optionValuePath='content.id'
+                            optionLabelPath='content.name'
+                            selection=factor_calculation_num
+                            prompt="Pick Numerator"
+                            required=true}}
+                          </div>
+
+                          <div class="field {{unless factor_calculation_denom  "error"}}">
+                              <label>Denominator</label>
+                            {{semantic-select
+                            content=metrics
+                            optionValuePath='content.id'
+                            optionLabelPath='content.name'
+                            selection=factor_calculation_denom
+                            prompt="Pick Denominator"
+                            required=true}}
+                          </div>
+
+                      {{/if}}
+
+                      {{#if hasSimple}}
+                        {{#if isMetric}}
+                            <div class="field {{unless factor_calculation_reducer  "error"}}">
+                                <label>Pick an Aggregate Function
+                                </label>
+
+                              {{view 'select'
+                              content=aggregateFunction
+                              optionValuePath='content.id'
+                              optionLabelPath='content.name'
+                              value=factor_calculation_reducer
+                              prompt="Pick Aggregate Function"
+                              required=true}}
+                            </div>
+                            <div class="field {{unless factor_calculation_colname  "error"}}">
+                                <label>Pick a Dimension</label>
+                                {{semantic-select
+                                content=dimensions
+                                optionValuePath='content.id'
+                                optionLabelPath='content.name'
+                                value=factor_calculation_colname
+                                prompt="Pick A Dimension"
+                                required=true}}
+                            </div>
+                        {{else}}
+                            <div class="field {{unless factor_calculation_colname  "error"}}">
+                                <label>Pick a Column</label>
+                                {{semantic-select
+                                content=tableColumns
+                                optionValuePath='content.name'
+                                optionLabelPath='content.name'
+                                value=factor_calculation_colname
+                                prompt="Pick A Column"
+                                required=true}}
+                            </div>
+                        {{/if}}
+                          <div class="field">
+                              <label>Sample Query</label>
+                              SELECT <strong>
+                            {{#if isMetric}}{{factor_calculation_reducer}}({{/if}}
+                            {{factor_calculation_colname}}
+                            {{#if isMetric}}){{/if}}
+                          </strong><br>
+                              FROM {{factor_tablename}}
+                          </div>
+                      {{/if}}
+                      {{#if hasFunction}}
+                        {{#if isMetric}}
+                            <div class="field {{unless factor_calculation_reducer  "error"}}">
+                                <label>Pick an Aggregate Function
+                                </label>
+
+                              {{view 'select'
+                              content=aggregateFunction
+                              optionValuePath='content.id'
+                              optionLabelPath='content.name'
+                              value=factor_calculation_reducer
+                              prompt="Pick Aggregate Function"
+                              required=true}}
+                            </div>
+                        {{/if}}
+                          <div class="field">
+                              <label>Enter SQL Condition for your {{factor_type}}
+                                  <em>
+                                      <a target="_blank"
+                                         href="https://cwiki.apache.org/confluence/display/Hive/LanguageManual+UDF">
+                                          see documentation
+                                      </a>
+                                  </em>
+                              </label>
+                            {{textarea
+                            type='text'
+                            value=factor_calculation_mapper
+                            placeholder=factor.calculation.mapper}}
+                          </div>
+
+                          <div class="field">
+                              <label>Sample Query</label>
+                              SELECT <strong>
+                            {{#if isMetric}}{{factor_calculation_reducer}}({{/if}}
+                            {{factor_calculation_mapper}}
+                            {{#if isMetric}}){{/if}}
+                          </strong><br>
+                              FROM {{factor_tablename}}
+                          </div>
+                      {{/if}}
+                      {{#if hasAdvanced}}
+                        {{schema/advanced-factor-form 
+                                factor=factor
+                                dataset_id=dataset_id
+                                dataset=dataset
+                                metrics=metrics
+                                dimensions=dimensions
+                                tables=tables
+                                saveText=null
+                                factor_type='Dimension'
+                                window=window
+                                dashboard=dashboard
+                        }}
+                      {{/if}}
+
+                    </div>
+                    <div class="ui vertical divider"></div>
+                    <div class="column">
+                        <div class="field  {{unless factor_name "error"}}">
+                            <label>Name your {{factor_type}}</label>
+                            <div class="ui input">
+                              {{input
+                              type='text'
+                              placeholder=factor.name
+                              name="factor_name"
+                              value=factor_name}}
+                            </div>
+                        </div>
+                        <div class="field  {{unless factor_data_type  "error"}}">
+                            <label>Format</label>
+                          {{view 'select'
+                          content=dataTypeChoices
+                          optionValuePath='content.name'
+                          optionLabelPath='content.name'
+                          selection=factor_data_type
+                          prompt="Pick One"
+                          name="factor_data_type"
+                          required=true}}
+                        </div>
+                      {{#if isMetric}}
+                          <div class="field">
+                              <label>If the metric goes up it is...</label>
+                              <div class="two fields">
+                                  <div class="field">
+                                    {{ui-radio name="factor_better_direction" label="Good" value="Higher" current=factor_better_direction}}
+                                  </div>
+                                  <div class="field">
+                                    {{ui-radio name="factor_better_direction" label="Bad" value="Lower" current=factor_better_direction}}
+                                  </div>
+                              </div>
+                          </div>
+                      {{/if}}
+
+                        <div class="row space-box">
+                            <!-- Nav tabs -->
+                            <ul class="nav nav-pills" role="tablist">
+                                <li role="presentation">
+                                    <a href="#description" aria-controls="description" role="tab"
+                                       data-toggle="tab">Description</a></li>
+                                <li role="presentation">
+                                    <a href="#group" aria-controls="group" role="tab" data-toggle="tab">Group</a>
+                                </li>
+                                <li role="presentation">
+                                    <a href="#table" aria-controls="table" role="tab" data-toggle="tab">Table</a>
+                                </li>
+                            </ul>
+
+                            <!-- Tab panes -->
+                            <div class="tab-content">
+                                <div role="tabpanel" class="tab-pane" id="description">
+                                    <div class="field">
+                                      {{textarea value=factor_description placeholder=factor.description cols="80" rows="6"}}
+                                    </div>
+                                </div>
+                                <div role="tabpanel" class="tab-pane" id="group">
+                                    <div class="field">
+                                      {{input
+                                      type='text'
+                                      value=factor_group
+                                      placeholder=factor.group}}
+                                    </div>
+                                </div>
+                                <div role="tabpanel" class="tab-pane" id="table">
+                                    <div class="field">
+                                      {{view 'select'
+                                      content=tables
+                                      optionValuePath='content.id'
+                                      optionLabelPath='content.name'
+                                      value=factor_tablename
+                                      prompt="Pick Table"
+                                      classNames='ui fluid dropdown'
+                                      required=true}}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <div class="column">
+          {{#if error}}
+              <div class="ui error message">{{error}}</div>
+          {{/if}}
+            <div>{{saveText}}</div>
+            <i class="fa fa-circle text-{{factor.status}} icon"></i>
+            (status: <span class="text-{{factor.status}}">{{factor.status}}</span>)
+          {{#if factor.id}}
+              <div class="pull-right">
+                  <button class="btn btn-primary" {{action 'save'}}>Save and Test</button>
+              </div>
+          {{else}}
+              <div class="pull-right">
+                  <button class="btn btn-primary" {{action 'save'}}>Create {{factor_type}} and Test</button>
+              </div>
+          {{/if}}
+        </div>
+        <div class="column">
+          {{#if showChart}}
+            {{#if isMetric}}
+              {{charts/col-chart dataset=dataset
+              selectedMetricId=factor.id
+              selectedDimensionId=dashboard.date
+              startDate=chartStartDate
+              endDate=window.endDate
+              dashboard=dashboard
+              spark_only=true
+              type='line'
+              exploreLink=true
+              topN=100
+              cache='refresh'
+              setCompare=(action 'setCompare')
+              setPoint=(action 'setPoint')}}
+            {{else}}
+              {{charts/col-chart dataset=dataset
+              selectedMetricId=dashboard.countmetric
+              selectedDimensionId=factor.id
+              startDate=window.startDate
+              endDate=window.endDate
+              dashboard=dashboard
+              spark_only=true
+              topN=100
+              type='column'
+              cache='refresh'
+              exploreLink=true
+              setCompare=(action 'setCompare')
+              setPoint=(action 'setPoint')}}
+            {{/if}}
+          {{/if}}
+        </div>
+    </div>
+
+{{/if}}

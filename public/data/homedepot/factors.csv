@@ -1,0 +1,87 @@
+entity_type,name,id,class,description,type,metric_type,better_direction,avg_value,multi_value,render_type,data_type,unit_type,col,values
+Customers,Customer Id,id,Keys,Customer Id,basic,,,,N,,string,,customer.id
+Customers,User Name,user_name,Keys,User Name,basic,,,,N,,string,,customer.name
+Customers,Email,email,Keys,User Email,basic,,,,Y,,string,,customer.email
+Customers,Facebook Id,facebook_id,Keys,Facebook Id,basic,,,,N,,string,,customer.facebookid
+Customers,Phone Number,phone,Keys,Phone Numbers,basic,,,,Y,,string,,customer_profile.phone
+Customers,Profile Image,image,Profile,User's Profile Image,basic,,,,Y,,image,,customer_profile.image
+Customers,Name,name,Profile,Full name,basic,,,,N,,string,,customer_profile.name
+Customers,Location,location,Demographic,Associated Locations,dimension,,,,Y,,location,,"ADDRESS(customer_profile, street, city, state, country, zipcode, SUFFIX_NUM)","United States,Canada,UK,Germany,India,Russia,Brazil"
+Customers,IP Address,ipaddress,Profile,Associated IPs,basic,,,,Y,,string,,TOP(session.ip)
+Customers,Registered,registered,Profile,Is the user registered?,dimension,,,,N,,boolean,,BOOLEAN(customer.registered),"Y,N"
+Customers,Gender,gender,Demographic,Gender,dimension,,,,Y,,class,,buy_demographic_db.gender,"Male,Female,Missing"
+Customers,Age,age,Demographic,Age,dimension,,,35,N,,number,Years,buy_demographic_db.age,"0-4,5-12,13-19,20-35,35-60,60+,Missing"
+Customers,Tagged Behaviors,Tagged Behaviors,Behaviour,,dimension,,,,Y,,string,,,"Daily User,Researcher, Quick Buyer, Big Purchaser, Marketing Based, Organic"
+Customers,Income,income,Demographic,Income Range,dimension,,,100000,Y,,number,$,buy_demographic_db.income,"0-40k,40k-100k,100k-250k,250k+"
+Customers,Household Size,household,Demographic,Household Size,dimension,,,3,Y,,number,,buy_demographic_db.househould_size,"1,2,3,4,5+,Missing"
+Customers,Occupation,occupation,Demographic,Occupation,dimension,,,,N,,string,,buy_demographic_db.occupation
+Customers,First Visit,first_visit,Audience Metrics,Days since first visit,dimension,,,200,N,,number,Days,"DAYS(TODAY, FIRST(sessions.date))"
+Customers,Last Visit,last_visit,Audience Metrics,Days since last visit,dimension,,,2,N,,number,Days,"DAYS(TODAY, LAST(sessions.date))"
+Customers,Retention Rate,retention_rate,Audience Metrics,Percentage customers active after a month,metric,rate,higher,60,N,,percent,%,COUNT(sessions) / DAY,"0,0-1%,1-2%,3-4%,5%+"
+Customers,Conversion Rate,conversion_rate,Audience Metrics,,metric,rate,higher,4,N,,percent,%,COUNT(sessions) / DAY,"0,0-1%,1-2%,3-4%,5%+"
+Customers,Days to Sign Up,signup_time,Audience Metrics,Days to sign up,metric,number,lower,4.2,N,,number,Days,"DAYS(sessions.date where session.signup = TRUE, FIRST(sessions.date))"
+Customers,Avg Total Visits per Customer ,visit_count,Audience Metrics,,metric,number,higher,100,N,,metric,,COUNT(sessions)
+Customers,Frequency,frequency,Audience Metrics,Avg number of visits for the time period,metric,number,higher,1.2,N,,metric,,COUNT(sessions) / DAY
+Customers,Sales,sales,Audience Metrics,Total money spent,metric,number,higher,143,N,,metric,$,COUNT(sessions) / DAY
+Customers,Abandonment,bounceRate,Audience Metrics,Avg Bounce Rate,metric,rate,lower,67,N,,percent,%,COUNT(sessions) / DAY,"0,0-1%,1-2%,3-4%,5%+"
+Customers,Session Length,sessionDuration,Audience Metrics,Avg Session Duration,metric,number,higher,510,N,,metric,Seconds,COUNT(sessions) / DAY
+Customers,Avg Page Load Time,pageResponseTime,Audience Metrics,,metric,number,lower,156,N,,metric,Milliseconds,COUNT(sessions) / DAY
+Customers,Browser,browser,Platform or Device,Most frequent browser,dimension,,,,Y,,string,,TOP(session.ip),"Chrome,IE,Firefox,Safari"
+Customers,Browser Version,browerVersion,Platform or Device,Most frequent browser version,dimension,,,,Y,,string,,TOP(session.ip)
+Customers,OS,os,Platform or Device,Most frequent OS,dimension,,,,Y,,string,,TOP(session.ip)
+Customers,OS Version,osVersion,Platform or Device,Most frequent OS Version,dimension,,,,Y,,string,,TOP(session.ip),"Window 7, Windows 8, OSX, Linux"
+Customers,Mobile Device,mobileDevice,Platform or Device,Most frequent Mobile Device,dimension,,,,Y,,string,,TOP(session.ip),"iPhone 5, iPhone 6 Plus, Samsung Galaxy S4, Nexus 5"
+Customers,Screen Resolution,screenResolution,Platform or Device,Most frequent desktop resolution,dimension,,,,Y,,string,,TOP(session.ip)
+Customers,Has Flash,hasFlash,Platform or Device,Flash installed?,dimension,,,,N,,boolean,,TOP(session.ip),"Yes,No"
+Customers,Has Java,hasJava,Platform or Device,Java installed?,dimension,,,,N,,boolean,,TOP(session.ip),"Yes,No"
+Customers,Has HTML5,hasHTML5,Platform or Device,Has HTML5?,dimension,,,,N,,boolean,,TOP(session.ip),"Yes,No"
+Customers,App Version,appVersion,Platform or Device,Lastest version of our app,dimension,,,,N,,string,,TOP(session.ip)
+Customers,Favorite Category,category,Behaviour,Best target categories,dimension,,,,Y,,string,,TOP(cust_behaviour.ip)
+Customers,Favorite Web Sites,website,Behaviour,Most used web sites,dimension,,,,Y,,string,,TOP(cust_behaviour.ip)
+Customers,Favorite Products,products,Behaviour,Most browsed products,dimension,,,,Y,,string,,TOP(cust_behaviour.ip)
+Customers,Interest Profile,interests,Behaviour,Best Interests,dimension,,,,Y,,string,,TOP(cust_behaviour.ip)
+Customers,Onboarding Type,onboardingType,Behaviour,Which onboarding experience was used?,dimension,,,,N,,string,,TOP(cust_behaviour.ip)
+Customers,Landing Page Name,landingPageName,Behaviour,Which page did he first land on?,dimension,,,,N,,string,,TOP(cust_behaviour.ip)
+Customers,Ad Impressions,marketing_hits,Marketing,Total marketing done,metric,number,higher,8.2,N,,metric,,traffic.sem_sessions
+Customers,Ad CTR,marketing_ctr,Marketing,,metric,rate,higher,2.1,N,,percent,%,traffic.total_pvs
+Customers,Email CTR,email_ctr,Marketing,,metric,rate,higher,1.09,N,,percent,%,traffic.seo_sessions
+Customers,Email Hits,email_hits,Marketing,Number of emails viewed,metric,number,higher,2.64,N,,metric,,traffic.sem_sessions
+Customers,Landed,landed,Browsing,First page of a visit,event
+Customers,Bounced,bounce,Browsing,Last Page,event
+Customers,Search,Search,Browsing,,event
+Customers,Category Page,Category Page,Browsing,,event
+Customers,Edited Profile,Edited Profile,Browsing,,event
+Customers,Changed Privacy Settings,Changed Privacy Settings,Browsing,,event
+Customers,Uploaded Data,Uploaded Data,Browsing,,event
+Customers,Gave Feedback,Gave Feedback,Browsing,,event
+Customers,Purchased,Purchased,Transaction,,event
+Customers,Registered,Registered,Browsing,,event
+Customers,Viewed Product Page,Viewed Product Page,Browsing,,event
+Customers,UI Error,UI Error,Errors,,event
+Customers,Server Error,Server Error,Errors,,event
+Customers,ZenDesk Complaint,ZenDesk Complaint,Errors,,event
+Customers,Filed Issue,Filed Issue,Errors,,event
+Customers,Saw Ad,Saw Ad,Marketing,,event
+Customers,Clicked Ad,Clicked Ad,Marketing,,event
+Customers,Opened email,Opened email,Marketing,,event
+Customers,Clicked email,Clicked email,Marketing,,event
+Customers,Returned Product,Returned Product,Transaction,,event
+Customers,Shipped Product,Shipped Product,Transaction,,event
+Customers,Shipped Product,Shipped Product,Transaction,,event
+Products,UPC,UPC,Basic,Primary UPC of the Product,basic,,,,,,string,,masteritem.upc
+Products,Image,Image,Basic,Primary Image of the Product,basic,,,,,Image,image,,masteritem.primary_image
+Products,Title,name,Basic,Title,basic,,,,,,string,,masteritem.title
+Products,Category Sales Rank,Category Sales Rank,Competition,Sales rank in the primary category,dimension,,,5,,,rank,,salesrank.category_rank,"1-5,6-10,11-20,21+"
+Products,Price,Price,Competition,Most recent price,dimension,,,100,,,number,$,masteritem.price
+Products,Brand Sales Rank,Brand Sales Rank,Competition,Sales rank among all products by this Brand,metric,number,lower,5,,,rank,,masteritem.brand,"1-5,6-10,11-20,21+"
+Products,Price Gap,Price Gap,Competition,%age difference vs Amazon price,metric,number,lower,10,,,percent,,priceintelligence.amazon_gap," -20 to -10%, -10 to -5%, -5 to +5%, 5-10%, >10%"
+Products,Category,Category,Attributes,Primary Category,dimension,,,,,,heirarchy,,masteritem.primary_category
+Products,Pattern,Pattern,Attributes,,dimension,,,,,,string,,masteritem.pattern,"Striped, Animals, Plain, Geometric"
+Products,Brand,Brand,Attributes,,dimension,,,,,,string,,masteritem.brand,"Sleeptrain, Sleepy, Certa, Comfort, Baggins"
+Products,Sentiment,Sentiment,User Experience,,metric,rate,higher,75,,,percent,%,socialanalysis.sentiment
+Products,Image Ct,Image Ct,User Experience,"Number of images including Primary, Secondary and Description images",metric,number,higher,3,,,number,," = IF(masteritem.primary_image, 1, 0) + COUNT(itemimages.image_url) ","0,1,2,3+"
+Products,Sales,Sales,Demand,Total GMV including shipping cost,metric,number,higher,13.2,,,metric,$,transactions.sales
+Products,SEO Traffic,SEO Traffic since last week,Demand,No of sessions from SEO,metric,number,higher,1000000,,,metric,,traffic.seo_sessions
+Products,SEM Traffic,SEM Traffic since last week,Demand,No of sessions from SEM,metric,number,higher,100000,,,metric,,traffic.sem_sessions
+Products,Page Views,Page Views,Demand,No of Page View for the Product detail page not including bots,metric,number,higher,400,,,metric,,traffic.total_pvs,"0,1-10,11-100,101-1000,1001+"
+Products,In stock view rate,Inventory on hand,Supply,Views with add to cart vs views without add to cart,metric,rate,higher,94,,,percent,%,traffic.isr,"<80%,80-90%,91-95%,95-99%,>99%"

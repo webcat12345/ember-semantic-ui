@@ -1,0 +1,21 @@
+ <div class="sidebar--datasource">
+    <div class=" button dropdown-toggle" data-toggle="dropdown">
+        Choose dataset 
+        <span class="caret caret-up"></span>
+    </div>
+    <ul class="dropdown-menu drop-up" role="menu">
+      <li ><a href="#">Dataset: &nbsp;<strong>{{model.dataset.name}}</strong></a></li>
+      <li class="divider"></li>
+      {{#each model.datasets as |b|}}
+        {{#link-to "datasetroot" b.id tagName="li" href=false}}
+          {{#link-to "datasetroot" b.id}}{{b.name}}{{/link-to}}
+        {{/link-to}}
+      {{/each}}
+      <li class="divider"></li>
+      <li>
+        {{#link-to "datasetroot.create"  href=false}}
+          {{#link-to "datasetroot.create" }}Create new customer{{/link-to}}
+        {{/link-to}}
+      </li>
+    </ul>
+</div>

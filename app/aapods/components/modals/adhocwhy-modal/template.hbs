@@ -1,0 +1,24 @@
+{{#main-modal ok='done' close='removeModal' showFooter=false showHeader=false showButtons=true requests=model.requests}}
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-8">
+            <img style='float:right;width:80px;height:80px; margin-right:50px;' src="/assets/images/adhocwhy.png" />
+            	<p>
+	             <strong>This report has never been run before. May I run it for you?</strong>
+			      <br><br>
+			      </p>
+			      <p style="color:#808080">We'll email you when the report is ready.</p><br>
+			     
+
+			     {{input type="checkbox" checked=run_deeper}} Run Deeper
+
+           <p class="description">Cuberon will pre-run deeper analysis’ for most top<br>
+            segment results before returning this report. Enabling this option will increase turnaround time. </p>
+			    
+		</div>
+		
+        </div>
+    </div>
+
+{{/main-modal}}

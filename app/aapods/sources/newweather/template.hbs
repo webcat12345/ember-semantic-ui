@@ -1,0 +1,48 @@
+<div class="row text-center">
+    <h2>Add Source: Weather</h2>
+</div>
+<div class="row text-center">
+    <div class="row">
+        <div class="row">
+            <div class="row space-box">
+                <form class="form-inline" role="form">
+                    <div class="form-group">
+                      {{input type="text"
+                      value=name
+                      required=true
+                      placeholder="Source Name"
+                      class="form-control"
+                      }}
+                    </div>
+                </form>
+            </div>
+            <div class="row space-box">
+                <form class="form-inline" role="form">
+                    <div class="form-group">
+                      {{input type="text"
+                      value=table_name
+                      required=true
+                      placeholder="ZIP code Table name"
+                      class="form-control"
+                      }}
+                    </div>
+                </form>
+            </div>
+            <div class="row space-box">
+                <form class="form-inline" role="form">
+                    <div class="form-group">
+                      {{input type="text"
+                      value=column_name
+                      required=true
+                      placeholder="ZIP code Column name"
+                      class="form-control"
+                      }}
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="row">
+            <a class="btn btn-primary {{if disableAdd 'disabled'}}" {{action "createsource"}}>Add Source</a>
+        </div>
+    </div>
+</div>

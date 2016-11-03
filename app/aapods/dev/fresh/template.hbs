@@ -1,0 +1,35 @@
+<h2>Current Freshness Status</h2>
+<table class="table table-striped">
+    <thead>
+      <tr>
+          <th>Dataset Id</th>
+          <th>Channel</th>
+          <th>No Stories</th>
+          <th>2 days</th>
+          <th>7 days</th>
+          <th>%Fresh</th>
+          <th>%Top10</th>
+          <th>%Fresh7</th>
+          <th>%WhyDone</th>
+          <th>%WhyData</th>
+          <th>%WhyError</th>
+      </tr>
+    </thead>
+    <tbody>
+      {{#each model.fresh as |f|}}
+      <tr class={{unless f.valid 'danger'}}>
+          <th>{{f.dataset_id}}</th>
+          <th>{{f.channel_name}}</th>
+          <th>{{f.num_stories}}</th>
+          <th>{{f.num_stories_2days}}</th>
+          <th>{{f.num_stories_7days}}</th>
+          <th>{{number-fmt 'perc' f.freshness_metric}}%</th>
+          <th>{{number-fmt 'perc' f.freshness_metric_top}}%</th>
+          <th>{{number-fmt 'perc' f.freshness_metric_week}}%</th>
+          <th>{{number-fmt 'perc' f.why_done}}%</th>
+          <th>{{number-fmt 'perc' f.why_data}}%</th>
+          <th>{{number-fmt 'perc' f.why_error}}%</th>
+      </tr>
+      {{/each}}
+    </tbody>
+</table>

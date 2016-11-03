@@ -1,0 +1,72 @@
+<div class="ui secondary pointing menu">
+  {{#if displaySettings.showGroups}}
+      <a class="item {{if (eq result_tab "summary") "active"}}" {{action 'setCompareType' 'summary'}}>
+          Summary for:&nbsp;
+        {{semantic-select
+        content=dimGroups
+        optionValuePath='content.name'
+        optionLabelPath='content.name'
+        selection=selectedGroup
+        prompt="Pick Group"
+        uiType="inline"
+        required=true}}
+      </a>
+  {{/if}}
+    <a class="item {{if (eq result_tab "dimension") "active"}}" {{action 'setCompareType' 'dimension'}}>
+        Dimension:&nbsp;  {{semantic-select
+    content=model.dimensions
+    optionValuePath='content.id'
+    optionLabelPath='content.name'
+    selection=resultDimension
+    uiType="inline"
+    prompt="Pick Dimension"
+    onSelect=(action 'selectDimension')
+    required=true}}
+    </a>
+    <a class="item">
+      {{#ui-dropdown class="ui icon pointing dropdown" onChange=(action 'download')}}
+          <i class="fa fa-cloud-download"></i>
+          <div class="menu">
+              <div class="item">CSV</div>
+              <div class="item">Excel</div>
+          </div>
+      {{/ui-dropdown}}
+    </a>
+</div>
+
+{{#if (eq result_tab "summary")}}
+  {{#if isLoading}}
+      <div class="progress">
+          <div class="progress-bar" role="progressbar"
+               aria-valuenow="{{number-fmt 'int' loading}}" aria-valuemin="0"
+               aria-valuemax="100"
+               style="min-width: 2em;width: {{number-fmt 'int' loading}}%;">
+            {{number-fmt 'int' loading}}%
+          </div>
+      </div>
+  {{/if}}
+
+  {{#each dimension_list as |d|}}
+    {{why/impact-table
+    model=model
+    dim=d.id
+    type=type
+    show_statsig=false
+    a=a
+    b=b
+    fltr=fltr
+    isAdmin=isAdmin
+    displaySettings=d.displaySettings
+    isLoadingParent=isLoading
+    setResults=(action 'setResults')
+    selectDimension=(action 'selectDimension')}}
+  {{/each}}
+{{else}}
+  {{#if (eq type 'mevsrest')}}
+    {{partial "apps/result-body"}}
+  {{else if (eq resultDimension.data_type "number")}}
+    {{partial "apps/result-charts"}}
+  {{else}}
+    {{partial "apps/result-body"}}
+  {{/if}}
+{{/if}}

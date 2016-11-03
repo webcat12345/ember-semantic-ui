@@ -1,0 +1,62 @@
+{{#if isMetric}}
+    <div class="row space-box">
+        <div class="col-md-12">
+            <span class="h4">Metrics</span>
+            <span class="pull-right">
+              {{#link-to 'factors.metric' 'new'}}new <i class="fa fa-plus"></i>{{/link-to}}
+            </span>
+        </div>
+    </div>
+    <div class="row space-box">
+        <div class="col-md-12">
+            <div class="ui fluid icon input">
+              {{input value=metricSearch placeholder="search..."}}
+                <i class="search icon"></i>
+            </div>
+
+        </div>
+    </div>
+    <div class="row space-box">
+        <div class="col-md-12">
+
+            <div class="ui link list relaxed">
+              {{#each metrics as |m|}}
+                {{#link-to 'factors.metric' m.id class="item"}}
+                    <i class="fa fa-circle icon text-{{m.status}}"></i>{{m.name}}
+                {{/link-to}}
+              {{/each}}
+                <a class="item hand" {{action 'toggleShowMetrics'}}><em>{{if showMoreMetrics "Show less" "Show more"}}</em></a>
+            </div>
+        </div>
+    </div>
+{{/if}}
+{{#if isDimension}}
+    <div class="row space-box">
+        <div class="col-md-12">
+            <span class="h4">Dimensions</span>
+            <span class="pull-right">
+              {{#link-to 'factors.dimension' 'new'}}new <i class="fa fa-plus"></i>{{/link-to}}
+            </span>
+        </div>
+    </div>
+    <div class="row space-box">
+        <div class="col-md-12">
+            <div class="ui fluid icon input">
+              {{input value=dimSearch placeholder="search..."}}
+                <i class="search icon"></i>
+            </div>
+        </div>
+    </div>
+    <div class="row space-box">
+        <div class="col-md-12">
+            <div class="ui link list relaxed">
+              {{#each dimensions as |m|}}
+                {{#link-to 'factors.dimension' m.id class="item"}}
+                    <i class="fa fa-circle icon text-{{m.status}}"></i>{{m.name}}
+                {{/link-to}}
+              {{/each}}
+                <a class="item hand" {{action 'toggleShowDims'}}><em>{{if showMoreDims "Show less" "Show more"}}</em></a>
+            </div>
+        </div>
+    </div>
+{{/if}}

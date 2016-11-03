@@ -1,0 +1,114 @@
+<h1 class="text-blue">Optimize <strong>Retention</strong></h1>
+
+<div class="ui middle aligned form">
+    <div class="fields">
+        <div class="fourteen wide field middle aligned content">
+            <h1>How does &nbsp;{{semantic-select
+            content=model.dimensions
+            optionValuePath='content.id'
+            optionLabelPath='content.name'
+            selection=resultDimension
+            prompt="_______"
+            uiType="inline"
+            required=true}} drive
+                <strong>
+                  {{semantic-select
+                  content=time_window_values
+                  selection=selected_time_window
+                  optionValuePath='content.id'
+                  optionLabelPath='content.name'
+                  uiType="inline"
+                  required=true}}
+                </strong>
+              {{semantic-select
+              content=retention_dimension_values
+              value=retention_start_value
+              optionValuePath='content.name'
+              optionLabelPath='content.name'
+              prompt="__"
+              uiType="inline"
+              required=true}}
+                to
+                <strong>
+                  {{selected_time_window.name}}
+                </strong>
+              {{semantic-select
+              content=retention_dimension_values
+              value=retention_end_value
+              optionValuePath='content.name'
+              optionLabelPath='content.name'
+              prompt="__"
+              uiType="inline"
+              required=true}} retention rate ?
+            </h1>
+        </div>
+        <div class="two wide field middle aligned content">
+          {{#if readyToAnalyze}}
+              <button class="ui orange button" {{action 'analyze'}}>Analyze</button>
+          {{else}}
+              <button class="ui orange button disabled">Analyze</button>
+          {{/if}}
+        </div>
+    </div>
+    <div class="fields">
+        <div class="thirteen wide field" id="filters">
+          {{partial "apps/pick-filters"}}
+        </div>
+    </div>
+</div>
+
+
+<div class="ui divider"></div>
+{{#if loadingStory}}
+    <div class="whitebox text-center">
+        <h1>Loading...</h1>
+      {{fa-icon icon="refresh" spin=true size="4"}}
+    </div>
+{{else if resultsExist}}
+  {{#if results}}
+      <div class="ui divided padded grid stackable">
+          <div class="row">
+              <div class="four wide column">
+                  <div class="ui horizontal statistic small">
+                      <div class="value">
+                        {{number-fmt 'commas' results.bpt.ct}}
+                      </div>
+                      <div class="label">users <br>started</div>
+                  </div>
+              </div>
+              <div class="four wide column">
+                  <div class="ui horizontal statistic small">
+                      <div class="value">
+                        {{number-fmt 'percunit' results.bpt.om}}
+                      </div>
+                      <div class="label sub-heading">
+                          of users <br> retained
+                      </div>
+                  </div>
+
+                {{#ui-progress percent=(number-fmt 'int' results.bpt.om) class="story-bar orange"}}
+                    <div class="bar story-bar"></div>
+                    <div class="label story-label">{{number-fmt 'int' results.bpt.mct}} users</div>
+                {{/ui-progress}}
+              </div>
+
+              <div class="four wide column">
+                  <div class="sub-heading">
+                      Based on
+                    {{semantic-select
+                    content=dateChoices
+                    selection=new_duration
+                    optionValuePath='content.name'
+                    optionLabelPath='content.name'
+                    uiType="inline"
+                    prompt=duration
+                    required=true}} of historical data.
+                      <div class="sub-heading">from {{date-fmt sd 'year'}} to {{date-fmt ed 'short'}}</div>
+                  </div>
+
+              </div>
+          </div>
+      </div>
+  {{/if}}
+  {{partial "apps/result-tabs"}}
+{{/if}}

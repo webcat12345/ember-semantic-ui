@@ -1,0 +1,31 @@
+{{#bootstrap-popover title="Why is this ranked high?"
+linktext=(number-fmt 'metric' point.facet.combo)}}
+  {{#if point.facet.impactperc}}
+      Impact for this segment was {{number-fmt 'changepercunit' point.facet.impactperc}}<br>
+  {{/if}}
+  {{#if point.facet.om}}
+      This segment changed  by {{number-fmt 'changeperc' point.facet.pm}}%<br>
+  {{/if}}
+  {{#if point.facet.mevsrest}}
+      This segment changed {{number-fmt "perc" point.facet.mevsrest}}X its peers<br>
+  {{/if}}
+  {{#if point.facet.significance.pvalue}}
+      Statistical Significance of this change is {{number-fmt 'percunit' point.facet.significance.pvalue}}<br>
+  {{/if}}
+
+  {{#if point.facet.contribdiff}}
+      This segments contribution changed by {{number-fmt 'changeperc' point.facet.contribdiff}}%<br>
+  {{/if}}
+
+  {{#if point.facet.z_score_delta_mult}}
+    {{#unless (eq point.facet.z_score_delta_mult 2)}}
+        This change was {{number-fmt "perc" point.facet.z_score_delta_mult}} Std Dev based on its history<br>
+    {{/unless}}
+  {{/if}}
+  {{#if isAdmin}}
+      <b>Weights</b><br>
+      {{#each part in point.facet.combo_parts}}
+        {{part.name}} = {{number-fmt 'metric' part.score}}<br>
+      {{/each}}
+  {{/if}}
+{{/bootstrap-popover}}

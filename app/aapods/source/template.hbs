@@ -1,0 +1,572 @@
+<div class="row space-box">
+    <div class="col-sm-2"></div>
+    <div class="col-sm-4">
+        <h3 class="">
+          {{#if model.id}}
+            {{model.name}}
+              <small>From {{model.type}}</small>
+          {{else}}
+              Import From {{model.type}}
+          {{/if}}
+        </h3>
+    </div>
+</div>
+<form class="form-horizontal">
+    <div class="form-group">
+        <label class="col-sm-2 control-label">Imported From</label>
+
+        <div class="col-sm-4">
+          {{input
+          type='text'
+          class='form-control'
+          value=model.type
+          disabled=true}}
+        </div>
+        <div id="helpBlock" class="help-block col-sm-6">Where the data is coming from.</div>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-2 control-label">Name</label>
+
+        <div class="col-sm-4">
+          {{input
+          type='text'
+          class='form-control'
+          value=model.name}}
+        </div>
+        <div id="helpBlock" class="help-block col-sm-6">Give a unique name to this data source.</div>
+    </div>
+  {{#if isMixpanel}}
+      <div class="form-group">
+          <label class="col-sm-2 control-label">API Key</label>
+
+          <div class="col-sm-4">
+            {{input
+            type='text'
+            class='form-control'
+            value=model.apiKey}}
+          </div>
+          <div id="helpBlock" class="help-block col-sm-6">Your Mixpanel API Key</div>
+      </div>
+
+      <div class="form-group">
+          <label class="col-sm-2 control-label">API Secret</label>
+
+          <div class="col-sm-4">
+            {{input
+            type='text'
+            class='form-control'
+            value=model.apiSecret}}
+          </div>
+          <div id="helpBlock" class="help-block col-sm-6">Your Mixpanel API Secret</div>
+      </div>
+
+      <div class="form-group">
+          <label class="col-sm-2 control-label">Days of History</label>
+
+          <div class="col-sm-4">
+            {{input
+            type='number'
+            class='form-control'
+            value=model.numDays
+            step=1
+            min=1
+            max=30}}
+          </div>
+          <div id="helpBlock" class="help-block col-sm-6">Number of days of history to import. Max 30 days</div>
+      </div>
+  {{/if}}
+  {{#if isMySql}}
+      <div class="form-group">
+          <label class="col-sm-2 control-label">Hostname</label>
+
+          <div class="col-sm-4">
+            {{input
+            type='text'
+            class='form-control'
+            value=model.hostname}}
+          </div>
+          <div id="helpBlock" class="help-block col-sm-6">Your MySQL Server Hostname</div>
+      </div>
+      <div class="form-group">
+          <label class="col-sm-2 control-label">Port</label>
+
+          <div class="col-sm-4">
+            {{input
+            type='text'
+            class='form-control'
+            value=model.port}}
+          </div>
+          <div id="helpBlock" class="help-block col-sm-6">Your MySQL Server Port</div>
+      </div>
+      <div class="form-group">
+          <label class="col-sm-2 control-label">Username</label>
+
+          <div class="col-sm-4">
+            {{input
+            type='text'
+            class='form-control'
+            value=model.username}}
+          </div>
+          <div id="helpBlock" class="help-block col-sm-6">A Username with Read Permission on the Server</div>
+      </div>
+
+      <div class="form-group">
+          <label class="col-sm-2 control-label">Password</label>
+
+          <div class="col-sm-4">
+            {{input
+            type='text'
+            class='form-control'
+            value=model.password}}
+          </div>
+          <div id="helpBlock" class="help-block col-sm-6">Password for this user</div>
+      </div>
+      <div class="form-group">
+          <label class="col-sm-2 control-label">Database</label>
+
+          <div class="col-sm-4">
+            {{input
+            type='text'
+            class='form-control'
+            value=model.db}}
+          </div>
+          <div id="helpBlock" class="help-block col-sm-6">The Database on the MySQL server to import from</div>
+      </div>
+      <div class="form-group">
+          <label class="col-sm-2 control-label">SQL Query</label>
+
+          <div class="col-sm-4">
+            {{textarea value=model.sql class='form-control' cols="80" rows="6"}}
+          </div>
+          <div id="helpBlock" class="help-block col-sm-6">The SQL Query to run to import data</div>
+      </div>
+      <div class="form-group">
+          <label class="col-sm-2 control-label">Days to Refresh</label>
+
+          <div class="col-sm-4">
+            {{input
+            type='text'
+            class='form-control'
+            value=model.refresh}}
+          </div>
+          <div id="helpBlock" class="help-block col-sm-6">How often should we refresh this data? Number of days</div>
+      </div>
+  {{/if}}
+
+  {{#if isS3}}
+      <div class="form-group">
+          <label class="col-sm-2 control-label">AWS Access Key Id</label>
+
+          <div class="col-sm-4">
+            {{input
+            type='text'
+            class='form-control'
+            value=model.awsAccessKeyId}}
+          </div>
+          <div id="helpBlock" class="help-block col-sm-6">Create an access key for your S3 Bucket and add it here.</div>
+      </div>
+      <div class="form-group">
+          <label class="col-sm-2 control-label">AWS Secret Access Key</label>
+
+          <div class="col-sm-4">
+            {{input
+            type='text'
+            class='form-control'
+            value=model.awsSecretAccessKey}}
+          </div>
+          <div id="helpBlock" class="help-block col-sm-6">Create an Secret Key for your S3 Bucket and add it here.</div>
+      </div>
+      <div class="form-group">
+          <label class="col-sm-2 control-label">Bucket</label>
+
+          <div class="col-sm-4">
+            {{input
+            type='text'
+            class='form-control'
+            value=model.bucket}}
+          </div>
+          <div id="helpBlock" class="help-block col-sm-6">
+              <button class="btn" {{action 's3getbuckets'}}>Show S3 Buckets</button>
+              S3 Bucket Name
+          </div>
+      </div>
+      <div class="form-group">
+          <label class="col-sm-2 control-label">Prefix</label>
+
+          <div class="col-sm-4">
+            {{input
+            type='text'
+            class='form-control'
+            value=model.prefix}}
+          </div>
+          <div id="helpBlock" class="help-block col-sm-6">
+              <button class="btn" {{action 's3getobjects'}}>Show Files</button>
+              Directory or Filename Prefix in the S3 Bucket. For example, eventsdir/fileprefix-YYYYMMDD-
+          </div>
+      </div>
+
+      <div class="form-group">
+          <label class="col-sm-2 control-label">Date Format</label>
+
+          <div class="col-sm-4">
+            {{input
+            type='text'
+            class='form-control'
+            value=model.dateFormat}}
+          </div>
+          <div id="helpBlock" class="help-block col-sm-6">
+              Format of the date in the filenames. For ex. %Y%m%d or %Y-%m-%d. <a href="http://strftime.org/">Format
+              Guide</a>
+          </div>
+      </div>
+
+      <div class="form-group">
+          <label class="col-sm-2 control-label">File Format</label>
+
+          <div class="col-sm-4">
+            {{view 'select'
+            content=fileFormatChoices
+            value=model.fileType
+            prompt="File Format"
+            classNames='form-control'
+            required=true}}
+          </div>
+          <div id="helpBlock" class="help-block col-sm-6">What is the format of the file? JSON? CSV, TSV etc. are
+              DELIMITED
+          </div>
+      </div>
+
+
+      <div class="form-group">
+          <label class="col-sm-2 control-label">File Format</label>
+
+          <div class="col-sm-4">
+            {{view 'select'
+            content=fileCompressionChoices
+            value=model.compression
+            prompt="Compression Type"
+            classNames='form-control'
+            required=true}}
+          </div>
+          <div id="helpBlock" class="help-block col-sm-6">Are the files compressed? If so what compression?</div>
+      </div>
+
+      <div class="form-group">
+          <label class="col-sm-2 control-label">Days of History</label>
+
+          <div class="col-sm-4">
+            {{input
+            type='number'
+            class='form-control'
+            value=model.numDays
+            step=1
+            min=1
+            max=30}}
+          </div>
+          <div id="helpBlock" class="help-block col-sm-6">Number of days of history to import. Max 30 days</div>
+      </div>
+  {{/if}}
+
+  {{#if isCSFTP}}
+      <div class="form-group">
+          <label class="col-sm-2 control-label">SFTP Login</label>
+
+          <div class="col-sm-4">
+            {{input
+            type='text'
+            class='form-control'
+            value=model.folder_name}}
+          </div>
+          <div id="helpBlock" class="help-block col-sm-6">
+              Your SFTP Login for Cuberon
+          </div>
+      </div>
+      <div class="form-group">
+          <label class="col-sm-2 control-label">File Name Prefix</label>
+
+          <div class="col-sm-4">
+            {{input
+            type='text'
+            class='form-control'
+            value=model.file_prefix}}
+          </div>
+          <div id="helpBlock" class="help-block col-sm-6">
+              Prefix in the filenames before the date
+          </div>
+      </div>
+
+      <div class="form-group">
+          <label class="col-sm-2 control-label">Date Format</label>
+
+          <div class="col-sm-4">
+            {{input
+            type='text'
+            class='form-control'
+            value=model.date_format}}
+          </div>
+          <div id="helpBlock" class="help-block col-sm-6">
+              Format of the date in the filenames. For ex. %Y%m%d or %Y-%m-%d. <a href="http://strftime.org/">Format
+              Guide</a>
+          </div>
+      </div>
+      <div class="form-group">
+          <label class="col-sm-2 control-label">File Name Suffix</label>
+
+          <div class="col-sm-4">
+            {{input
+            type='text'
+            class='form-control'
+            value=model.file_suffix}}
+          </div>
+          <div id="helpBlock" class="help-block col-sm-6">
+              Suffix in the filenames after the date
+          </div>
+      </div>
+      <div class="form-group">
+          <label class="col-sm-2 control-label">Date Format</label>
+
+          <div class="col-sm-4">
+            {{input
+            type='text'
+            class='form-control'
+            value=model.date_format}}
+          </div>
+          <div id="helpBlock" class="help-block col-sm-6">
+              Format of the date in the filenames. For ex. %Y%m%d or %Y-%m-%d. <a href="http://strftime.org/">Format
+              Guide</a>
+          </div>
+      </div>
+
+      <div class="form-group">
+          <label class="col-sm-2 control-label">File Format</label>
+
+          <div class="col-sm-4">
+            {{view 'select'
+            content=fileFormatChoices
+            value=model.file_type
+            prompt="File Format"
+            classNames='form-control'
+            required=true}}
+          </div>
+          <div id="helpBlock" class="help-block col-sm-6">What is the format of the file? JSON? CSV, TSV etc. are
+              DELIMITED
+          </div>
+      </div>
+
+    {{#if eq (model.file_type "DELIMITED")}}
+        <div class="form-group">
+            <label class="col-sm-2 control-label">Delimiter</label>
+
+            <div class="col-sm-4">
+              {{input
+              type='text'
+              class='form-control'
+              value=model.delimiter}}
+            </div>
+            <div id="helpBlock" class="help-block col-sm-6">
+                Delimiter to parse the data
+            </div>
+        </div>
+    {{/if}}
+
+      <div class="form-group">
+          <label class="col-sm-2 control-label">Compression</label>
+
+          <div class="col-sm-4">
+            {{view 'select'
+            content=fileCompressionChoices
+            value=model.compression
+            prompt="Compression Type"
+            classNames='form-control'
+            required=true}}
+          </div>
+          <div id="helpBlock" class="help-block col-sm-6">Are the files compressed? If so what compression?</div>
+      </div>
+
+      <div class="form-group">
+          <label class="col-sm-2 control-label">Days of History</label>
+
+          <div class="col-sm-4">
+            {{input
+            type='number'
+            class='form-control'
+            value=model.num_days
+            step=1
+            min=1
+            max=30}}
+          </div>
+          <div id="helpBlock" class="help-block col-sm-6">Number of days of history to import. Max 30 days</div>
+      </div>
+  {{/if}}
+
+  {{#if isFile}}
+      <div class="form-group">
+          <label class="col-sm-2 control-label">File path</label>
+
+          <div class="col-sm-4">
+            {{input
+            type='text'
+            class='form-control'
+            value=model.path}}
+          </div>
+          <div id="helpBlock" class="help-block col-sm-6">
+              The path to the file in the NFS dropbox where data is stored
+          </div>
+      </div>
+
+      <div class="form-group">
+          <label class="col-sm-2 control-label">File Format</label>
+
+          <div class="col-sm-4">
+            {{view 'select'
+            content=fileFormatChoices
+            value=model.file_type
+            prompt="File Format"
+            classNames='form-control'
+            required=true}}
+          </div>
+          <div id="helpBlock" class="help-block col-sm-6">What is the format of the file? JSON? CSV, TSV etc. are
+              DELIMITED
+          </div>
+      </div>
+
+
+      <div class="form-group">
+          <label class="col-sm-2 control-label">Delimiter</label>
+
+          <div class="col-sm-4">
+            {{input
+            type='text'
+            class='form-control'
+            value=model.delimiter}}
+          </div>
+          <div id="helpBlock" class="help-block col-sm-6">
+              Delimiter to parse the data
+          </div>
+      </div>
+
+  {{/if}}
+
+  {{#if isOMF}}
+      <div class="form-group">
+          <label class="col-sm-2 control-label">Directory/Archive</label>
+
+          <div class="col-sm-4">
+            {{input
+            type='text'
+            class='form-control'
+            value=model.inputPath}}
+          </div>
+          <div id="helpBlock" class="help-block col-sm-6">
+              The path to the directory or .tar.gz file where Omniture ftp dump is stored
+          </div>
+      </div>
+      <div class="form-group">
+          <label class="col-sm-2 control-label">Omniture Hits File</label>
+
+          <div class="col-sm-4">
+            {{input
+            type='text'
+            class='form-control'
+            value=model.hitsFile}}
+          </div>
+          <div id="helpBlock" class="help-block col-sm-6">
+              The name of the file containing hits data
+          </div>
+      </div>
+      <div class="form-group">
+          <label class="col-sm-2 control-label">Omniture Header File</label>
+
+          <div class="col-sm-4">
+            {{input
+            type='text'
+            class='form-control'
+            value=model.headerFile}}
+          </div>
+          <div id="helpBlock" class="help-block col-sm-6">
+              The name of the file with header names for the hits file
+          </div>
+      </div>
+  {{/if}}
+
+
+  {{#if isGA}}
+    {{ga-source model=model isAdmin=isAdmin user=user}}
+  {{/if}}
+
+    <div class="form-group">
+        <label class="col-sm-2 control-label">Dictionary</label>
+        <div class="col-sm-4">
+            {{input
+            type='checkbox'
+            name='isDictionary'
+            checked=model.is_dictionary}}
+        </div>
+    </div>
+
+    {{#if model.is_dictionary}}
+        <h4> Dictionary Join Info </h4>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">Supplier</label>
+            <div class="col-sm-4">
+                {{input
+                type='text'
+                class='form-control'
+                value=model.dict_join_info.supplier}}
+            </div>
+            <div id="helpBlock" class="help-block col-sm-6">
+                ( Cuberon, Customer )
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">Join Order</label>
+            <div class="col-sm-4">
+                {{input
+                type='text'
+                class='form-control'
+                value=model.dict_join_info.join_order}}
+            </div>
+            <div id="helpBlock" class="help-block col-sm-6">
+                Sequential order in which to join this dictionary
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-1 control-label">  </label>
+            <label class="col-sm-3 control-label"> Event Table </label>
+            <label class="col-sm-3 control-label"> Dictionary </label>
+        </div>
+        {{#each join_column in model.dict_join_info.join_columns}}
+            <div class="form-group">
+                <label class="col-sm-2 control-label">Join Column</label>
+                <div class="col-sm-3">
+                    {{input
+                    type='text'
+                    class='form-control'
+                    value=join_column.parent_col}}
+                </div>
+                <div class="col-sm-3">
+                    {{input
+                    type='text'
+                    class='form-control'
+                    value=join_column.dictionary_col}}
+                </div>
+            </div>
+        {{/each}}
+    {{/if}}
+
+    <div class="row space-box">
+        <div class="col-sm-2"></div>
+        <div class="col-sm-4">
+          {{#if model.id}}
+              <div>
+                  <button class="btn btn-default" {{action 'save'}}>{{saveText}}</button>
+                {{model.name}} is valid and saved.
+              </div>
+          {{else}}
+              <div>
+                  <button class="btn btn-default btn-danger" {{action 'save'}}>{{saveText}}</button>
+              </div>
+          {{/if}}
+        </div>
+    </div>
+</form>

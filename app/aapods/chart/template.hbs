@@ -1,0 +1,16 @@
+{{outlet 'exploretop'}}
+<div class="ui secondary pointing menu">
+  {{#link-to 'chart.advanced_chart' class="item"}}Segmentation{{/link-to}}
+  {{#link-to 'chart.funnel' class="item"}}Funnels{{/link-to}}
+  {{#link-to 'chart.retention' class="item"}}Retention{{/link-to}}
+  {{#link-to 'chart.advanced_query' class="item"}}Advanced Query{{/link-to}}
+  {{#if isAdmin}}
+    {{#link-to 'chart.dashboard_demo' class="item"}}*Dashboard Demo{{/link-to}}
+    {{#link-to 'chart.dashboard_demo2' class="item"}}*Dashboard Demo 2{{/link-to}}
+    {{#link-to 'chart.abtest' class="item"}}*A/B Tests{{/link-to}}
+    {{#link-to 'chart.session_view' class="item"}}*Session View{{/link-to}}
+  {{/if}}
+</div>
+<div class="container">
+  {{outlet}}
+</div>

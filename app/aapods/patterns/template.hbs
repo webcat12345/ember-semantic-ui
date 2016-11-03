@@ -1,0 +1,70 @@
+<div class="row text-center">
+  <div class="col-md-4"></div>
+  <div class="col-md-4">
+    {{view 'select'
+    content=model.metrics
+    optionValuePath='content.id'
+    optionLabelPath='content.name'
+    optionGroupPath='group'
+    value=sm
+    prompt="Select a Metric"
+    classNames='form-control'
+    required=true}}
+  </div>
+  <div class="col-md-4"></div>
+</div>
+{{#if loadingGrps}}
+  <div class="row">
+    <div class="whitebox text-center">
+      <h1>Loading Insights...</h1>
+      {{fa-icon icon="refresh" spin=true size="4"}}
+    </div>
+  </div>
+{{else}}
+  {{#each insightGrps as |group|}}
+    <div class="row">
+      <hr>
+      <div class="col-md-2"></div>
+      <div class="col-md-8">
+        <div class="row text-center">
+          <span class="text-lg font-extra-bold">{{group.key}}</span> : {{number-fmt 'metric' group.metrics.final}}
+          / {{number-fmt 'commas' group.metrics.denominator}}
+        </div>
+        <div class="row text-center font-extra-bold">
+          <h2>
+            <a href="">{{group.name}}</a>
+          </h2>
+        </div>
+
+        <div class="row space-box">
+          <div class="col-md-4 font-extra-bold text-center border-right">Name</div>
+          <div class="col-md-2 font-extra-bold text-center border-right">Delta</div>
+          <div class="col-md-2 font-extra-bold text-center border-right">Metric</div>
+          <div class="col-md-2 font-extra-bold text-center border-right">Size</div>
+          <div class="col-md-2 font-extra-bold text-center">Links</div>
+        </div>
+        {{#each group.facets as |f|}}
+          <div class="row space-box {{if f.p.hidden 'hidden'}}">
+            <div class="col-md-4 text-center border-right font-bold">
+              <a href="">{{f.v}}</a>
+            </div>
+            <div class="col-md-2 text-center text-{{f.klvl}} border-right">
+              <strong>{{number-fmt 'changeperc' f.kdelta}}%</strong>
+            </div>
+            <div class="col-md-2 text-center text-{{f.klvl}} border-right">
+              <strong>
+                {{number-fmt 'metric' f.p.scores.final}}
+              </strong>
+            </div>
+            <div class="col-md-2 text-center border-right">{{number-fmt 'commas' f.p.scores.denominator}}</div>
+            <div class="col-md-2 text-center">
+              <a href="">More</a>
+            </div>
+          </div>
+        {{/each}}
+      </div>
+      <div class="col-md-2">
+      </div>
+    </div>
+  {{/each}}
+{{/if}}

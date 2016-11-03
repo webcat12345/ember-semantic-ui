@@ -1,0 +1,15 @@
+.animate-reveal
+  opacity: 0
+  animation: reveal 1s cubic-bezier(0, 1, 0.5, 1) 1 normal forwards
+
+.animate-first
+  animation-delay: 1s
+
+@keyframes reveal
+  0%
+    opacity: 0
+    transform: translateY(100%)
+
+  100%
+    opacity: 1
+    transform: translateY(0)

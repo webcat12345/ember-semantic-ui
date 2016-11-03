@@ -1,0 +1,7 @@
+{{#if feed}}
+{{#each feed as |f|}}
+{{feeds/story-small f=f dataset=dataset user=user feed_id=feed_id action="reload"}}
+{{/each}}
+{{else}}
+<div class="row">Your search yielded zero results. Please try another search</div>
+{{/if}}

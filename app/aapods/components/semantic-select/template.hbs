@@ -1,0 +1,53 @@
+{{#if show}}
+  {{#if loading}}
+    {{#ui-dropdown class=loadingDropdownType data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"
+    fullTextSearch='exact' sort=true onChange=(action 'setValue') forceSelection=false}}
+        <div class="default text">Loading...</div>
+        <i class="dropdown icon"></i>
+    {{/ui-dropdown}}
+  {{else if _disabled}}
+    {{#ui-dropdown class=disabledDropdownType data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"
+    fullTextSearch='exact' sort=true onChange=(action 'setValue') forceSelection=false}}
+        <div class="default text">{{prompt}}</div>
+        <i class="dropdown icon"></i>
+    {{/ui-dropdown}}
+  {{else if multiple}}
+    {{#ui-dropdown class=multipleDropdownType data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"
+    fullTextSearch='exact' sort=true onChange=(action 'setValue') onHide=(action 'onHide') forceSelection=false}}
+        <div class="default text">{{prompt}}</div>
+        <i class="dropdown icon"></i>
+        <div class="menu">
+          {{#each parsedContent as |item|}}
+              <div class="item" data-value="{{item.value}}">
+                {{item.name}}
+              </div>
+          {{/each}}
+          {{#if newText}}
+              <div class="ui divider"></div>
+              <a class="item small-text" data-value="NEWNEW">
+                  <i class="fa fa-plus"></i> {{newText}}
+              </a>
+          {{/if}}
+        </div>
+    {{/ui-dropdown}}
+  {{else}}
+    {{#ui-dropdown selected=_value class=dropdownType data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"
+    fullTextSearch='exact' sort=true onChange=(action 'setValue') onHide=(action 'onHide') forceSelection=false}}
+        <div class="default text">{{prompt}}</div>
+        <i class="dropdown icon"></i>
+        <div class="menu">
+          {{#each parsedContent as |item|}}
+              <div class="item" data-value="{{item.value}}">
+                {{item.name}}
+              </div>
+          {{/each}}
+          {{#if newText}}
+              <div class="ui divider"></div>
+              <a class="item small-text" data-value="NEWNEW">
+                  <i class="fa fa-plus"></i> {{newText}}
+              </a>
+          {{/if}}
+        </div>
+    {{/ui-dropdown}}
+  {{/if}}
+{{/if}}

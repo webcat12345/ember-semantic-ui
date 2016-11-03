@@ -1,0 +1,32 @@
+<div class="row space-box">
+  {{#if selectedFactors}}
+    {{#each selectedFactors as |m|}}
+      {{m.name}},
+    {{/each}}
+  {{else}}
+    Choose below:
+  {{/if}}
+</div>
+<div class="row">
+  {{#if columnArr}}
+    {{select-picker
+    content=columnArr
+    selection=selectedFactors
+    liveSearch=true
+    multiple=true
+    optionGroupPath="group"
+    optionLabelPath="content.name"
+    optionValuePath="content.id"}}
+  {{else}}
+    {{view 'select'
+    content=dims
+    optionValuePath='content.id'
+    optionLabelPath='content.name'
+    optionGroupPath='group'
+    selection=qusd
+    prompt="Select Factors"
+    classNames='form-control'
+    required=true
+    disabled=true}}
+  {{/if}}
+</div>

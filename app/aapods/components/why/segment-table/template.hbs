@@ -1,0 +1,242 @@
+{{#data-tables tableid=tableid btnid=btnid selectable=false filters=filterSearch}}
+    <div class="row">
+        <div class="col-md-12 col-sm-12 col-xs-12">
+            <div id="datatable_wrapper" class="dataTables_wrapper form-inline dt-bootstrap no-footer">
+                <div class="col-sm-12">
+                    <div class="row"><span class="h4">{{title}}</span>
+                      {{#if isAdmin}}<span class="pull-right">
+                        {{view 'select'
+                        content=sortChoices
+                        optionValuePath='content.id'
+                        optionLabelPath='content.name'
+                        value=sortchoice
+                        classNames='form-control'
+                        required=true}}
+                      </span>
+                      {{/if}}
+                    </div>
+                    <table class="table dataTable no-footer display compact"
+                           cellspacing="0" width="100%"
+                           role="grid"
+                           aria-describedby="datatable_info"
+                           id={{tableid}}
+                                   data-order='[[ 2,
+                    "desc"]]'
+                    data-language='{"zeroRecords":"<strong>No Significant Segments were
+                    found</strong> <br> Please uncheck one above to see all segments."}'
+                    data-dom='<"top"i>rt<"bottom"p><"clear">'>
+                    <thead>
+                    <tr>
+                        <th data-orderable="false">Segment</th>
+                        <th data-orderable="false">
+                            Dimensions &nbsp;
+                          {{view 'select'
+                          content=uniq_factors
+                          optionValuePath='content.id'
+                          optionLabelPath='content.name'
+                          selection=factor
+                          prompt="All"
+                          classNames='form-control'
+                          required=true}}</th>
+
+                        <th class="{{if (eq uiversion 'simple') 'hidden'}}">
+                          {{scoreMsg}}
+                          {{#bootstrap-popover title="What is the Cuberon Score?" icon="fa fa-question-circle"}}
+                              This score shows Cuberon's estimate of how much this segment
+                              influenced the {{tableMsg}}.
+                          {{/bootstrap-popover}}
+                        </th>
+                        <th>
+                          {{tableMsg}} in metric
+                          {{#bootstrap-popover title="What is Change in Metric?" icon="fa fa-question-circle"}}
+                              Percentage {{tableMsg}} in "{{compare.metric.name}}" for this segment.
+                          {{/bootstrap-popover}}
+                        </th>
+                      {{#if model.results.d.significance}}
+                          <th>
+                              Statistical Significance
+                            {{#bootstrap-popover title="What is stat significance" icon="fa fa-question-circle"}}
+                                Statistical significance is computed from p-value obtained via t-test or chi-square
+                                test, as appropriate, to
+                                find out if the difference in "{{compare.metric.name}}" is significant for this segment.
+                            {{/bootstrap-popover}}
+                          </th>
+                      {{/if}}
+
+                        <th class="{{unless isDebug "hidden"}}">
+                            vs Rest
+                          {{#bootstrap-popover title="What is vs Rest?" icon="fa fa-question-circle"}}
+                              "vs Rest" tells this segments change is X times change in all others.
+                          {{/bootstrap-popover}}
+                        </th>
+                        <th class="{{unless showImpact "hidden"}}">
+                            Impact
+                          {{#bootstrap-popover title="What is Impact?" icon="fa fa-question-circle"}}
+                              Impact measures the percentage of overall {{tableMsg}} that can be
+                              attributed to this segment.
+                          {{/bootstrap-popover}}
+                        </th>
+                        <th>
+                          {{tableMsg}} in contribution
+                          {{#bootstrap-popover title="What is Share of traffic?" icon="fa fa-question-circle"}}
+                            {{tableMsg}} in contribution measures the percentage of overall
+                            {{#if compare.metric.calculation.numerator}}
+                                "{{compare.metric.calculation.numerator.name}}"
+                            {{else}}
+                                "{{calculation.metric.name}}'
+                            {{/if}} coming from this segment.
+                          {{/bootstrap-popover}}
+                        </th>
+                        <th class="hidden" id="significantcol">Is Signicant</th>
+                        <th class="hidden" id="contributorcol">Is Contributor</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {{#each fpts as |point|}}
+                    {{!--#unless (eq point.facet.n "Not Tagged Data")}}
+                      {{#unless (eq point.facet.n "----")}}
+                        {{#unless (eq point.facet.n "None")--}}
+                        <tr id={{point.facet.n}}>
+                            <td>
+                              {{#if (eq point.facet.n "Not Tagged")}}
+                                  <div class="show-tooltip" data-toggle="tooltip"
+                                       data-placement="top"
+                                       title="Segment to represent missing data">
+                                    {{!--<strong>{{str-fmt point.facet.n 50}}</strong>--}}
+                                    {{#bootstrap-popover linktext="Not Tagged"}}
+                                        Segment to represent remaining share of the metric.
+                                    {{/bootstrap-popover}}
+                                  </div>
+                              {{else}}
+                                {{#if (eq point.facet.n "----")}}
+                                    <div class="show-tooltip" data-toggle="tooltip"
+                                         data-placement="top"
+                                         title="Segment to represent empty string">
+                                      {{#bootstrap-popover linktext="----"}}
+                                          "----" marks pockets of empty data. This means that
+                                          Cuberon found empty fields representing this segment
+                                      {{/bootstrap-popover}}
+                                    </div>
+                                  {{#if point.loading}}
+                                    {{fa-icon icon="refresh" spin=true size="1"}}
+                                  {{/if}}
+                                {{else}}
+                                    <div class="dropdown">
+                                        <a href="" class="dropdown-toggle" type=""
+                                           data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                          {{str-fmt point.facet.n 50}} <span class="caret"></span>
+                                        </a>
+                                        <ul class="dropdown-menu">
+                                            <li><a href=""
+                                                   title="{{point.facet.n}}"{{action 'deeperwhy' point}}>
+                                                <small><i
+                                                        class="fa fa-eye" aria-hidden="true"></i> Explore
+                                                </small>
+                                            </a>
+                                              {{#if point.loading}}
+                                                {{fa-icon icon="refresh" spin=true size="1"}}
+                                              {{/if}}</li>
+                                            <li><a href="" {{action "whyfunnel" point}}>
+                                                <small>
+                                                    <i class="fa fa-filter" aria-hidden="true"></i> Funnel
+                                                </small>
+                                            </a></li>
+                                          {{#if is_thredup_sessions}}
+                                              <li><a href="" {{action "exploreSessions" point}}>
+                                                  <small>
+                                                      <i class="fa fa-filter" aria-hidden="true"></i> Explore
+                                                      Sessions
+                                                  </small>
+                                              </a></li>
+                                          {{/if}}
+                                        </ul>
+                                    </div>
+                                {{/if}}
+
+                              {{/if}}
+                            </td>
+                            <td>
+                                <div class="dropdown">
+                                    <a href="" class="dropdown-toggle"
+                                       data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        <em>{{factor-name factors=dimHash id=point.facet.f}}</em><span
+                                            class="caret"></span>
+                                    </a>
+                                    <ul class="dropdown-menu">
+                                        <li><a href="" {{action 'selectdim' point.facet.f}}>
+                                            <small><i class="fa fa-circle" aria-hidden="true"></i> Filter</small>
+                                        </a></li>
+                                        <li><a href="" {{action 'deletedim' point.facet.f}}>
+                                            <small><i class="fa fa-times" aria-hidden="true"></i> Remove</small>
+                                        </a></li>
+                                        <li><a href="" {{action "editFactor" point}}>
+                                            <small><i class="fa fa-pencil" aria-hidden="true"></i> Rename</small>
+                                        </a></li>
+                                    </ul>
+                                </div>
+                            </td>
+
+                            <td class="{{if (eq uiversion 'simple') 'hidden'}}"
+                                data-order={{point.facet.combo}}>
+                              {{partial "compare/explain/score-popover"}}
+                            </td>
+
+                            <td data-order={{if (eq point.facet.pm 100) 0 point.facet.pm}}>
+                              {{partial "compare/explain/metric-popover"}}
+                                <div class="hand pull-right" {{action 'modalForSegment' point}}>
+                                    <i class="fa fa-line-chart"></i>
+                                </div>
+                            </td>
+
+                          {{#if model.results.d.significance}}
+                            {{#if point.facet.significance.pvalue}}
+                                <td data-order={{point.facet.significance.pvalue}}>
+                                  {{why/significance-popover significance=point.facet.significance}}
+                                </td>
+                            {{else}}
+                                <td data-order=-1>
+                                  {{#bootstrap-popover title="More Details" linktext="N/A"}}
+                                      The data for this segment is not sufficient to calculate statistical
+                                      significance
+                                  {{/bootstrap-popover}}
+                                </td>
+                            {{/if}}
+                          {{/if}}
+
+
+                            <td class="{{unless isDebug "hidden"}} " data-order="{{point.facet.mevsrest}}">
+                              {{partial "compare/explain/mevsrest-popover"}}
+                            </td>
+                          {{!--
+                          <td data-order={{point.facet.vsnochangeperc}} class="{{unless showImpact "hidden"}}">
+                            {{partial "compare/explain/impact-popover"}}
+                          </td> --}}
+
+                            <td data-order={{point.facet.impactperc}} class="{{unless showImpact "hidden"}}">
+                              {{partial "compare/explain/lift-popover"}}
+                            </td>
+
+                            <td data-order={{point.facet.contribdiff}}>
+                              {{partial "compare/explain/num-contrib-popover"}}
+                              {{#if isAdmin}}
+                                  <div class="hand pull-right" {{action 'modalForContrib' point}}>
+                                      <i class="fa fa-line-chart"></i>
+                                  </div>
+                              {{/if}}
+                            </td>
+
+                            <td class="hidden">{{point.facet.isSignificant}}</td>
+
+                            <td class="hidden">{{point.facet.isContributor}}</td>
+                        </tr>
+                    {{!--/unless}}
+                  {{/unless}}
+                {{/unless--}}
+                    {{/each}}
+                    </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+{{/data-tables}}

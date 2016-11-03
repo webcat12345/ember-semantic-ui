@@ -1,0 +1,71 @@
+<div class="ui equal width padded grid">
+  {{#if loading}}
+      <div class="padded row">
+          <div class="sixteen wide column">
+              <div class="whitebox text-center">
+                  <h2>Loading Chart...</h2>
+                {{fa-icon icon="refresh" spin=true size="4"}}
+              </div>
+          </div>
+      </div>
+  {{else if error}}
+      <br><br>
+      <div class="padded row">
+          <div class="two wide column"></div>
+          <div class="four wide column"><img src="/assets/images/cuberon_error_logo.png" width="150px"/></div>
+          <div class="eight wide column">
+              <h3>Sorry, this chart isn't loading properly </h3>
+              <hr>
+              I detected that my server is redirecting the request for this chart in a way that will
+              never complete. Can you try reloading the page? I have been told it often works.
+          </div>
+      </div>
+  {{else if serverChart}}
+      <div class="padded row explore--main-row">
+          <div class="thirteen wide column">
+              <h4 class="panel-title">
+                {{#if showTitle}}
+                  {{final_name}}
+                    <em>{{chart_subtitle}}</em>
+                {{/if}}
+                {{#if exploreLink}}
+                    <small>{{#link-to 'chart.advanced_chart'
+                    (query-params sm=selectedMetricId
+                    sd=selectedDimensionId
+                    startDate=startDate
+                    endDate=endDate
+                    type=type
+                    sortm=sortm
+                    sortd=sortd
+                    topN=topN
+                    f=filter
+                    show="chart"
+                    group_by_id=group_by_id)}}
+                        Explore this
+                    {{/link-to}}</small>
+                {{/if}}
+              </h4>
+          </div>
+        {{#if (and chartProperties.isDate showDateCompare)}}
+            <div class="three wide column">
+                <div class="week-filter">
+                  {{semantic-select
+                  content=type_date_dimensions
+                  optionValuePath='content.id'
+                  optionLabelPath='content.name'
+                  prompt="Compare Dates"
+                  selection=type_date_dimensions_selected
+                  required=true}}
+                </div>
+            </div>
+        {{/if}}
+      </div>
+      <div class="padded row explore--main-row">
+          <div class="sixteen wide column">
+            {{charts/high-chart config=chart}}
+          </div>
+      </div>
+  {{else}}
+  {{/if}}
+
+</div>

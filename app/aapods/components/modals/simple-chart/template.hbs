@@ -1,0 +1,26 @@
+{{#main-modal title=model.modalTitle ok='done' close='removeModal' showFooter=false size=size}}
+    <div class="panel panel-default">
+        <div>
+          {{charts/col-chart dataset=model.dataset
+          selectedMetricId=model.selectedMetricId
+          selectedDimensionId=model.selectedDimensionId
+          startDate=model.startDate
+          endDate=model.endDate
+          type=model.type
+          filter=model.f
+          group_by_id=model.group_by
+          chart_name=model.chart_name
+          dashboard=model.dashboard
+          spark_only=model.spark_only
+          exploreLink=true
+          rangeSelectEnabled=false
+          selectPtEnabled=false
+          preColorA=model.preColorA
+          preColorB=model.preColorB
+          selectedSeries=model.selectedSeries
+          setCompare=(action 'setCompare')
+          setPoint=(action 'setPoint')}}
+
+        </div>
+    </div>
+{{/main-modal}}

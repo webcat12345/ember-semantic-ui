@@ -1,0 +1,103 @@
+{{#if (and authGA.needed (not isSourceSetUp))}}
+    <div class="form-group">
+        <label class="col-sm-2 control-label">Connect</label>
+        <div class="col-sm-4">
+            <a class="btn btn-primary" href="" {{action "gaconnect"}}>Sign In</a>
+        </div>
+        <div id="helpBlock" class="help-block col-sm-6">
+            Make sure PopUps are allowed. Check Address Bar if Pop Up is blocked
+        </div>
+    </div>
+{{else if (or (and isSourceSetUp isOwner) (not isSourceSetUp))}}
+    <div class="form-group">
+        <label class="col-sm-2 control-label">Connect</label>
+        <div class="col-sm-10">
+            Connected to Google Analytics.
+            <a class="btn btn-default" {{action "gadisconnect"}}>Sign Out</a>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="col-sm-2 control-label">Account</label>
+
+        <div class="col-sm-4">
+          {{view 'select'
+          content=accountSummaries.items
+          optionValuePath='content.id'
+          optionLabelPath='content.name'
+          selection=selectedAccount
+          prompt="Select Account"
+          classNames='form-control'
+          required=true}}
+        </div>
+        <div id="helpBlock" class="help-block col-sm-6">Pick an account
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-2 control-label">Website</label>
+
+        <div class="col-sm-4">
+          {{view 'select'
+          content=selectedAccount.webProperties
+          optionValuePath='content.id'
+          optionLabelPath='content.name'
+          selection=selectedWebProperty
+          prompt="Select Web Property"
+          classNames='form-control'
+          required=true
+          disabled=disableWebProperty}}
+        </div>
+        <div id="helpBlock" class="help-block col-sm-6">Pick a Web Property
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-2 control-label">Profile</label>
+
+        <div class="col-sm-4">
+          {{view 'select'
+          content=selectedWebProperty.profiles
+          optionValuePath='content.id'
+          optionLabelPath='content.name'
+          selection=selectedProfile
+          prompt="Select Profile"
+          classNames='form-control'
+          required=true
+          disabled=disableProfile}}
+        </div>
+        <div id="helpBlock" class="help-block col-sm-6">Pick a Profile
+        </div>
+    </div>
+
+{{else}}
+    <div class="form-group">
+        <label class="col-sm-2 control-label">Connect</label>
+        <div class="col-sm-10">
+            Connected to Google Analytics.
+            Using <b>{{model.userWithCredentials}}</b> account.
+
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="col-sm-2 control-label">Account</label>
+
+        <div class="col-sm-4">
+          {{selectedAccount.name}}
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-2 control-label">Website</label>
+
+        <div class="col-sm-4">
+          {{selectedWebProperty.name}}
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-2 control-label">Profile</label>
+
+        <div class="col-sm-4">
+          {{selectedProfile.name}}
+        </div>
+    </div>
+
+{{/if}}

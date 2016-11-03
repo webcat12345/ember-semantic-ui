@@ -1,0 +1,178 @@
+<div class="ui padded grid middle aligned ">
+    <div class="row space-box">
+            <div class="row space-box">
+                <span class="big">
+                    <i>With in </i>
+                        {{semantic-select
+                        content=levelDims
+                        optionValuePath='content.id'
+                        optionLabelPath='content.name'
+                        selection=dynamicDim.level
+                        onSelect=(action 'selectLevel')
+                        uiType="inline"
+                        prompt="________"
+                        required=true}}
+                </span>
+            </div>
+            <div class="row space-box">
+                <span class="big">
+                    <i> Compute </i>
+                        {{semantic-select
+                        content=aggFuncs
+                        optionValuePath='content.id'
+                        optionLabelPath='content.name'
+                        selection=dynamicDim.func
+                        onSelect=(action 'selectFunc')
+                        uiType="inline"
+                        prompt="________"
+                        required=true}}
+                    (
+                    {{#each dynamicDim.args as |funcArg index|}}
+                            {{semantic-select
+                            content=legalArgs
+                            optionValuePath='content.id'
+                            optionLabelPath='content.name'
+                            selection=funcArg
+                            onSelect=(action 'selectFuncArg' index)
+                            uiType="inline"
+                            prompt="________"
+                            required=true}}
+                    {{/each}}
+                    )
+                </span>
+            </div>
+            <!--Dynamic Dimension Filters-->
+            {{#each dynamicDim.filters as |filter index|}}
+                <div class="row space-box">
+                    <div class="form-group">
+                        {{#unless dynamicDim.complete}}
+                            {{#if filter.first}}
+                                <div class="row space-box">
+                                    <label class="col-sm-1 control-label">Where</label>
+                                </div>
+                                {{#unless dynamicDim.func.requireFilter}}
+                                    <a {{action "removeDimFilter" index}}
+                                        class="text-lightgrey pull-left hand">
+                                        <i class="fa fa-times"></i>
+                                    </a>
+                                {{/unless}}
+                            {{else}}
+                                <a {{action "removeDimFilter" index}}
+                                    class="text-lightgrey pull-left hand">
+                                    <i class="fa fa-times"></i>
+                                </a>
+                                {{#unless filter.complete}}
+                                    {{semantic-select
+                                    content=filter.conjTypes
+                                    optionValuePath='content.id'
+                                    optionLabelPath='content.name'
+                                    selection=filter.conj
+                                    onSelect=(action 'selectDimFilterConj' index)
+                                    uiType="inline"
+                                    prompt="________"
+                                    required=true}}
+                                {{else}}
+                                    <label class="col-sm-1 control-label">
+                                        {{filter.conj.name}}
+                                    </label>
+                                {{/unless}}
+                            {{/if}}
+                            {{#unless filter.complete}}
+                                {{semantic-select
+                                content=allDims
+                                optionValuePath='content.id'
+                                optionLabelPath='content.name'
+                                selection=filter.left
+                                onSelect=(action 'selectDimFilterLeft' index)
+                                uiType="inline"
+                                prompt="________"
+                                required=true}}
+                            {{else}}
+                                {{filter.left.name}}
+                            {{/unless}}
+                            {{#unless filter.complete}}
+                                {{semantic-select
+                                content=filter.filterTypes
+                                optionValuePath='content.id'
+                                optionLabelPath='content.name'
+                                selection=filter.filterType
+                                onSelect=(action 'selectDimFilterType' index)
+                                uiType="inline"
+                                prompt="________"
+                                required=true}}
+                            {{else}}
+                                {{filter.filterType.name}}
+                            {{/unless}}
+                            {{#unless filter.isUnary}}
+                                (
+                                {{#unless filter.complete}}
+                                    {{semantic-select
+                                    content=filter.rightTypes
+                                    optionValuePath='content.id'
+                                    optionLabelPath='content.name'
+                                    selection=filter.rightType
+                                    onSelect=(action 'selectDimFilterRightType' index)
+                                    uiType="inline"
+                                    prompt="________"
+                                    required=true}}
+                                {{else}}
+                                    {{filter.rightType.name}}
+                                {{/unless}}
+                                )
+                                    {{!--#if filter.hasValues--}}
+                                        {{semantic-select
+                                        content=filter.rightValues
+                                        optionValuePath='content.id'
+                                        optionLabelPath='content.name'
+                                        selection=filter.right
+                                        onSelect=(action 'selectDimFilterRight' index)
+                                        uiType="inline"
+                                        prompt="________"
+                                        required=true}}
+                                    {{!--else}}
+                                        {{input
+                                        type='text'
+                                        class="ui input"
+                                        placeholder="value..."
+                                        value=filter.right.name}}
+                                    {{/if--}}
+                            {{/unless}}
+                        {{else}}
+                            {{#if filter.first}}
+                                <label class="col-sm-1 control-label">Where</label>
+                            {{else}}
+                                <label class="col-sm-1 control-label">
+                                    {{filter.conj.name}}
+                                </label>
+                            {{/if}}
+                            {{filter.left.name}}
+                            {{filter.filterType.name}}
+                            {{#unless filter.isUnary}}
+                                ({{filter.rightType.name}})
+                                {{filter.right.name}}
+                            {{/unless}}
+                        {{/unless}}
+                    </div>
+                </div>
+            {{/each}}
+            {{#unless dynamicDim.complete}}
+                <div class="row space-box">
+                    <div class="two wide column">
+                        <a {{action "addDimFilter"}} class="hand">
+                            <i class="fa fa-plus"></i>
+                            {{#unless dynamicDim.hasFilter}}
+                                Where
+                            {{else}}
+                                and/or
+                            {{/unless}}
+                        </a>
+                    </div>
+                </div>
+            {{/unless}}
+            <div class="row space-box">
+                <div class="ui divider explore--main-divider"></div>
+            </div>
+
+
+    </div>
+</div>

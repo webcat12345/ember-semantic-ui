@@ -1,0 +1,9 @@
+{{#if settings}}
+    <button class="ui basic button" {{action "toggleSettings"}}>
+        <i class="fa fa-floppy-o settings hand"></i>
+    </button>
+{{else}}
+    <button class="ui basic button" {{action "toggleSettings"}}>
+        <i class="fa fa-cog settings hand"></i>
+    </button>
+{{/if}}

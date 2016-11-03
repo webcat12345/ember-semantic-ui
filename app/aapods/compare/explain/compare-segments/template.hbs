@@ -1,0 +1,60 @@
+<div class="col-md-3">
+    {{#unless factor}}
+        {{why/summary-answer title="Winners" summary=winner_dims dimHash=dimHash answerClick="jumptosegmentrow"}}
+    {{/unless}}
+</div>
+<div id="whywheel" class="col-md-6">
+{{why/why-wheel title="test" data=dimensionpie2 clickpie="clickpie" height=300}}
+{{#if dimensionpie2.back}}
+    <div id="whywheel-back">
+        <button id="whywheelbackbutton" type="button"
+                class="btn btn-danger btn-circle btn-lg" {{action "setdim" null}}><i
+                class="fa fa-arrow-circle-left" aria-hidden="true"></i></button>
+    {{!-- <button id="whywheelbackbutton" type="button" class="btn btn-primary btn-xs" {{action "setdim" null}}><span class="glyphicon glyphicon-circle-arrow-left"></span> Back</button> --}}
+    </div>
+{{/if}}
+</div>
+<div class="col-md-3">
+    {{#unless factor}}
+    {{why/summary-answer title="Losers" summary=looser_dims dimHash=dimHash answerClick="jumptosegmentrow"}}
+    {{/unless}}
+</div>
+
+<div class="row">
+<div class="col-md-11">
+        Search: {{input action='searchDims' type='text' class='form-control' value=searchStr}}
+</div>
+<div class="col-md-1"><br/>
+    <a class="btn btn-default" {{action 'searchDims' searchStr}}>Go</a>
+</div>
+<br/>
+</div>
+
+{{why/segment-table title="All Winners" isDebug=isDebug isWinner=true
+                    tableid='topsegmentstable' btnid='topsegmentsbuttons' model=model
+                    uniq_factors=uniq_factors pts=pts compare=model deeperwhy="deeperwhy"
+                    deletedim="deletedim" modalForSegment="modalForSegment" isAdmin=isAdmin
+                    modalForContrib="modalForContrib" dimHash=dimHash selectdim="selectdim"
+                    significantFilter="significantFilter" directionFilter="directionFilter"
+                    editFactor="editFactor" factor=factor filterSearch=filterSearch searchDims="searchDims"
+                    sortChoices=sortChoices sortchoice=sortchoice uiversion=uiversion
+                    compare_type=result_tab whyfunnel="whyfunnel"}}
+
+{{why/segment-table title="All Losers" isDebug=isDebug isWinner=false
+                    tableid='topsegmentstable' btnid='topsegmentsbuttons' model=model
+                    uniq_factors=uniq_factors pts=pts compare=model deeperwhy="deeperwhy"
+                    deletedim="deletedim" modalForSegment="modalForSegment" isAdmin=isAdmin
+                    modalForContrib="modalForContrib" dimHash=dimHash selectdim="selectdim"
+                    significantFilter="significantFilter" directionFilter="directionFilter"
+                    editFactor="editFactor" factor=factor filterSearch=filterSearch searchDims="searchDims"
+                    sortChoices=sortChoices sortchoice=sortchoice uiversion=uiversion
+                    compare_type=result_tab whyfunnel="whyfunnel"}}
+
+
+<div id="topsegmentsbuttons">
+    <div class="pull-left vertical-sep">
+      {{#unless dim}}
+          {{j-check checked=significantOnly action='significantFilter'}} Significant Only
+      {{/unless}}
+    </div>
+</div>

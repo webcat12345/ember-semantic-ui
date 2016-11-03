@@ -1,0 +1,6 @@
+id,name,type,level,deltaType,change
+1,Low METRIC,Underperformer,danger,bad
+2,High METRIC,Overperformer,success,good
+3,METRIC Dropped,Dropped,danger,bad,Y
+4,METRIC Recovered,Recovered,success,good,Y
+5,METRIC Increased,Increased,info,good,Y

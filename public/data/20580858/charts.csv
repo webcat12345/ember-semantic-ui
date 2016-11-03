@@ -1,0 +1,5 @@
+id,name,dashboard,chart_id
+1,Abandonment Rate,1,Session Abandonment Rate
+2,Sessions by Browser,1,Session count by browser
+3,Brand Sales,1,Session Abandonment Rate by user type
+4,Query Conversion,1,Session Abandonment Rate by date

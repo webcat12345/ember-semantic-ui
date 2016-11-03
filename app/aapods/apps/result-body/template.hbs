@@ -1,0 +1,38 @@
+<div class="ui middle aligned padded grid">
+  {{partial "apps/result-header"}}
+  {{#if showLoader}}
+      <div class="whitebox text-center sixteen wide column">
+          <h1>Loading...</h1>
+        {{fa-icon icon="refresh" spin=true size="4"}}
+      </div>
+  {{else}}
+    {{#if pts}}
+      {{#each pts as |pt|}}
+          <div class="row padded facet-div" id="actions" {{action 'clickFacet' pt}}>
+            {{#if pt.isClicked}}
+              {{partial "apps/facet-full"}}
+            {{else}}
+              {{partial "apps/facet-summary"}}
+            {{/if}}
+          </div>
+      {{/each}}
+      {{#if shouldShowMore}}
+        {{#if showMore}}
+            <div class="hand sub-heading" {{action 'showMore' false}}><em>See less</em></div>
+        {{else}}
+            <div class="hand sub-heading" id="showMore" {{action 'showMore' true}}><em>See more</em></div>
+        {{/if}}
+      {{/if}}
+    {{else if results.facets}}
+        No Significant Segments found. <a class="hand" {{action 'toggleSignificant'}}>See All</a>
+    {{else if isLoadingParent}}
+        <div class="whitebox text-center sixteen wide column">
+            <h1>Loading...</h1>
+          {{fa-icon icon="refresh" spin=true size="4"}}
+        </div>
+    {{else}}
+        No data found
+    {{/if}}
+  {{/if}}
+</div>
+

@@ -1,0 +1,36 @@
+<div class="ui modal" style="height: {{size}}">
+  {{#if showHeader}}
+      <div class="header">
+          <button type="button" class="close" data-dismiss="modal"
+                  aria-hidden="true" {{action 'close'}}>&times;</button>
+          <h4 class="modal-title">{{title}}</h4>
+      </div>
+  {{/if}}
+    <div class="content">
+      {{yield}}
+
+    </div>
+
+    <div class="actions">
+
+      {{#if showOkButton}}
+          <button type="button" class="btn btn-primary" {{action 'ok'}}>{{okButtonText}}</button>
+      {{/if}}
+      {{#if (or showButtons showFooter)}}
+          <button type="button" class="btn btn-primary" {{action 'ok'}}>{{okText}}</button>
+          &nbsp;&nbsp;
+          <button type="button" class="btn btn-default"
+                  data-dismiss="modal"  {{action 'close'}}>{{closeText}}</button>
+      {{/if}}
+
+      {{#if showSave}}
+          <button type="button" class="btn btn-primary" {{action 'ok'}}>Save</button>
+          &nbsp;&nbsp;
+          <button type="button" class="btn btn-default" data-dismiss="modal" {{action 'close'}}>Cancel
+          </button>
+      {{/if}}
+    </div>
+
+
+</div>
+

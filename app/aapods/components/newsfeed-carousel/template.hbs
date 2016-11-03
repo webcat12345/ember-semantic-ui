@@ -1,0 +1,29 @@
+<div id="my-carousel" class="carousel slide" data-ride="carousel">
+
+    <ol class="carousel-indicators">
+        {{#each photos as |photo|}}
+            <li data-target="#my-carousel" data-slide-to=""></li>
+        {{/each}}
+    </ol>
+
+    <div class="carousel-inner" role="listbox">
+        {{#each photos as |photo|}}
+            <div class="item col-lg-6 col-lg-offset-3">
+            {{photo.name}}
+            {{single-feed feed=photo}}
+            </div>
+        {{/each}}
+    </div>
+
+    <!-- Left and right controls -->
+  <a class="left carousel-control" href="#my-carousel" role="button" data-slide="prev">
+    <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+    <span class="sr-only">Previous</span>
+  </a>
+  <a class="right carousel-control" href="#my-carousel" role="button" data-slide="next">
+    <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+    <span class="sr-only">Next</span>
+  </a>
+
+    <!-- removed right and left controls for clarity -->
+</div>
